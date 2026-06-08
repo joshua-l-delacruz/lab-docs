@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joshua Dela Cruz | IT Home Lab</title>
+  <style>
+    body { font-family: Segoe UI, sans-serif; max-width: 800px; margin: 60px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.7; }
+    h1 { font-size: 2em; border-bottom: 3px solid #0078d4; padding-bottom: 10px; }
+    h2 { color: #0078d4; margin-top: 40px; }
+    h3 { margin-top: 24px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    .badge { display: inline-block; background: #0078d4; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; margin-right: 6px; }
+    .stack { margin: 16px 0; }
+    footer { margin-top: 60px; font-size: 0.85em; color: #888; border-top: 1px solid #eee; padding-top: 16px; }
+  </style>
+</head>
+<body>
+
+  <h1>Joshua Dela Cruz</h1>
+  <p>IT Support Specialist | AZ-104 Candidate | Home Lab</p>
+  <p>
+    <a href="mailto:josh.delacruz19@gmail.com">josh.delacruz19@gmail.com</a> |
+    <a href="https://www.linkedin.com/in/joshua-l-delacruz" target="_blank">LinkedIn</a>
+  </p>
+
+  <h2>Hybrid Active Directory Lab</h2>
+  <p>Windows Server 2022 Domain Controller connected to Microsoft Azure via Entra Cloud Sync. Built to develop hands-on infrastructure skills aligned with cloud and MSP environments.</p>
+
+  <div class="stack">
+    <span class="badge">Windows Server 2022</span>
+    <span class="badge">Active Directory</span>
+    <span class="badge">Group Policy</span>
+    <span class="badge">Azure Entra ID</span>
+    <span class="badge">VMware Workstation</span>
+    <span class="badge">Cloudflare</span>
+  </div>
+
+  <h3>What I Built</h3>
+  <ul>
+    <li><strong>Domain Controller (DC01)</strong> - Windows Server 2022 on VMware, domain: ad.joshuadelacruz.solutions</li>
+    <li><strong>Active Directory</strong> - OUs (IT, HR, Finance, Workstations), users, security groups</li>
+    <li><strong>Group Policy Objects</strong> - Password Policy (12 char min, 90-day max age), Lock Screen timeout, USB Storage restriction</li>
+    <li><strong>Hybrid Identity</strong> - Microsoft Entra Cloud Sync connecting on-prem AD to Azure Entra ID</li>
+    <li><strong>DNS</strong> - Internal DNS on DC01, public DNS managed via Cloudflare</li>
+    <li><strong>Custom Domain</strong> - joshuadelacruz.solutions verified in Microsoft Entra ID</li>
+  </ul>
+
+  <h3>Architecture</h3>
+  <ul>
+    <li>Host: Lenovo ThinkPad T14 Gen 2 (i7-1185G7, 16GB RAM)</li>
+    <li>Hypervisor: VMware Workstation Pro 25</li>
+    <li>On-prem: Windows Server 2022 (DC01, 3GB RAM, 60GB)</li>
+    <li>Cloud: Microsoft Entra ID Free (tenant: joshuadelacruz.solutions)</li>
+    <li>Sync: Microsoft Entra Provisioning Agent (Cloud Sync)</li>
+    <li>Internet: PLDT 1Gbps / 700Mbps upload</li>
+  </ul>
+
+  <h2>Certifications</h2>
+  <ul>
+    <li>Microsoft Azure Administrator Associate (AZ-104) - Exam scheduled June 15, 2026</li>
+    <li>Microsoft DevOps Engineer Expert (AZ-400) - Exam scheduled June 29, 2026</li>
+    <li>Salesforce Certified Advanced Administrator - April 2022</li>
+    <li>Salesforce Certified Administrator - April 2022</li>
+  </ul>
+
+  <h2>Also Working With</h2>
+  <ul>
+    <li>Ubuntu Server - LAMP stack, FreePBX/Asterisk VoIP, UFW/iptables</li>
+    <li>ServiceNow - 4+ years enterprise ITSM</li>
+    <li>Microsoft Intune - MDM device enrollment and management</li>
+    <li>SailPoint / IDLocker - Enterprise IAM</li>
+  </ul>
+
+  <footer>
+    Joshua Dela Cruz - Sta. Maria, Bulacan, Philippines | Updated June 2026
+  </footer>
+
+</body>
+</html>
