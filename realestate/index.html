@@ -34,7 +34,7 @@ html[data-theme="dark"]{
   --accent2:#3b82f6;
   --success:#34d399;
   --danger:#f87171;
-  --warning:#f59e0b;
+  --warning:#fbbf24;
   --shadow:0 10px 35px rgba(0,0,0,.25);
 }
 
@@ -48,7 +48,14 @@ html{
 
 body{
   margin:0;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   background:var(--bg);
   color:var(--text);
   line-height:1.5;
@@ -72,6 +79,10 @@ input{
     color .18s ease,
     transform .12s ease,
     box-shadow .18s ease;
+}
+
+button{
+  -webkit-tap-highlight-color:transparent;
 }
 
 a{
@@ -138,7 +149,8 @@ a:hover{
 }
 
 .icon-btn,
-.secondary-btn{
+.secondary-btn,
+.danger-btn{
   border:1px solid var(--border);
   background:var(--surface);
   color:var(--text);
@@ -150,6 +162,15 @@ a:hover{
 .icon-btn:hover,
 .secondary-btn:hover{
   border-color:var(--accent);
+  transform:translateY(-1px);
+}
+
+.danger-btn{
+  color:var(--danger);
+}
+
+.danger-btn:hover{
+  border-color:var(--danger);
   transform:translateY(-1px);
 }
 
@@ -168,6 +189,15 @@ a:hover{
   transform:translateY(-1px);
 }
 
+.primary-btn:disabled,
+.secondary-btn:disabled,
+.danger-btn:disabled,
+.icon-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
 .location-btn{
   display:inline-flex;
   align-items:center;
@@ -178,12 +208,6 @@ a:hover{
 .location-btn.loading{
   opacity:.75;
   cursor:wait;
-}
-
-.location-btn:disabled{
-  opacity:.65;
-  cursor:not-allowed;
-  transform:none;
 }
 
 /* =========================================================
@@ -226,7 +250,9 @@ a:hover{
   height:7px;
   border-radius:50%;
   background:var(--success);
-  box-shadow:0 0 0 5px color-mix(in srgb,var(--success) 12%,transparent);
+  box-shadow:
+    0 0 0 5px
+    color-mix(in srgb,var(--success) 12%,transparent);
 }
 
 h1{
@@ -262,26 +288,6 @@ h1{
 .workspace-nav a:hover{
   background:var(--surface);
   color:var(--text);
-}
-
-.grid{
-  display:grid;
-  gap:18px;
-}
-
-.grid-2{
-  grid-template-columns:1.3fr .7fr;
-}
-
-.grid-3{
-  grid-template-columns:repeat(3,1fr);
-}
-
-@media(max-width:900px){
-  .grid-2,
-  .grid-3{
-    grid-template-columns:1fr;
-  }
 }
 
 /* =========================================================
@@ -326,6 +332,148 @@ h1{
   font-weight:800;
   background:color-mix(in srgb,var(--success) 12%,transparent);
   color:var(--success);
+}
+
+.badge.unsaved{
+  background:color-mix(in srgb,var(--warning) 12%,transparent);
+  color:var(--warning);
+}
+
+/* =========================================================
+   SAVED TRANSACTIONS
+   ========================================================= */
+
+.save-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+  padding:14px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+
+.save-state{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.save-state strong{
+  font-size:13px;
+}
+
+.save-state span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.save-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.saved-list{
+  display:grid;
+  gap:10px;
+}
+
+.saved-empty{
+  padding:22px;
+  border:1px dashed var(--border);
+  border-radius:14px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.saved-item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:center;
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--surface2);
+}
+
+.saved-item.active{
+  border-color:var(--accent);
+  box-shadow:
+    0 0 0 2px
+    color-mix(in srgb,var(--accent) 10%,transparent);
+}
+
+.saved-main{
+  min-width:0;
+}
+
+.saved-id{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  font-size:12px;
+  font-weight:850;
+}
+
+.current-chip{
+  display:inline-flex;
+  padding:3px 7px;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--accent) 12%,transparent);
+  color:var(--accent);
+  font-size:9px;
+  letter-spacing:.05em;
+}
+
+.saved-title{
+  margin-top:5px;
+  font-weight:800;
+  font-size:14px;
+}
+
+.saved-meta{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+
+.saved-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.small-btn{
+  min-height:35px;
+  padding:7px 10px;
+  border-radius:9px;
+  font-size:11px;
+}
+
+.saved-count{
+  color:var(--muted);
+  font-size:11px;
+}
+
+@media(max-width:720px){
+  .saved-item{
+    grid-template-columns:1fr;
+  }
+
+  .saved-actions{
+    justify-content:flex-start;
+  }
 }
 
 /* =========================================================
@@ -380,12 +528,9 @@ select{
 input:focus,
 select:focus{
   border-color:var(--accent);
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent);
-}
-
-input[readonly]{
-  opacity:.85;
-  cursor:not-allowed;
+  box-shadow:
+    0 0 0 3px
+    color-mix(in srgb,var(--accent) 12%,transparent);
 }
 
 .location-status{
@@ -421,7 +566,7 @@ input[readonly]{
 }
 
 /* =========================================================
-   LOCATION GPS PANEL
+   GPS
    ========================================================= */
 
 .gps-panel{
@@ -468,20 +613,20 @@ input[readonly]{
 
 .gps-status-dot.active{
   background:var(--success);
-  box-shadow:0 0 0 4px color-mix(in srgb,var(--success) 12%,transparent);
+  box-shadow:
+    0 0 0 4px
+    color-mix(in srgb,var(--success) 12%,transparent);
 }
 
 @media(max-width:600px){
-
   .gps-panel-top{
-    align-items:stretch;
     flex-direction:column;
+    align-items:stretch;
   }
 
   .gps-panel-top .primary-btn{
     width:100%;
   }
-
 }
 
 /* =========================================================
@@ -684,7 +829,7 @@ th{
 }
 
 /* =========================================================
-   REPORT — WEB
+   REPORT
    ========================================================= */
 
 .report{
@@ -824,10 +969,7 @@ footer{
   }
 
   body{
-    font-family:
-      Arial,
-      Helvetica,
-      sans-serif!important;
+    font-family:Arial,Helvetica,sans-serif!important;
   }
 
   body > *{
@@ -854,14 +996,11 @@ footer{
     min-height:0!important;
     margin:0!important;
     padding:0!important;
-
     border:0!important;
     border-radius:0!important;
     box-shadow:none!important;
-
     background:#fff!important;
     color:#111827!important;
-
     overflow:visible!important;
   }
 
@@ -902,7 +1041,6 @@ footer{
     padding:5mm 0!important;
     margin:0!important;
     border-bottom:1px solid #d5d5d5!important;
-
     page-break-inside:avoid!important;
     break-inside:avoid!important;
   }
@@ -931,9 +1069,7 @@ footer{
     justify-content:space-between!important;
     align-items:baseline!important;
     gap:8mm!important;
-
     padding:1.2mm 0!important;
-
     font-size:9.5pt!important;
     line-height:1.35!important;
   }
@@ -952,12 +1088,9 @@ footer{
     display:flex!important;
     justify-content:space-between!important;
     align-items:baseline!important;
-
     margin-top:4mm!important;
     padding:4mm 0 0!important;
-
     border-top:1.5px solid #111827!important;
-
     font-size:12pt!important;
     line-height:1.3!important;
     font-weight:900!important;
@@ -965,36 +1098,24 @@ footer{
 
   #report .report-warning{
     display:block!important;
-
     margin-top:4mm!important;
     padding:3.5mm!important;
-
     background:#f7f7f7!important;
     border-left:3px solid #555!important;
-
     font-size:8pt!important;
     line-height:1.45!important;
-
     page-break-inside:avoid!important;
     break-inside:avoid!important;
   }
 
   #report .report-disclaimer{
     display:block!important;
-
     margin-top:3mm!important;
     padding-top:3mm!important;
-
     border-top:1px solid #ddd!important;
-
     color:#666!important;
     font-size:7.5pt!important;
     line-height:1.4!important;
-  }
-
-  #report .report-section{
-    page-break-inside:avoid!important;
-    break-inside:avoid!important;
   }
 
   h1,h2,h3,p{
@@ -1034,10 +1155,6 @@ footer{
 
 <body>
 
-<!-- =======================================================
-     HEADER
-     ======================================================= -->
-
 <header class="topbar">
   <div class="topbar-inner">
 
@@ -1076,16 +1193,9 @@ footer{
   </div>
 </header>
 
-
-<!-- =======================================================
-     MAIN
-     ======================================================= -->
-
 <main class="container">
 
-  <!-- BREADCRUMB -->
   <div class="breadcrumb">
-
     <a href="https://joshuadelacruz.solutions/">
       ← Joshua Dela Cruz
     </a>
@@ -1097,36 +1207,35 @@ footer{
     <strong>
       Transaction Workspace
     </strong>
-
   </div>
 
-
-  <!-- HERO -->
   <section class="hero">
 
     <div class="kicker">
-      VERSION 4 · PHILIPPINE LOCATION
+      VERSION 1.3 · SAVED TRANSACTIONS
     </div>
 
     <h1>
       Prepare the transaction.<br>
-      Know who pays what.
+      Save the deal.
     </h1>
 
     <p>
       Build a preliminary Philippine property transaction estimate,
-      allocate expenses between buyer and seller, track documents
-      and produce a clean client-ready report.
+      allocate expenses between buyer and seller, track documents,
+      save transactions locally and produce a clean client-ready report.
     </p>
 
   </section>
 
-
-  <!-- NAV -->
   <nav class="workspace-nav">
 
     <a href="#workspace">
       ▦ Transaction
+    </a>
+
+    <a href="#savedTransactions">
+      💾 Saved
     </a>
 
     <a href="#costs">
@@ -1151,7 +1260,6 @@ footer{
 
   </nav>
 
-
   <!-- =====================================================
        WORKSPACE
        ===================================================== -->
@@ -1164,7 +1272,6 @@ footer{
     <div class="card-title">
 
       <div>
-
         <h2>
           Transaction Setup
         </h2>
@@ -1172,15 +1279,56 @@ footer{
         <p>
           Enter the information available from the property documents.
         </p>
-
       </div>
 
-      <span class="badge">
-        LIVE
+      <span
+        class="badge unsaved"
+        id="saveBadge"
+      >
+        UNSAVED
       </span>
 
     </div>
 
+    <!-- SAVE TOOLBAR -->
+
+    <div class="save-toolbar">
+
+      <div class="save-state">
+
+        <strong id="currentTransactionLabel">
+          New transaction
+        </strong>
+
+        <span id="saveStateText">
+          This transaction has not been saved yet.
+        </span>
+
+      </div>
+
+      <div class="save-actions">
+
+        <button
+          class="primary-btn"
+          id="saveTransactionBtn"
+          type="button"
+        >
+          💾 Save Transaction
+        </button>
+
+        <button
+          class="secondary-btn"
+          id="newTransactionBtn"
+          type="button"
+        >
+          ＋ New Transaction
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- BASIC DETAILS -->
 
     <div class="form-grid">
 
@@ -1207,7 +1355,6 @@ footer{
         </select>
 
       </div>
-
 
       <div class="field">
 
@@ -1237,7 +1384,6 @@ footer{
 
       </div>
 
-
       <div class="field">
 
         <label for="sellingPrice">
@@ -1253,7 +1399,6 @@ footer{
         >
 
       </div>
-
 
       <div class="field">
 
@@ -1271,7 +1416,6 @@ footer{
 
       </div>
 
-
       <div class="field">
 
         <label for="zonalValue">
@@ -1287,7 +1431,6 @@ footer{
         >
 
       </div>
-
 
       <div class="field">
 
@@ -1307,10 +1450,7 @@ footer{
 
     </div>
 
-
-    <!-- ===================================================
-         LOCATION
-         =================================================== -->
+    <!-- LOCATION -->
 
     <div
       style="
@@ -1336,7 +1476,6 @@ footer{
 
       </div>
 
-
       <!-- GPS -->
 
       <div class="gps-panel">
@@ -1357,15 +1496,12 @@ footer{
             </div>
 
             <div class="gps-description">
-
               Use your device location to automatically identify
               the Philippine province, city / municipality and
               barangay when possible.
-
             </div>
 
           </div>
-
 
           <button
             class="primary-btn location-btn"
@@ -1377,7 +1513,6 @@ footer{
 
         </div>
 
-
         <div
           class="gps-meta"
           id="gpsMeta"
@@ -1388,8 +1523,7 @@ footer{
 
       </div>
 
-
-      <!-- LOCATION DROPDOWNS -->
+      <!-- LOCATION FIELDS -->
 
       <div class="form-grid three">
 
@@ -1412,7 +1546,6 @@ footer{
 
         </div>
 
-
         <div class="field">
 
           <label for="cityMunicipality">
@@ -1432,7 +1565,6 @@ footer{
 
         </div>
 
-
         <div class="field">
 
           <label for="barangay">
@@ -1451,7 +1583,6 @@ footer{
           </select>
 
         </div>
-
 
         <div class="field">
 
@@ -1476,7 +1607,6 @@ footer{
 
       </div>
 
-
       <div
         id="locationStatus"
         class="location-status"
@@ -1485,6 +1615,7 @@ footer{
 
     </div>
 
+    <!-- LOT / COMMISSION -->
 
     <div class="form-grid">
 
@@ -1504,7 +1635,6 @@ footer{
 
       </div>
 
-
       <div class="field">
 
         <label for="commissionRate">
@@ -1523,7 +1653,6 @@ footer{
       </div>
 
     </div>
-
 
     <div
       style="
@@ -1551,7 +1680,6 @@ footer{
 
     </div>
 
-
     <div class="button-row">
 
       <button
@@ -1567,16 +1695,55 @@ footer{
         id="resetBtn"
         type="button"
       >
-        Reset
+        Reset Current Form
       </button>
 
     </div>
 
   </section>
 
-
   <br>
 
+  <!-- =====================================================
+       SAVED TRANSACTIONS
+       ===================================================== -->
+
+  <section
+    class="card"
+    id="savedTransactions"
+  >
+
+    <div class="card-title">
+
+      <div>
+
+        <h2>
+          Saved Transactions
+        </h2>
+
+        <p>
+          Transactions saved in this browser.
+        </p>
+
+      </div>
+
+      <span
+        class="saved-count"
+        id="savedCount"
+      >
+        0 saved
+      </span>
+
+    </div>
+
+    <div
+      class="saved-list"
+      id="savedTransactionsList"
+    ></div>
+
+  </section>
+
+  <br>
 
   <!-- =====================================================
        SUMMARY
@@ -1601,7 +1768,6 @@ footer{
 
       </div>
 
-
       <div class="metric">
 
         <div class="metric-label">
@@ -1616,7 +1782,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="metric">
 
@@ -1633,7 +1798,6 @@ footer{
 
       </div>
 
-
       <div class="metric">
 
         <div class="metric-label">
@@ -1648,7 +1812,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="metric">
 
@@ -1669,9 +1832,7 @@ footer{
 
   </section>
 
-
   <br>
-
 
   <!-- =====================================================
        COSTS
@@ -1698,7 +1859,6 @@ footer{
 
     </div>
 
-
     <div class="cost-list">
 
       <div class="cost-row">
@@ -1724,7 +1884,6 @@ footer{
 
       </div>
 
-
       <div class="cost-row">
 
         <div>
@@ -1747,7 +1906,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="cost-row">
 
@@ -1772,7 +1930,6 @@ footer{
 
       </div>
 
-
       <div class="cost-row">
 
         <div>
@@ -1796,7 +1953,6 @@ footer{
 
       </div>
 
-
       <div class="cost-row">
 
         <div>
@@ -1819,7 +1975,6 @@ footer{
         </div>
 
       </div>
-
 
       <div
         class="cost-row"
@@ -1846,9 +2001,7 @@ footer{
 
   </section>
 
-
   <br>
-
 
   <!-- =====================================================
        ALLOCATION
@@ -1875,7 +2028,6 @@ footer{
 
     </div>
 
-
     <div class="table-wrap">
 
       <table>
@@ -1896,7 +2048,6 @@ footer{
 
     </div>
 
-
     <p
       style="
         color:var(--muted);
@@ -1911,9 +2062,7 @@ footer{
 
   </section>
 
-
   <br>
-
 
   <!-- =====================================================
        ANALYTICS
@@ -1947,9 +2096,7 @@ footer{
 
   </section>
 
-
   <br>
-
 
   <!-- =====================================================
        CHECKLIST
@@ -1980,7 +2127,6 @@ footer{
 
     </div>
 
-
     <div class="progress">
 
       <div
@@ -1990,7 +2136,6 @@ footer{
 
     </div>
 
-
     <div
       class="checklist"
       id="checklistContainer"
@@ -1998,12 +2143,10 @@ footer{
 
   </section>
 
-
   <br>
 
-
   <!-- =====================================================
-       CLEAN REPORT
+       REPORT
        ===================================================== -->
 
   <section
@@ -2025,7 +2168,6 @@ footer{
 
       </div>
 
-
       <div style="text-align:right">
 
         <strong id="reportDate">
@@ -2040,7 +2182,6 @@ footer{
 
     </div>
 
-
     <!-- PROPERTY DETAILS -->
 
     <div class="report-section">
@@ -2049,116 +2190,57 @@ footer{
         Property Details
       </h3>
 
-
       <div class="report-grid">
 
         <div class="report-line">
-
-          <span>
-            Transaction
-          </span>
-
+          <span>Transaction</span>
           <strong id="rTransaction">
             Sale of property
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Property type
-          </span>
-
+          <span>Property type</span>
           <strong id="rPropertyType">
             House & Lot
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Province
-          </span>
-
-          <strong id="rProvince">
-            —
-          </strong>
-
+          <span>Province</span>
+          <strong id="rProvince">—</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            City / Municipality
-          </span>
-
-          <strong id="rCity">
-            —
-          </strong>
-
+          <span>City / Municipality</span>
+          <strong id="rCity">—</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Barangay
-          </span>
-
-          <strong id="rBarangay">
-            —
-          </strong>
-
+          <span>Barangay</span>
+          <strong id="rBarangay">—</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            ZIP Code
-          </span>
-
-          <strong id="rZip">
-            —
-          </strong>
-
+          <span>ZIP Code</span>
+          <strong id="rZip">—</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Lot area
-          </span>
-
+          <span>Lot area</span>
           <strong id="rLotArea">
             0 sqm
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Transaction ID
-          </span>
-
-          <strong id="transactionId">
-            —
-          </strong>
-
+          <span>Transaction ID</span>
+          <strong id="transactionId">—</strong>
         </div>
 
       </div>
 
     </div>
-
 
     <!-- VALUATION -->
 
@@ -2168,77 +2250,36 @@ footer{
         Valuation
       </h3>
 
-
       <div class="report-grid">
 
         <div class="report-line">
-
-          <span>
-            Gross selling price
-          </span>
-
-          <strong id="rSelling">
-            ₱0
-          </strong>
-
+          <span>Gross selling price</span>
+          <strong id="rSelling">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Fair market value
-          </span>
-
-          <strong id="rFair">
-            ₱0
-          </strong>
-
+          <span>Fair market value</span>
+          <strong id="rFair">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            BIR zonal value
-          </span>
-
-          <strong id="rZonal">
-            ₱0
-          </strong>
-
+          <span>BIR zonal value</span>
+          <strong id="rZonal">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Acquisition price
-          </span>
-
-          <strong id="rAcquisition">
-            ₱0
-          </strong>
-
+          <span>Acquisition price</span>
+          <strong id="rAcquisition">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Illustrative tax base
-          </span>
-
-          <strong id="rTaxBase">
-            ₱0
-          </strong>
-
+          <span>Illustrative tax base</span>
+          <strong id="rTaxBase">₱0</strong>
         </div>
 
       </div>
 
     </div>
-
 
     <!-- FINANCIAL SUMMARY -->
 
@@ -2248,49 +2289,24 @@ footer{
         Financial Summary
       </h3>
 
-
       <div class="report-grid">
 
         <div class="report-line">
-
-          <span>
-            Seller expenses
-          </span>
-
-          <strong id="rSellerExpenses">
-            ₱0
-          </strong>
-
+          <span>Seller expenses</span>
+          <strong id="rSellerExpenses">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Buyer expenses
-          </span>
-
-          <strong id="rBuyerExpenses">
-            ₱0
-          </strong>
-
+          <span>Buyer expenses</span>
+          <strong id="rBuyerExpenses">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Broker commission
-          </span>
-
-          <strong id="rCommission">
-            ₱0
-          </strong>
-
+          <span>Broker commission</span>
+          <strong id="rCommission">₱0</strong>
         </div>
 
       </div>
-
 
       <div class="report-total">
 
@@ -2306,7 +2322,6 @@ footer{
 
     </div>
 
-
     <!-- COST BREAKDOWN -->
 
     <div class="report-section">
@@ -2315,77 +2330,36 @@ footer{
         Estimated Cost Breakdown
       </h3>
 
-
       <div class="report-grid">
 
         <div class="report-line">
-
-          <span>
-            Capital Gains Tax
-          </span>
-
-          <strong id="rCGT">
-            ₱0
-          </strong>
-
+          <span>Capital Gains Tax</span>
+          <strong id="rCGT">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Documentary Stamp Tax
-          </span>
-
-          <strong id="rDST">
-            ₱0
-          </strong>
-
+          <span>Documentary Stamp Tax</span>
+          <strong id="rDST">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Transfer Tax
-          </span>
-
-          <strong id="rTransfer">
-            ₱0
-          </strong>
-
+          <span>Transfer Tax</span>
+          <strong id="rTransfer">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Registration / other
-          </span>
-
-          <strong id="rRegistration">
-            ₱0
-          </strong>
-
+          <span>Registration / other</span>
+          <strong id="rRegistration">₱0</strong>
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Broker Commission
-          </span>
-
-          <strong id="rCommission2">
-            ₱0
-          </strong>
-
+          <span>Broker Commission</span>
+          <strong id="rCommission2">₱0</strong>
         </div>
 
       </div>
 
     </div>
-
 
     <!-- PREPARATION STATUS -->
 
@@ -2395,23 +2369,14 @@ footer{
         Preparation Status
       </h3>
 
-
       <div class="report-grid">
 
         <div class="report-line">
-
-          <span>
-            Checklist completion
-          </span>
-
-          <strong id="rChecklist">
-            0%
-          </strong>
-
+          <span>Checklist completion</span>
+          <strong id="rChecklist">0%</strong>
         </div>
 
       </div>
-
 
       <div class="report-warning">
 
@@ -2429,21 +2394,16 @@ footer{
 
       </div>
 
-
       <div class="report-disclaimer">
 
         Geographic reference data provided through PSGC Cloud.
-        PSGC Cloud describes its service as a structured Philippine
-        Standard Geographic Code reference API. Independently verify
-        critical geographic information before relying on it for a
-        legal, tax, banking or property transaction.
+        Independently verify critical geographic information
+        before relying on it for a legal, tax, banking or
+        property transaction.
 
       </div>
 
     </div>
-
-
-    <!-- PRINT BUTTON -->
 
     <div
       class="button-row no-print"
@@ -2464,11 +2424,6 @@ footer{
 
 </main>
 
-
-<!-- =======================================================
-     FOOTER
-     ======================================================= -->
-
 <footer>
 
   <div>
@@ -2481,27 +2436,25 @@ footer{
 
 </footer>
 
-
 <script>
+"use strict";
+
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
-   VERSION 4
-   GPS LOCATION ENABLED
+   V1.3 — SAVED TRANSACTIONS
    ========================================================= */
 
-const PSGC_BASE = "https://psgc.cloud/api";
+const PSGC_BASE =
+  "https://psgc.cloud/api";
 
-/*
-  Nominatim is used only for one-time reverse geocoding
-  after the user explicitly presses the GPS button.
-
-  IMPORTANT:
-  The browser geolocation API requires HTTPS
-  (or localhost during development).
-*/
 const NOMINATIM_REVERSE =
   "https://nominatim.openstreetmap.org/reverse";
 
+const SAVED_TRANSACTIONS_KEY =
+  "ph-property-saved-transactions-v1";
+
+const THEME_KEY =
+  "ph-property-theme";
 
 /* =========================================================
    STATE
@@ -2540,82 +2493,32 @@ const state = {
     latitude:null,
     longitude:null,
     accuracy:null
+  },
+
+  savedTransactions:[],
+
+  activeTransactionId:null,
+
+  transactionId:null,
+
+  lastSavedAt:null,
+
+  isDirty:false,
+
+  locationData:{
+    provinces:[],
+    cities:[],
+    barangays:[]
   }
 
 };
-
 
 /* =========================================================
    HELPERS
    ========================================================= */
 
-const $ = id => document.getElementById(id);
-
-
-function peso(value){
-
-  const number = Number(value) || 0;
-
-  return number.toLocaleString(
-    "en-PH",
-    {
-      style:"currency",
-      currency:"PHP",
-      minimumFractionDigits:0,
-      maximumFractionDigits:0
-    }
-  );
-
-}
-
-
-function numberValue(id){
-
-  return Number($(id).value) || 0;
-
-}
-
-
-function selectedText(select){
-
-  if(!select || !select.value){
-
-    return "—";
-
-  }
-
-  const option =
-    select.options[select.selectedIndex];
-
-  return option
-    ? option.textContent
-    : "—";
-
-}
-
-
-function setStatus(message,type=""){
-
-  const locationStatus =
-    $("locationStatus");
-
-  locationStatus.textContent =
-    message;
-
-  locationStatus.className =
-    "location-status" +
-    (
-      type
-        ? " " + type
-        : ""
-    );
-
-}
-
-
-/* =========================================================
-   LOCATION ELEMENTS
-   ========================================================= */
+const $ =
+  id => document.getElementById(id);
 
 const provinceSelect =
   $("province");
@@ -2629,6 +2532,1167 @@ const barangaySelect =
 const zipInput =
   $("zipCode");
 
+function peso(value){
+
+  const number =
+    Number(value) || 0;
+
+  return number.toLocaleString(
+    "en-PH",
+    {
+      style:"currency",
+      currency:"PHP",
+      minimumFractionDigits:0,
+      maximumFractionDigits:0
+    }
+  );
+
+}
+
+function numberValue(id){
+
+  const value =
+    Number($(id).value);
+
+  return Number.isFinite(value)
+    ? Math.max(0,value)
+    : 0;
+
+}
+
+function selectedText(select){
+
+  if(
+    !select ||
+    !select.value
+  ){
+
+    return "—";
+
+  }
+
+  const option =
+    select.options[
+      select.selectedIndex
+    ];
+
+  return option
+    ? option.textContent
+    : "—";
+
+}
+
+function selectedName(select){
+
+  if(
+    !select ||
+    !select.value
+  ){
+
+    return "";
+
+  }
+
+  const option =
+    select.options[
+      select.selectedIndex
+    ];
+
+  return (
+    option?.dataset?.name ||
+    option?.textContent ||
+    ""
+  );
+
+}
+
+function setStatus(
+  message,
+  type=""
+){
+
+  const element =
+    $("locationStatus");
+
+  element.textContent =
+    message;
+
+  element.className =
+    "location-status" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+
+}
+
+function formatDateTime(
+  isoString
+){
+
+  if(!isoString){
+    return "—";
+  }
+
+  const date =
+    new Date(isoString);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "—";
+  }
+
+  return date.toLocaleString(
+    "en-PH",
+    {
+      year:"numeric",
+      month:"short",
+      day:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+/* =========================================================
+   TRANSACTION ID
+   ========================================================= */
+
+function createTransactionId(){
+
+  const now =
+    new Date();
+
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-CA",
+      {
+        timeZone:"Asia/Manila",
+        year:"numeric",
+        month:"2-digit",
+        day:"2-digit"
+      }
+    ).formatToParts(now);
+
+  const map = {};
+
+  parts.forEach(
+    part => {
+      map[part.type] =
+        part.value;
+    }
+  );
+
+  const random =
+    Math.floor(
+      10000000 +
+      Math.random() *
+      90000000
+    );
+
+  return (
+    "PTW-" +
+    map.year +
+    map.month +
+    map.day +
+    "-" +
+    random
+  );
+
+}
+
+function ensureTransactionId(){
+
+  if(!state.transactionId){
+
+    state.transactionId =
+      createTransactionId();
+
+  }
+
+  $("transactionId").textContent =
+    state.transactionId;
+
+}
+
+/* =========================================================
+   SAVE STATE UI
+   ========================================================= */
+
+function markDirty(){
+
+  state.isDirty = true;
+
+  updateSaveStateUI();
+
+}
+
+function markClean(){
+
+  state.isDirty = false;
+
+  updateSaveStateUI();
+
+}
+
+function updateSaveStateUI(){
+
+  const badge =
+    $("saveBadge");
+
+  const label =
+    $("currentTransactionLabel");
+
+  const text =
+    $("saveStateText");
+
+  ensureTransactionId();
+
+  label.textContent =
+    state.transactionId;
+
+  if(
+    state.activeTransactionId
+  ){
+
+    if(state.isDirty){
+
+      badge.textContent =
+        "UNSAVED CHANGES";
+
+      badge.classList.add(
+        "unsaved"
+      );
+
+      text.textContent =
+        "This saved transaction has changes that have not been saved.";
+
+    }else{
+
+      badge.textContent =
+        "SAVED";
+
+      badge.classList.remove(
+        "unsaved"
+      );
+
+      text.textContent =
+        state.lastSavedAt
+          ? "Last saved " +
+            formatDateTime(
+              state.lastSavedAt
+            )
+          : "Saved transaction.";
+
+    }
+
+  }else{
+
+    badge.textContent =
+      "UNSAVED";
+
+    badge.classList.add(
+      "unsaved"
+    );
+
+    text.textContent =
+      "This transaction has not been saved yet.";
+
+  }
+
+}
+
+/* =========================================================
+   LOCAL STORAGE
+   ========================================================= */
+
+function loadSavedTransactionsFromStorage(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        SAVED_TRANSACTIONS_KEY
+      );
+
+    if(!raw){
+
+      state.savedTransactions =
+        [];
+
+      return;
+
+    }
+
+    const parsed =
+      JSON.parse(raw);
+
+    state.savedTransactions =
+      Array.isArray(parsed)
+        ? parsed
+        : [];
+
+  }catch(error){
+
+    console.error(
+      "Unable to load saved transactions:",
+      error
+    );
+
+    state.savedTransactions =
+      [];
+
+  }
+
+}
+
+function persistSavedTransactions(){
+
+  try{
+
+    localStorage.setItem(
+      SAVED_TRANSACTIONS_KEY,
+      JSON.stringify(
+        state.savedTransactions
+      )
+    );
+
+  }catch(error){
+
+    console.error(
+      "Unable to save transactions:",
+      error
+    );
+
+    alert(
+      "The browser could not save this transaction locally."
+    );
+
+  }
+
+}
+
+/* =========================================================
+   CAPTURE TRANSACTION
+   ========================================================= */
+
+function captureChecklist(){
+
+  return Array.from(
+    document.querySelectorAll(
+      "#checklistContainer input[type=checkbox]"
+    )
+  ).map(
+    checkbox =>
+      checkbox.checked
+  );
+
+}
+
+function captureTransaction(){
+
+  ensureTransactionId();
+
+  const now =
+    new Date().toISOString();
+
+  const existing =
+    state.savedTransactions.find(
+      transaction =>
+        transaction.id ===
+        state.activeTransactionId
+    );
+
+  return {
+
+    version:"1.3",
+
+    id:
+      state.transactionId,
+
+    createdAt:
+      existing?.createdAt ||
+      now,
+
+    updatedAt:
+      now,
+
+    transactionType:
+      $("transactionType").value,
+
+    propertyType:
+      $("propertyType").value,
+
+    sellingPrice:
+      numberValue(
+        "sellingPrice"
+      ),
+
+    fairMarketValue:
+      numberValue(
+        "fairMarketValue"
+      ),
+
+    zonalValue:
+      numberValue(
+        "zonalValue"
+      ),
+
+    acquisitionPrice:
+      numberValue(
+        "acquisitionPrice"
+      ),
+
+    lotArea:
+      numberValue(
+        "lotArea"
+      ),
+
+    commissionRate:
+      numberValue(
+        "commissionRate"
+      ),
+
+    location:{
+
+      provinceCode:
+        provinceSelect.value,
+
+      provinceName:
+        selectedName(
+          provinceSelect
+        ),
+
+      cityCode:
+        citySelect.value,
+
+      cityName:
+        selectedName(
+          citySelect
+        ),
+
+      barangayCode:
+        barangaySelect.value,
+
+      barangayName:
+        selectedName(
+          barangaySelect
+        ),
+
+      zipCode:
+        zipInput.value
+
+    },
+
+    allocation:{
+      ...state.allocation
+    },
+
+    checklist:
+      captureChecklist(),
+
+    gps:{
+      ...state.gps
+    }
+
+  };
+
+}
+
+/* =========================================================
+   SAVE TRANSACTION
+   ========================================================= */
+
+function saveCurrentTransaction(){
+
+  const transaction =
+    captureTransaction();
+
+  const existingIndex =
+    state.savedTransactions.findIndex(
+      item =>
+        item.id ===
+        transaction.id
+    );
+
+  if(existingIndex >= 0){
+
+    transaction.createdAt =
+      state.savedTransactions[
+        existingIndex
+      ].createdAt ||
+      transaction.createdAt;
+
+    state.savedTransactions[
+      existingIndex
+    ] =
+      transaction;
+
+  }else{
+
+    state.savedTransactions.unshift(
+      transaction
+    );
+
+  }
+
+  state.activeTransactionId =
+    transaction.id;
+
+  state.transactionId =
+    transaction.id;
+
+  state.lastSavedAt =
+    transaction.updatedAt;
+
+  persistSavedTransactions();
+
+  renderSavedTransactions();
+
+  markClean();
+
+}
+
+/* =========================================================
+   NEW TRANSACTION
+   ========================================================= */
+
+function newTransaction(
+  askConfirmation=true
+){
+
+  if(
+    askConfirmation &&
+    state.isDirty
+  ){
+
+    const proceed =
+      confirm(
+        "You have unsaved changes. Start a new transaction anyway?"
+      );
+
+    if(!proceed){
+      return;
+    }
+
+  }
+
+  state.activeTransactionId =
+    null;
+
+  state.transactionId =
+    createTransactionId();
+
+  state.lastSavedAt =
+    null;
+
+  state.gps = {
+    latitude:null,
+    longitude:null,
+    accuracy:null
+  };
+
+  state.allocation = {
+    cgt:"Seller",
+    dst:"Buyer",
+    transfer:"Buyer",
+    registration:"Buyer",
+    commission:"Seller"
+  };
+
+  $("transactionType").value =
+    "Sale of property";
+
+  $("propertyType").value =
+    "House & Lot";
+
+  [
+    "sellingPrice",
+    "fairMarketValue",
+    "zonalValue",
+    "acquisitionPrice",
+    "lotArea",
+    "commissionRate"
+  ].forEach(
+    id => {
+      $(id).value = "";
+    }
+  );
+
+  provinceSelect.value =
+    "";
+
+  resetSelect(
+    citySelect,
+    "Select province first"
+  );
+
+  resetSelect(
+    barangaySelect,
+    "Select city / municipality first"
+  );
+
+  zipInput.value =
+    "";
+
+  $("gpsStatusDot")
+    .classList.remove(
+      "active"
+    );
+
+  $("gpsMeta").textContent =
+    "GPS is used only when you press the button. Your location is not continuously tracked.";
+
+  document
+    .querySelectorAll(
+      "#checklistContainer input[type=checkbox]"
+    )
+    .forEach(
+      checkbox => {
+
+        checkbox.checked =
+          false;
+
+        checkbox
+          .closest(
+            ".check-item"
+          )
+          ?.classList.remove(
+            "done"
+          );
+
+      }
+    );
+
+  setStatus(
+    "New transaction ready.",
+    "success"
+  );
+
+  calculate();
+
+  updateChecklist();
+
+  ensureTransactionId();
+
+  state.isDirty =
+    false;
+
+  updateSaveStateUI();
+
+  renderSavedTransactions();
+
+}
+
+/* =========================================================
+   OPEN SAVED TRANSACTION
+   ========================================================= */
+
+async function openSavedTransaction(
+  transactionId
+){
+
+  if(
+    state.isDirty &&
+    state.activeTransactionId !==
+    transactionId
+  ){
+
+    const proceed =
+      confirm(
+        "You have unsaved changes. Open another transaction anyway?"
+      );
+
+    if(!proceed){
+      return;
+    }
+
+  }
+
+  const transaction =
+    state.savedTransactions.find(
+      item =>
+        item.id ===
+        transactionId
+    );
+
+  if(!transaction){
+    return;
+  }
+
+  state.activeTransactionId =
+    transaction.id;
+
+  state.transactionId =
+    transaction.id;
+
+  state.lastSavedAt =
+    transaction.updatedAt ||
+    transaction.createdAt ||
+    null;
+
+  state.allocation = {
+
+    cgt:
+      transaction.allocation?.cgt ||
+      "Seller",
+
+    dst:
+      transaction.allocation?.dst ||
+      "Buyer",
+
+    transfer:
+      transaction.allocation?.transfer ||
+      "Buyer",
+
+    registration:
+      transaction.allocation?.registration ||
+      "Buyer",
+
+    commission:
+      transaction.allocation?.commission ||
+      "Seller"
+
+  };
+
+  state.gps = {
+    latitude:
+      transaction.gps?.latitude ??
+      null,
+
+    longitude:
+      transaction.gps?.longitude ??
+      null,
+
+    accuracy:
+      transaction.gps?.accuracy ??
+      null
+  };
+
+  $("transactionType").value =
+    transaction.transactionType ||
+    "Sale of property";
+
+  $("propertyType").value =
+    transaction.propertyType ||
+    "House & Lot";
+
+  $("sellingPrice").value =
+    transaction.sellingPrice ||
+    "";
+
+  $("fairMarketValue").value =
+    transaction.fairMarketValue ||
+    "";
+
+  $("zonalValue").value =
+    transaction.zonalValue ||
+    "";
+
+  $("acquisitionPrice").value =
+    transaction.acquisitionPrice ||
+    "";
+
+  $("lotArea").value =
+    transaction.lotArea ||
+    "";
+
+  $("commissionRate").value =
+    transaction.commissionRate ||
+    "";
+
+  await restoreSavedLocation(
+    transaction.location ||
+    {}
+  );
+
+  zipInput.value =
+    transaction.location?.zipCode ||
+    zipInput.value ||
+    "";
+
+  restoreChecklist(
+    transaction.checklist
+  );
+
+  if(
+    state.gps.latitude !== null &&
+    state.gps.longitude !== null
+  ){
+
+    $("gpsStatusDot")
+      .classList.add(
+        "active"
+      );
+
+    $("gpsMeta").textContent =
+      "This saved transaction includes a previously detected GPS position.";
+
+  }else{
+
+    $("gpsStatusDot")
+      .classList.remove(
+        "active"
+      );
+
+    $("gpsMeta").textContent =
+      "GPS is used only when you press the button. Your location is not continuously tracked.";
+
+  }
+
+  calculate();
+
+  updateChecklist();
+
+  state.isDirty =
+    false;
+
+  updateSaveStateUI();
+
+  renderSavedTransactions();
+
+  $("workspace")
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+}
+
+/* =========================================================
+   DUPLICATE SAVED TRANSACTION
+   ========================================================= */
+
+async function duplicateSavedTransaction(
+  transactionId
+){
+
+  const source =
+    state.savedTransactions.find(
+      item =>
+        item.id ===
+        transactionId
+    );
+
+  if(!source){
+    return;
+  }
+
+  const now =
+    new Date().toISOString();
+
+  const duplicate =
+    JSON.parse(
+      JSON.stringify(
+        source
+      )
+    );
+
+  duplicate.id =
+    createTransactionId();
+
+  duplicate.createdAt =
+    now;
+
+  duplicate.updatedAt =
+    now;
+
+  state.savedTransactions.unshift(
+    duplicate
+  );
+
+  persistSavedTransactions();
+
+  renderSavedTransactions();
+
+  await openSavedTransaction(
+    duplicate.id
+  );
+
+}
+
+/* =========================================================
+   DELETE SAVED TRANSACTION
+   ========================================================= */
+
+function deleteSavedTransaction(
+  transactionId
+){
+
+  const transaction =
+    state.savedTransactions.find(
+      item =>
+        item.id ===
+        transactionId
+    );
+
+  if(!transaction){
+    return;
+  }
+
+  const confirmed =
+    confirm(
+      "Delete saved transaction " +
+      transaction.id +
+      "?\n\nThis cannot be undone."
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  state.savedTransactions =
+    state.savedTransactions.filter(
+      item =>
+        item.id !==
+        transactionId
+    );
+
+  persistSavedTransactions();
+
+  if(
+    state.activeTransactionId ===
+    transactionId
+  ){
+
+    newTransaction(
+      false
+    );
+
+  }
+
+  renderSavedTransactions();
+
+}
+
+/* =========================================================
+   RENDER SAVED TRANSACTIONS
+   ========================================================= */
+
+function renderSavedTransactions(){
+
+  const container =
+    $("savedTransactionsList");
+
+  const count =
+    state.savedTransactions.length;
+
+  $("savedCount").textContent =
+    count === 1
+      ? "1 saved"
+      : count + " saved";
+
+  if(!count){
+
+    container.innerHTML = `
+      <div class="saved-empty">
+        No transactions saved yet.<br>
+        Fill out the workspace and choose
+        <strong>Save Transaction</strong>.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  const sorted =
+    [...state.savedTransactions]
+      .sort(
+        (a,b) =>
+          new Date(
+            b.updatedAt ||
+            b.createdAt ||
+            0
+          ) -
+          new Date(
+            a.updatedAt ||
+            a.createdAt ||
+            0
+          )
+      );
+
+  container.innerHTML =
+    sorted.map(
+      transaction => {
+
+        const active =
+          transaction.id ===
+          state.activeTransactionId;
+
+        const locationParts =
+          [
+            transaction.location?.barangayName,
+            transaction.location?.cityName,
+            transaction.location?.provinceName
+          ]
+          .filter(Boolean);
+
+        const location =
+          locationParts.length
+            ? locationParts.join(", ")
+            : "Location not specified";
+
+        const value =
+          peso(
+            transaction.sellingPrice ||
+            0
+          );
+
+        const property =
+          transaction.propertyType ||
+          "Property";
+
+        return `
+          <article
+            class="saved-item ${active ? "active" : ""}"
+          >
+
+            <div class="saved-main">
+
+              <div class="saved-id">
+
+                ${escapeHtml(transaction.id)}
+
+                ${
+                  active
+                    ? `<span class="current-chip">CURRENT</span>`
+                    : ""
+                }
+
+              </div>
+
+              <div class="saved-title">
+                ${escapeHtml(property)} · ${escapeHtml(value)}
+              </div>
+
+              <div class="saved-meta">
+
+                <span>
+                  ${escapeHtml(location)}
+                </span>
+
+                <span>·</span>
+
+                <span>
+                  Updated ${escapeHtml(
+                    formatDateTime(
+                      transaction.updatedAt ||
+                      transaction.createdAt
+                    )
+                  )}
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="saved-actions">
+
+              <button
+                class="secondary-btn small-btn"
+                type="button"
+                data-action="open"
+                data-id="${escapeHtml(transaction.id)}"
+              >
+                Open
+              </button>
+
+              <button
+                class="secondary-btn small-btn"
+                type="button"
+                data-action="duplicate"
+                data-id="${escapeHtml(transaction.id)}"
+              >
+                Duplicate
+              </button>
+
+              <button
+                class="danger-btn small-btn"
+                type="button"
+                data-action="delete"
+                data-id="${escapeHtml(transaction.id)}"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </article>
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+/* =========================================================
+   SAVED TRANSACTION BUTTON EVENTS
+   ========================================================= */
+
+$("savedTransactionsList")
+  .addEventListener(
+    "click",
+    async event => {
+
+      const button =
+        event.target.closest(
+          "button[data-action]"
+        );
+
+      if(!button){
+        return;
+      }
+
+      const action =
+        button.dataset.action;
+
+      const id =
+        button.dataset.id;
+
+      if(action === "open"){
+
+        await openSavedTransaction(
+          id
+        );
+
+      }
+
+      if(action === "duplicate"){
+
+        await duplicateSavedTransaction(
+          id
+        );
+
+      }
+
+      if(action === "delete"){
+
+        deleteSavedTransaction(
+          id
+        );
+
+      }
+
+    }
+  );
 
 /* =========================================================
    API
@@ -2641,11 +3705,11 @@ async function fetchJSON(url){
       url,
       {
         headers:{
-          "Accept":"application/json"
+          Accept:
+            "application/json"
         }
       }
     );
-
 
   if(!response.ok){
 
@@ -2656,36 +3720,24 @@ async function fetchJSON(url){
 
   }
 
-
   const data =
     await response.json();
 
-
   if(Array.isArray(data)){
-
     return data;
-
   }
-
 
   if(Array.isArray(data.data)){
-
     return data.data;
-
   }
-
 
   if(Array.isArray(data.results)){
-
     return data.results;
-
   }
-
 
   return [];
 
 }
-
 
 /* =========================================================
    SELECT HELPERS
@@ -2696,22 +3748,28 @@ function resetSelect(
   placeholder
 ){
 
-  select.innerHTML = "";
+  select.innerHTML =
+    "";
 
   const option =
-    document.createElement("option");
+    document.createElement(
+      "option"
+    );
 
-  option.value = "";
+  option.value =
+    "";
 
   option.textContent =
     placeholder;
 
-  select.appendChild(option);
+  select.appendChild(
+    option
+  );
 
-  select.disabled = true;
+  select.disabled =
+    true;
 
 }
-
 
 function populateSelect(
   select,
@@ -2724,12 +3782,12 @@ function populateSelect(
     placeholder
   );
 
-
   for(const item of items){
 
     const option =
-      document.createElement("option");
-
+      document.createElement(
+        "option"
+      );
 
     option.value =
       item.code ||
@@ -2737,12 +3795,10 @@ function populateSelect(
       item.name ||
       "";
 
-
     option.textContent =
       item.name ||
       item.label ||
       "Unnamed location";
-
 
     if(item.type){
 
@@ -2753,33 +3809,33 @@ function populateSelect(
 
     }
 
-
     option.dataset.name =
-      item.name || "";
-
+      item.name ||
+      "";
 
     option.dataset.zip =
       item.zip_code ||
       item.zip ||
       "";
 
-
-    select.appendChild(option);
+    select.appendChild(
+      option
+    );
 
   }
-
 
   select.disabled =
     items.length === 0;
 
 }
 
-
 /* =========================================================
    TEXT NORMALIZATION
    ========================================================= */
 
-function normalizeLocationName(value){
+function normalizeLocationName(
+  value
+){
 
   return String(value || "")
     .toLowerCase()
@@ -2789,12 +3845,15 @@ function normalizeLocationName(value){
       ""
     )
     .replace(
+      /\b(city|municipality|mun|province|prov)\b/g,
+      ""
+    )
+    .replace(
       /[^a-z0-9]/g,
       ""
     );
 
 }
-
 
 function locationNameMatches(
   optionText,
@@ -2811,32 +3870,22 @@ function locationNameMatches(
       targetText
     );
 
-
-  if(!option || !target){
+  if(
+    !option ||
+    !target
+  ){
 
     return false;
 
   }
 
-
-  if(option === target){
-
-    return true;
-
-  }
-
-
   return (
+    option === target ||
     option.includes(target) ||
     target.includes(option)
   );
 
 }
-
-
-/* =========================================================
-   FIND OPTION
-   ========================================================= */
 
 function findOptionByLocationName(
   select,
@@ -2844,22 +3893,16 @@ function findOptionByLocationName(
 ){
 
   if(!target){
-
     return null;
-
   }
 
-
-  const options =
+  return (
     Array.from(
       select.options
-    );
-
-
-  return (
-    options.find(
+    ).find(
       option =>
         locationNameMatches(
+          option.dataset.name ||
           option.textContent,
           target
         )
@@ -2869,9 +3912,8 @@ function findOptionByLocationName(
 
 }
 
-
 /* =========================================================
-   PROVINCES
+   LOAD PROVINCES
    ========================================================= */
 
 async function loadProvinces(){
@@ -2891,16 +3933,14 @@ async function loadProvinces(){
     "Select city / municipality first"
   );
 
-  zipInput.value = "";
-
   setStatus(
     "Loading Philippine location data..."
   );
 
-
   try{
 
-    let provinces = [];
+    let provinces =
+      [];
 
     try{
 
@@ -2915,20 +3955,18 @@ async function loadProvinces(){
       provinces =
         await fetchJSON(
           PSGC_BASE +
-          "/provinces"
+          "/v2/provinces"
         );
 
     }
 
-
     provinces.sort(
       (a,b) =>
-        String(a.name)
+        String(a.name || "")
           .localeCompare(
-            String(b.name)
+            String(b.name || "")
           )
     );
-
 
     if(!provinces.length){
 
@@ -2938,6 +3976,8 @@ async function loadProvinces(){
 
     }
 
+    state.locationData.provinces =
+      provinces;
 
     populateSelect(
       provinceSelect,
@@ -2945,23 +3985,21 @@ async function loadProvinces(){
       "Select province"
     );
 
-
     setStatus(
       "Philippine location data ready.",
       "success"
     );
 
-
   }catch(error){
 
-    console.error(error);
-
+    console.error(
+      error
+    );
 
     resetSelect(
       provinceSelect,
       "Unable to load provinces"
     );
-
 
     setStatus(
       "Unable to load Philippine location data. Please refresh and try again.",
@@ -2972,9 +4010,8 @@ async function loadProvinces(){
 
 }
 
-
 /* =========================================================
-   CITIES
+   LOAD CITIES
    ========================================================= */
 
 async function loadCities(
@@ -2991,8 +4028,8 @@ async function loadCities(
     "Select city / municipality first"
   );
 
-  zipInput.value = "";
-
+  zipInput.value =
+    "";
 
   if(!provinceCode){
 
@@ -3005,11 +4042,9 @@ async function loadCities(
 
   }
 
-
   try{
 
     let cities;
-
 
     try{
 
@@ -3037,22 +4072,22 @@ async function loadCities(
 
     }
 
-
     cities.sort(
       (a,b) =>
-        String(a.name)
+        String(a.name || "")
           .localeCompare(
-            String(b.name)
+            String(b.name || "")
           )
     );
 
+    state.locationData.cities =
+      cities;
 
     populateSelect(
       citySelect,
       cities,
       "Select city / municipality"
     );
-
 
     if(cities.length){
 
@@ -3070,26 +4105,23 @@ async function loadCities(
 
     }
 
-
     return cities;
-
 
   }catch(error){
 
-    console.error(error);
-
+    console.error(
+      error
+    );
 
     resetSelect(
       citySelect,
       "Unable to load cities / municipalities"
     );
 
-
     setStatus(
       "Unable to load cities / municipalities. Please refresh and try again.",
       "error"
     );
-
 
     return [];
 
@@ -3097,9 +4129,8 @@ async function loadCities(
 
 }
 
-
 /* =========================================================
-   BARANGAYS
+   LOAD BARANGAYS
    ========================================================= */
 
 async function loadBarangays(
@@ -3111,8 +4142,8 @@ async function loadBarangays(
     "Loading barangays..."
   );
 
-  zipInput.value = "";
-
+  zipInput.value =
+    "";
 
   if(!cityCode){
 
@@ -3125,11 +4156,9 @@ async function loadBarangays(
 
   }
 
-
   try{
 
     let barangays;
-
 
     try{
 
@@ -3157,15 +4186,16 @@ async function loadBarangays(
 
     }
 
-
     barangays.sort(
       (a,b) =>
-        String(a.name)
+        String(a.name || "")
           .localeCompare(
-            String(b.name)
+            String(b.name || "")
           )
     );
 
+    state.locationData.barangays =
+      barangays;
 
     populateSelect(
       barangaySelect,
@@ -3173,28 +4203,19 @@ async function loadBarangays(
       "Select barangay"
     );
 
-
     const selectedCity =
       citySelect.options[
         citySelect.selectedIndex
       ];
 
-
     const cityZip =
       selectedCity?.dataset.zip ||
       "";
-
 
     if(cityZip){
 
       zipInput.value =
         cityZip;
-
-
-      setStatus(
-        "Location loaded. ZIP Code automatically populated.",
-        "success"
-      );
 
     }else{
 
@@ -3202,52 +4223,36 @@ async function loadBarangays(
         cityCode
       );
 
-
-      if(zipInput.value){
-
-        setStatus(
-          "Location loaded. ZIP Code automatically populated.",
-          "success"
-        );
-
-      }else{
-
-        setStatus(
-          "Location loaded. ZIP Code is not available in the reference data for this locality.",
-          "success"
-        );
-
-      }
-
     }
 
+    setStatus(
+      "Location loaded.",
+      "success"
+    );
 
     return barangays;
 
-
   }catch(error){
 
-    console.error(error);
-
+    console.error(
+      error
+    );
 
     resetSelect(
       barangaySelect,
       "Unable to load barangays"
     );
 
-
     setStatus(
       "Unable to load barangays. Please refresh and try again.",
       "error"
     );
-
 
     return [];
 
   }
 
 }
-
 
 /* =========================================================
    CITY ZIP
@@ -3258,22 +4263,17 @@ async function loadCityZip(
 ){
 
   if(!cityCode){
-
     return;
-
   }
-
 
   const selectedCity =
     citySelect.options[
       citySelect.selectedIndex
     ];
 
-
   const existingZip =
     selectedCity?.dataset.zip ||
     "";
-
 
   if(existingZip){
 
@@ -3284,11 +4284,9 @@ async function loadCityZip(
 
   }
 
-
   try{
 
     let locality;
-
 
     try{
 
@@ -3314,18 +4312,15 @@ async function loadCityZip(
 
     }
 
-
     const item =
       Array.isArray(locality)
         ? locality[0]
         : locality;
 
-
     const zip =
       item?.zip_code ||
       item?.zip ||
       "";
-
 
     if(zip){
 
@@ -3345,16 +4340,189 @@ async function loadCityZip(
 
 }
 
+/* =========================================================
+   RESTORE SAVED LOCATION
+   ========================================================= */
+
+async function restoreSavedLocation(
+  location
+){
+
+  if(!location){
+
+    return;
+
+  }
+
+  if(
+    location.provinceCode
+  ){
+
+    const provinceExists =
+      Array.from(
+        provinceSelect.options
+      ).some(
+        option =>
+          option.value ===
+          location.provinceCode
+      );
+
+    if(provinceExists){
+
+      provinceSelect.value =
+        location.provinceCode;
+
+    }else if(
+      location.provinceName
+    ){
+
+      const provinceOption =
+        findOptionByLocationName(
+          provinceSelect,
+          location.provinceName
+        );
+
+      if(provinceOption){
+
+        provinceSelect.value =
+          provinceOption.value;
+
+      }
+
+    }
+
+  }else if(
+    location.provinceName
+  ){
+
+    const provinceOption =
+      findOptionByLocationName(
+        provinceSelect,
+        location.provinceName
+      );
+
+    if(provinceOption){
+
+      provinceSelect.value =
+        provinceOption.value;
+
+    }
+
+  }
+
+  if(!provinceSelect.value){
+
+    updateReportLocation();
+
+    return;
+
+  }
+
+  await loadCities(
+    provinceSelect.value
+  );
+
+  if(
+    location.cityCode &&
+    Array.from(
+      citySelect.options
+    ).some(
+      option =>
+        option.value ===
+        location.cityCode
+    )
+  ){
+
+    citySelect.value =
+      location.cityCode;
+
+  }else if(
+    location.cityName
+  ){
+
+    const cityOption =
+      findOptionByLocationName(
+        citySelect,
+        location.cityName
+      );
+
+    if(cityOption){
+
+      citySelect.value =
+        cityOption.value;
+
+    }
+
+  }
+
+  if(!citySelect.value){
+
+    updateReportLocation();
+
+    return;
+
+  }
+
+  await loadBarangays(
+    citySelect.value
+  );
+
+  if(
+    location.barangayCode &&
+    Array.from(
+      barangaySelect.options
+    ).some(
+      option =>
+        option.value ===
+        location.barangayCode
+    )
+  ){
+
+    barangaySelect.value =
+      location.barangayCode;
+
+  }else if(
+    location.barangayName
+  ){
+
+    const barangayOption =
+      findOptionByLocationName(
+        barangaySelect,
+        location.barangayName
+      );
+
+    if(barangayOption){
+
+      barangaySelect.value =
+        barangayOption.value;
+
+    }
+
+  }
+
+  if(location.zipCode){
+
+    zipInput.value =
+      String(
+        location.zipCode
+      );
+
+  }
+
+  updateReportLocation();
+
+}
 
 /* =========================================================
-   LOCATION EVENTS
+   MANUAL LOCATION EVENTS
    ========================================================= */
 
 provinceSelect.addEventListener(
   "change",
   async () => {
 
-    zipInput.value = "";
+    zipInput.value =
+      "";
 
     await loadCities(
       provinceSelect.value
@@ -3362,15 +4530,17 @@ provinceSelect.addEventListener(
 
     updateReportLocation();
 
+    markDirty();
+
   }
 );
-
 
 citySelect.addEventListener(
   "change",
   async () => {
 
-    zipInput.value = "";
+    zipInput.value =
+      "";
 
     await loadBarangays(
       citySelect.value
@@ -3378,9 +4548,10 @@ citySelect.addEventListener(
 
     updateReportLocation();
 
+    markDirty();
+
   }
 );
-
 
 barangaySelect.addEventListener(
   "change",
@@ -3391,8 +4562,9 @@ barangaySelect.addEventListener(
         citySelect.selectedIndex
       ];
 
-
-    if(selectedCity?.dataset.zip){
+    if(
+      selectedCity?.dataset.zip
+    ){
 
       zipInput.value =
         selectedCity.dataset.zip;
@@ -3401,22 +4573,14 @@ barangaySelect.addEventListener(
 
     updateReportLocation();
 
+    markDirty();
+
   }
 );
-
-
-/* =========================================================
-   ZIP CODE MANUAL CHANGE
-   ========================================================= */
 
 zipInput.addEventListener(
   "input",
   () => {
-
-    /*
-      Keep ZIP Code numeric while allowing
-      the user to manually override it.
-    */
 
     zipInput.value =
       zipInput.value
@@ -3429,12 +4593,12 @@ zipInput.addEventListener(
           4
         );
 
-
     updateReportLocation();
+
+    markDirty();
 
   }
 );
-
 
 /* =========================================================
    REPORT LOCATION
@@ -3447,24 +4611,21 @@ function updateReportLocation(){
       provinceSelect
     );
 
-
   $("rCity").textContent =
     selectedText(
       citySelect
     );
-
 
   $("rBarangay").textContent =
     selectedText(
       barangaySelect
     );
 
-
   $("rZip").textContent =
-    zipInput.value || "—";
+    zipInput.value ||
+    "—";
 
 }
-
 
 /* =========================================================
    GPS
@@ -3477,39 +4638,20 @@ function setGpsLoading(
   const button =
     $("gpsBtn");
 
+  button.disabled =
+    loading;
 
-  if(loading){
+  button.classList.toggle(
+    "loading",
+    loading
+  );
 
-    button.disabled =
-      true;
-
-    button.classList.add(
-      "loading"
-    );
-
-    button.textContent =
-      "📍 Detecting location...";
-
-  }else{
-
-    button.disabled =
-      false;
-
-    button.classList.remove(
-      "loading"
-    );
-
-    button.textContent =
-      "📍 Use My Current Location";
-
-  }
+  button.textContent =
+    loading
+      ? "📍 Detecting location..."
+      : "📍 Use My Current Location";
 
 }
-
-
-/* =========================================================
-   GET CURRENT POSITION
-   ========================================================= */
 
 function getCurrentPosition(){
 
@@ -3519,7 +4661,9 @@ function getCurrentPosition(){
       reject
     ) => {
 
-      if(!navigator.geolocation){
+      if(
+        !navigator.geolocation
+      ){
 
         reject(
           new Error(
@@ -3531,75 +4675,43 @@ function getCurrentPosition(){
 
       }
 
-
-      navigator.geolocation.getCurrentPosition(
-        resolve,
-        reject,
-        {
-          enableHighAccuracy:true,
-          timeout:15000,
-          maximumAge:300000
-        }
-      );
+      navigator.geolocation
+        .getCurrentPosition(
+          resolve,
+          reject,
+          {
+            enableHighAccuracy:true,
+            timeout:15000,
+            maximumAge:300000
+          }
+        );
 
     }
   );
 
 }
 
-
-/* =========================================================
-   GPS ERROR
-   ========================================================= */
-
 function getGeolocationErrorMessage(
   error
 ){
 
-  if(!error){
-
-    return "Unable to determine your location.";
-
-  }
-
-
-  switch(error.code){
+  switch(error?.code){
 
     case 1:
-
-      return (
-        "Location permission was denied. " +
-        "Please allow location access in your browser settings."
-      );
+      return "Location permission was denied. Please allow location access in your browser settings.";
 
     case 2:
-
-      return (
-        "Your location could not be determined. " +
-        "Make sure GPS/location services are enabled."
-      );
+      return "Your location could not be determined. Make sure GPS/location services are enabled.";
 
     case 3:
-
-      return (
-        "Location detection timed out. " +
-        "Please try again."
-      );
+      return "Location detection timed out. Please try again.";
 
     default:
-
-      return (
-        "Unable to determine your current location."
-      );
+      return "Unable to determine your current location.";
 
   }
 
 }
-
-
-/* =========================================================
-   REVERSE GEOCODING
-   ========================================================= */
 
 async function reverseGeocode(
   latitude,
@@ -3620,18 +4732,16 @@ async function reverseGeocode(
     "&zoom=18" +
     "&addressdetails=1";
 
-
   const response =
     await fetch(
       url,
       {
         headers:{
-          "Accept":
+          Accept:
             "application/json"
         }
       }
     );
-
 
   if(!response.ok){
 
@@ -3642,82 +4752,48 @@ async function reverseGeocode(
 
   }
 
-
-  const data =
-    await response.json();
-
-
-  return data;
+  return await response.json();
 
 }
-
-
-/* =========================================================
-   EXTRACT PHILIPPINE LOCATION
-   ========================================================= */
 
 function extractPhilippineLocation(
   data
 ){
 
   const address =
-    data?.address || {};
-
-
-  /*
-    Nominatim can use different names depending
-    on the exact geographic position.
-
-    We intentionally check several possible fields.
-  */
-
-  const province =
-    address.province ||
-    address.state ||
-    address.region ||
-    "";
-
-
-  const city =
-    address.city ||
-    address.municipality ||
-    address.town ||
-    address.city_district ||
-    address.county ||
-    "";
-
-
-  const barangay =
-    address.village ||
-    address.suburb ||
-    address.neighbourhood ||
-    address.quarter ||
-    "";
-
-
-  const postcode =
-    address.postcode ||
-    "";
-
+    data?.address ||
+    {};
 
   return {
 
-    province,
-    city,
-    barangay,
-    postcode,
+    province:
+      address.province ||
+      address.state ||
+      address.region ||
+      "",
 
-    displayName:
-      data?.display_name || ""
+    city:
+      address.city ||
+      address.municipality ||
+      address.town ||
+      address.city_district ||
+      address.county ||
+      "",
+
+    barangay:
+      address.village ||
+      address.suburb ||
+      address.neighbourhood ||
+      address.quarter ||
+      "",
+
+    postcode:
+      address.postcode ||
+      ""
 
   };
 
 }
-
-
-/* =========================================================
-   SELECT PROVINCE FROM GPS
-   ========================================================= */
 
 async function applyGpsProvince(
   provinceName
@@ -3729,31 +4805,20 @@ async function applyGpsProvince(
       provinceName
     );
 
-
   if(!option){
-
     return false;
-
   }
-
 
   provinceSelect.value =
     option.value;
-
 
   await loadCities(
     option.value
   );
 
-
   return true;
 
 }
-
-
-/* =========================================================
-   SELECT CITY FROM GPS
-   ========================================================= */
 
 async function applyGpsCity(
   cityName
@@ -3765,31 +4830,20 @@ async function applyGpsCity(
       cityName
     );
 
-
   if(!option){
-
     return false;
-
   }
-
 
   citySelect.value =
     option.value;
-
 
   await loadBarangays(
     option.value
   );
 
-
   return true;
 
 }
-
-
-/* =========================================================
-   SELECT BARANGAY FROM GPS
-   ========================================================= */
 
 function applyGpsBarangay(
   barangayName
@@ -3801,42 +4855,20 @@ function applyGpsBarangay(
       barangayName
     );
 
-
   if(!option){
-
     return false;
-
   }
-
 
   barangaySelect.value =
     option.value;
-
 
   return true;
 
 }
 
-
-/* =========================================================
-   APPLY GPS LOCATION
-   ========================================================= */
-
 async function applyGpsLocation(
   location
 ){
-
-  const provinceName =
-    location.province;
-
-
-  const cityName =
-    location.city;
-
-
-  const barangayName =
-    location.barangay;
-
 
   let provinceMatched =
     false;
@@ -3847,64 +4879,38 @@ async function applyGpsLocation(
   let barangayMatched =
     false;
 
-
-  /*
-    Province
-  */
-
-  if(provinceName){
+  if(location.province){
 
     provinceMatched =
       await applyGpsProvince(
-        provinceName
+        location.province
       );
 
   }
 
-
-  /*
-    City / Municipality
-  */
-
   if(
     provinceMatched &&
-    cityName
+    location.city
   ){
 
     cityMatched =
       await applyGpsCity(
-        cityName
+        location.city
       );
 
   }
 
-
-  /*
-    Barangay
-  */
-
   if(
     cityMatched &&
-    barangayName
+    location.barangay
   ){
 
     barangayMatched =
       applyGpsBarangay(
-        barangayName
+        location.barangay
       );
 
   }
-
-
-  /*
-    ZIP Code
-
-    Nominatim postcode is used first because
-    it is directly associated with the detected
-    geographic position.
-
-    The user can still manually change it.
-  */
 
   if(location.postcode){
 
@@ -3921,7 +4927,9 @@ async function applyGpsLocation(
         4
       );
 
-  }else if(cityMatched){
+  }else if(
+    cityMatched
+  ){
 
     await loadCityZip(
       citySelect.value
@@ -3929,267 +4937,172 @@ async function applyGpsLocation(
 
   }
 
-
   updateReportLocation();
 
-
-  /*
-    Return matching status.
-  */
-
   return {
-
     provinceMatched,
     cityMatched,
     barangayMatched
-
   };
 
 }
 
+$("gpsBtn")
+  .addEventListener(
+    "click",
+    async () => {
 
-/* =========================================================
-   GPS BUTTON
-   ========================================================= */
-
-$("gpsBtn").addEventListener(
-  "click",
-  async () => {
-
-    setGpsLoading(
-      true
-    );
-
-
-    $("gpsStatusDot")
-      .classList.remove(
-        "active"
+      setGpsLoading(
+        true
       );
-
-
-    $("gpsMeta").textContent =
-      "Requesting your current device location...";
-
-
-    setStatus(
-      "Requesting GPS location permission..."
-    );
-
-
-    try{
-
-      const position =
-        await getCurrentPosition();
-
-
-      const latitude =
-        position.coords.latitude;
-
-
-      const longitude =
-        position.coords.longitude;
-
-
-      const accuracy =
-        position.coords.accuracy;
-
-
-      state.gps = {
-
-        latitude,
-        longitude,
-        accuracy
-
-      };
-
-
-      $("gpsStatusDot")
-        .classList.add(
-          "active"
-        );
-
-
-      $("gpsMeta").textContent =
-        "GPS position detected. Accuracy approximately " +
-        Math.round(
-          accuracy
-        ) +
-        " meters.";
-
-
-      setStatus(
-        "GPS position detected. Identifying the Philippine locality...",
-        "success"
-      );
-
-
-      const location =
-        await reverseGeocode(
-          latitude,
-          longitude
-        );
-
-
-      /*
-        Reject obvious non-Philippine results.
-      */
-
-      const countryCode =
-        String(
-          location?.address?.country_code ||
-          ""
-        ).toLowerCase();
-
-
-      if(
-        countryCode &&
-        countryCode !== "ph"
-      ){
-
-        throw new Error(
-          "The detected location does not appear to be in the Philippines."
-        );
-
-      }
-
-
-      const extracted =
-        extractPhilippineLocation(
-          location
-        );
-
-
-      if(
-        !extracted.province &&
-        !extracted.city
-      ){
-
-        throw new Error(
-          "The GPS location could not be matched to a Philippine locality."
-        );
-
-      }
-
-
-      const result =
-        await applyGpsLocation(
-          extracted
-        );
-
-
-      /*
-        Build a useful status message.
-      */
-
-      const matchedParts = [];
-
-
-      if(result.provinceMatched){
-
-        matchedParts.push(
-          "province"
-        );
-
-      }
-
-
-      if(result.cityMatched){
-
-        matchedParts.push(
-          "city / municipality"
-        );
-
-      }
-
-
-      if(result.barangayMatched){
-
-        matchedParts.push(
-          "barangay"
-        );
-
-      }
-
-
-      if(matchedParts.length === 3){
-
-        setStatus(
-          "GPS location applied. Province, city / municipality, barangay and ZIP Code have been populated. You can still change the dropdowns or ZIP Code manually.",
-          "success"
-        );
-
-      }else if(
-        matchedParts.length === 2
-      ){
-
-        setStatus(
-          "GPS location applied to the " +
-          matchedParts.join(
-            " and "
-          ) +
-          ". The barangay could not be matched exactly, so you can select it manually.",
-          "success"
-        );
-
-      }else if(
-        matchedParts.length === 1
-      ){
-
-        setStatus(
-          "GPS identified part of the location. Please complete the remaining location fields using the dropdowns.",
-          "warning"
-        );
-
-      }else{
-
-        setStatus(
-          "GPS coordinates were detected, but the location could not be matched to the PSGC dropdowns. Please select the location manually.",
-          "warning"
-        );
-
-      }
-
-
-      updateReportLocation();
-
-
-    }catch(error){
-
-      console.error(
-        "GPS error:",
-        error
-      );
-
 
       $("gpsStatusDot")
         .classList.remove(
           "active"
         );
 
-
       $("gpsMeta").textContent =
-        "GPS location was not applied. You can continue using the dropdowns manually.";
-
+        "Requesting your current device location...";
 
       setStatus(
-        error?.message ||
-        getGeolocationErrorMessage(
+        "Requesting GPS location permission..."
+      );
+
+      try{
+
+        const position =
+          await getCurrentPosition();
+
+        const latitude =
+          position.coords.latitude;
+
+        const longitude =
+          position.coords.longitude;
+
+        const accuracy =
+          position.coords.accuracy;
+
+        state.gps = {
+          latitude,
+          longitude,
+          accuracy
+        };
+
+        $("gpsStatusDot")
+          .classList.add(
+            "active"
+          );
+
+        $("gpsMeta").textContent =
+          "GPS position detected. Accuracy approximately " +
+          Math.round(
+            accuracy
+          ) +
+          " meters.";
+
+        setStatus(
+          "GPS position detected. Identifying the Philippine locality...",
+          "success"
+        );
+
+        const reverse =
+          await reverseGeocode(
+            latitude,
+            longitude
+          );
+
+        const countryCode =
+          String(
+            reverse?.address?.country_code ||
+            ""
+          ).toLowerCase();
+
+        if(
+          countryCode &&
+          countryCode !== "ph"
+        ){
+
+          throw new Error(
+            "The detected location does not appear to be in the Philippines."
+          );
+
+        }
+
+        const extracted =
+          extractPhilippineLocation(
+            reverse
+          );
+
+        const result =
+          await applyGpsLocation(
+            extracted
+          );
+
+        if(
+          result.provinceMatched &&
+          result.cityMatched &&
+          result.barangayMatched
+        ){
+
+          setStatus(
+            "GPS location applied. You can still change the dropdowns or ZIP Code manually.",
+            "success"
+          );
+
+        }else if(
+          result.provinceMatched &&
+          result.cityMatched
+        ){
+
+          setStatus(
+            "GPS detected the province and city / municipality. Please verify or select the barangay manually.",
+            "warning"
+          );
+
+        }else{
+
+          setStatus(
+            "GPS coordinates were detected, but the complete PSGC location could not be matched. Please complete the location manually.",
+            "warning"
+          );
+
+        }
+
+        markDirty();
+
+      }catch(error){
+
+        console.error(
+          "GPS error:",
           error
-        ),
-        "error"
-      );
+        );
 
-    }finally{
+        $("gpsStatusDot")
+          .classList.remove(
+            "active"
+          );
 
-      setGpsLoading(
-        false
-      );
+        $("gpsMeta").textContent =
+          "GPS location was not applied. You can continue using the dropdowns manually.";
+
+        setStatus(
+          error?.message ||
+          getGeolocationErrorMessage(
+            error
+          ),
+          "error"
+        );
+
+      }finally{
+
+        setGpsLoading(
+          false
+        );
+
+      }
 
     }
-
-  }
-);
-
+  );
 
 /* =========================================================
    CALCULATION
@@ -4202,31 +5115,20 @@ function calculate(){
       "sellingPrice"
     );
 
-
   const fair =
     numberValue(
       "fairMarketValue"
     );
-
 
   const zonal =
     numberValue(
       "zonalValue"
     );
 
-
   const commissionRate =
     numberValue(
       "commissionRate"
     );
-
-
-  /*
-    Illustrative tax base:
-    highest of selling price,
-    fair market value and
-    BIR zonal value.
-  */
 
   const taxBase =
     Math.max(
@@ -4235,29 +5137,28 @@ function calculate(){
       zonal
     );
 
-
   const cgt =
-    taxBase * 0.06;
-
+    taxBase *
+    0.06;
 
   const dst =
-    taxBase * 0.015;
-
+    taxBase *
+    0.015;
 
   const transfer =
-    taxBase * 0.005;
-
+    taxBase *
+    0.005;
 
   const registration =
-    taxBase * 0.0025;
-
+    taxBase *
+    0.0025;
 
   const commission =
     selling *
     (
-      commissionRate / 100
+      commissionRate /
+      100
     );
-
 
   state.costs = {
     cgt,
@@ -4267,7 +5168,6 @@ function calculate(){
     commission
   };
 
-
   const total =
     cgt +
     dst +
@@ -4275,11 +5175,11 @@ function calculate(){
     registration +
     commission;
 
+  let sellerExpenses =
+    0;
 
-  let sellerExpenses = 0;
-
-  let buyerExpenses = 0;
-
+  let buyerExpenses =
+    0;
 
   for(
     const [key,value]
@@ -4291,14 +5191,17 @@ function calculate(){
     const payer =
       state.allocation[key];
 
-
-    if(payer === "Seller"){
+    if(
+      payer ===
+      "Seller"
+    ){
 
       sellerExpenses +=
         value;
 
     }else if(
-      payer === "Buyer"
+      payer ===
+      "Buyer"
     ){
 
       buyerExpenses +=
@@ -4316,65 +5219,70 @@ function calculate(){
 
   }
 
-
   const sellerNet =
     selling -
     sellerExpenses;
 
-
-  /* WEB SUMMARY */
-
   $("metricProperty").textContent =
-    peso(selling);
-
+    peso(
+      selling
+    );
 
   $("metricTax").textContent =
-    peso(taxBase);
-
+    peso(
+      taxBase
+    );
 
   $("metricSeller").textContent =
-    peso(sellerExpenses);
-
+    peso(
+      sellerExpenses
+    );
 
   $("metricBuyer").textContent =
-    peso(buyerExpenses);
-
+    peso(
+      buyerExpenses
+    );
 
   $("metricNet").textContent =
-    peso(sellerNet);
-
+    peso(
+      sellerNet
+    );
 
   $("cgtAmount").textContent =
-    peso(cgt);
-
+    peso(
+      cgt
+    );
 
   $("dstAmount").textContent =
-    peso(dst);
-
+    peso(
+      dst
+    );
 
   $("transferAmount").textContent =
-    peso(transfer);
-
+    peso(
+      transfer
+    );
 
   $("registrationAmount").textContent =
-    peso(registration);
-
+    peso(
+      registration
+    );
 
   $("commissionAmount").textContent =
-    peso(commission);
-
+    peso(
+      commission
+    );
 
   $("totalCosts").textContent =
-    peso(total);
-
+    peso(
+      total
+    );
 
   updateAllocationTable();
 
   updateChart();
 
-
   updateReport({
-
     selling,
     fair,
     zonal,
@@ -4382,14 +5290,12 @@ function calculate(){
     sellerExpenses,
     buyerExpenses,
     sellerNet
-
   });
 
 }
 
-
 /* =========================================================
-   ALLOCATION TABLE
+   ALLOCATION
    ========================================================= */
 
 function updateAllocationTable(){
@@ -4397,9 +5303,8 @@ function updateAllocationTable(){
   const body =
     $("allocationBody");
 
-
-  body.innerHTML = "";
-
+  body.innerHTML =
+    "";
 
   const labels = {
 
@@ -4420,7 +5325,6 @@ function updateAllocationTable(){
 
   };
 
-
   for(
     const key
     of Object.keys(
@@ -4433,7 +5337,6 @@ function updateAllocationTable(){
         "tr"
       );
 
-
     const name =
       document.createElement(
         "td"
@@ -4441,7 +5344,6 @@ function updateAllocationTable(){
 
     name.textContent =
       labels[key];
-
 
     const amount =
       document.createElement(
@@ -4453,22 +5355,18 @@ function updateAllocationTable(){
         state.costs[key]
       );
 
-
     const payerCell =
       document.createElement(
         "td"
       );
-
 
     const select =
       document.createElement(
         "select"
       );
 
-
     select.className =
       "payer-select";
-
 
     [
       "Seller",
@@ -4482,25 +5380,15 @@ function updateAllocationTable(){
             "option"
           );
 
-
         option.value =
           optionValue;
-
 
         option.textContent =
           optionValue;
 
-
-        if(
+        option.selected =
           state.allocation[key] ===
-          optionValue
-        ){
-
-          option.selected =
-            true;
-
-        }
-
+          optionValue;
 
         select.appendChild(
           option
@@ -4508,7 +5396,6 @@ function updateAllocationTable(){
 
       }
     );
-
 
     select.addEventListener(
       "change",
@@ -4519,14 +5406,14 @@ function updateAllocationTable(){
 
         calculate();
 
+        markDirty();
+
       }
     );
-
 
     payerCell.appendChild(
       select
     );
-
 
     row.appendChild(
       name
@@ -4540,7 +5427,6 @@ function updateAllocationTable(){
       payerCell
     );
 
-
     body.appendChild(
       row
     );
@@ -4548,7 +5434,6 @@ function updateAllocationTable(){
   }
 
 }
-
 
 /* =========================================================
    CHART
@@ -4559,9 +5444,8 @@ function updateChart(){
   const chart =
     $("chart");
 
-
-  chart.innerHTML = "";
-
+  chart.innerHTML =
+    "";
 
   const items = [
 
@@ -4592,15 +5476,14 @@ function updateChart(){
 
   ];
 
-
   const max =
     Math.max(
       ...items.map(
-        item => item[1]
+        item =>
+          item[1]
       ),
       1
     );
-
 
   for(
     const [label,value]
@@ -4615,7 +5498,6 @@ function updateChart(){
     wrap.className =
       "bar-wrap";
 
-
     const amount =
       document.createElement(
         "div"
@@ -4625,8 +5507,9 @@ function updateChart(){
       "bar-value";
 
     amount.textContent =
-      peso(value);
-
+      peso(
+        value
+      );
 
     const bar =
       document.createElement(
@@ -4636,19 +5519,21 @@ function updateChart(){
     bar.className =
       "bar";
 
-
     const height =
       value === 0
         ? 3
         : Math.max(
             8,
-            (value / max) * 190
+            (
+              value /
+              max
+            ) *
+            190
           );
 
-
     bar.style.height =
-      height + "px";
-
+      height +
+      "px";
 
     const labelElement =
       document.createElement(
@@ -4660,7 +5545,6 @@ function updateChart(){
 
     labelElement.textContent =
       label;
-
 
     wrap.appendChild(
       amount
@@ -4674,7 +5558,6 @@ function updateChart(){
       labelElement
     );
 
-
     chart.appendChild(
       wrap
     );
@@ -4683,38 +5566,36 @@ function updateChart(){
 
 }
 
-
 /* =========================================================
    REPORT
    ========================================================= */
 
-function updateReport(data){
+function updateReport(
+  data
+){
+
+  ensureTransactionId();
 
   $("rTransaction").textContent =
     $("transactionType").value;
 
-
   $("rPropertyType").textContent =
     $("propertyType").value;
-
 
   $("rSelling").textContent =
     peso(
       data.selling
     );
 
-
   $("rFair").textContent =
     peso(
       data.fair
     );
 
-
   $("rZonal").textContent =
     peso(
       data.zonal
     );
-
 
   $("rAcquisition").textContent =
     peso(
@@ -4723,86 +5604,78 @@ function updateReport(data){
       )
     );
 
-
   $("rTaxBase").textContent =
     peso(
       data.taxBase
     );
-
 
   $("rSellerExpenses").textContent =
     peso(
       data.sellerExpenses
     );
 
-
   $("rBuyerExpenses").textContent =
     peso(
       data.buyerExpenses
     );
-
 
   $("rCommission").textContent =
     peso(
       state.costs.commission
     );
 
-
   $("rSellerNet").textContent =
     peso(
       data.sellerNet
     );
-
 
   $("rCGT").textContent =
     peso(
       state.costs.cgt
     );
 
-
   $("rDST").textContent =
     peso(
       state.costs.dst
     );
-
 
   $("rTransfer").textContent =
     peso(
       state.costs.transfer
     );
 
-
   $("rRegistration").textContent =
     peso(
       state.costs.registration
     );
-
 
   $("rCommission2").textContent =
     peso(
       state.costs.commission
     );
 
-
   const lotArea =
     numberValue(
       "lotArea"
     );
 
-
   $("rLotArea").textContent =
     lotArea.toLocaleString(
-      "en-PH"
+      "en-PH",
+      {
+        maximumFractionDigits:2
+      }
     ) +
     " sqm";
 
+  $("transactionId").textContent =
+    state.transactionId;
 
   updateReportLocation();
 
   updateChecklistReport();
 
 }
-
 
 /* =========================================================
    CHECKLIST
@@ -4813,9 +5686,8 @@ function renderChecklist(){
   const container =
     $("checklistContainer");
 
-
-  container.innerHTML = "";
-
+  container.innerHTML =
+    "";
 
   state.checklist.forEach(
     (
@@ -4828,39 +5700,31 @@ function renderChecklist(){
           "div"
         );
 
-
       wrapper.className =
         "check-item";
-
 
       const checkbox =
         document.createElement(
           "input"
         );
 
-
       checkbox.type =
         "checkbox";
-
 
       checkbox.id =
         "check-" +
         index;
-
 
       const label =
         document.createElement(
           "label"
         );
 
-
       label.htmlFor =
         checkbox.id;
 
-
       label.textContent =
         item;
-
 
       checkbox.addEventListener(
         "change",
@@ -4871,22 +5735,20 @@ function renderChecklist(){
             checkbox.checked
           );
 
-
           updateChecklist();
+
+          markDirty();
 
         }
       );
-
 
       wrapper.appendChild(
         checkbox
       );
 
-
       wrapper.appendChild(
         label
       );
-
 
       container.appendChild(
         wrapper
@@ -4895,15 +5757,51 @@ function renderChecklist(){
     }
   );
 
-
   updateChecklist();
 
 }
 
+function restoreChecklist(
+  savedChecklist
+){
 
-/* =========================================================
-   CHECKLIST UPDATE
-   ========================================================= */
+  const values =
+    Array.isArray(
+      savedChecklist
+    )
+      ? savedChecklist
+      : [];
+
+  document
+    .querySelectorAll(
+      "#checklistContainer input[type=checkbox]"
+    )
+    .forEach(
+      (
+        checkbox,
+        index
+      ) => {
+
+        checkbox.checked =
+          Boolean(
+            values[index]
+          );
+
+        checkbox
+          .closest(
+            ".check-item"
+          )
+          ?.classList.toggle(
+            "done",
+            checkbox.checked
+          );
+
+      }
+    );
+
+  updateChecklist();
+
+}
 
 function updateChecklist(){
 
@@ -4912,19 +5810,16 @@ function updateChecklist(){
       "#checklistContainer input[type=checkbox]"
     );
 
-
   const completed =
-    [
-      ...checkboxes
-    ].filter(
+    Array.from(
+      checkboxes
+    ).filter(
       checkbox =>
         checkbox.checked
     ).length;
 
-
   const total =
     checkboxes.length;
-
 
   const percent =
     total
@@ -4932,24 +5827,24 @@ function updateChecklist(){
           (
             completed /
             total
-          ) * 100
+          ) *
+          100
         )
       : 0;
 
-
   $("checkPercent").textContent =
-    percent + "%";
-
+    percent +
+    "%";
 
   $("checkProgress").style.width =
-    percent + "%";
-
+    percent +
+    "%";
 
   $("rChecklist").textContent =
-    percent + "%";
+    percent +
+    "%";
 
 }
-
 
 function updateChecklistReport(){
 
@@ -4958,12 +5853,26 @@ function updateChecklistReport(){
 
 }
 
-
 /* =========================================================
-   RESET
+   FORM RESET
    ========================================================= */
 
-function resetWorkspace(){
+function resetCurrentForm(){
+
+  const proceed =
+    confirm(
+      "Reset the current form to ₱0 and clear its details?"
+    );
+
+  if(!proceed){
+    return;
+  }
+
+  $("transactionType").value =
+    "Sale of property";
+
+  $("propertyType").value =
+    "House & Lot";
 
   [
     "sellingPrice",
@@ -4974,164 +5883,147 @@ function resetWorkspace(){
     "commissionRate"
   ].forEach(
     id => {
-
       $(id).value = "";
-
     }
   );
 
-
-  $("transactionType").value =
-    "Sale of property";
-
-
-  $("propertyType").value =
-    "House & Lot";
-
-
-  provinceSelect.value = "";
-
+  provinceSelect.value =
+    "";
 
   resetSelect(
     citySelect,
     "Select province first"
   );
 
-
   resetSelect(
     barangaySelect,
     "Select city / municipality first"
   );
 
-
-  zipInput.value = "";
-
+  zipInput.value =
+    "";
 
   state.allocation = {
-
     cgt:"Seller",
     dst:"Buyer",
     transfer:"Buyer",
     registration:"Buyer",
     commission:"Seller"
-
   };
-
-
-  state.costs = {
-
-    cgt:0,
-    dst:0,
-    transfer:0,
-    registration:0,
-    commission:0
-
-  };
-
 
   state.gps = {
-
     latitude:null,
     longitude:null,
     accuracy:null
-
   };
-
 
   $("gpsStatusDot")
     .classList.remove(
       "active"
     );
 
-
   $("gpsMeta").textContent =
     "GPS is used only when you press the button. Your location is not continuously tracked.";
 
-
-  document
-    .querySelectorAll(
-      "#checklistContainer input[type=checkbox]"
-    )
-    .forEach(
-      checkbox => {
-
-        checkbox.checked =
-          false;
-
-
-        checkbox
-          .closest(
-            ".check-item"
-          )
-          ?.classList.remove(
-            "done"
-          );
-
-      }
-    );
-
-
-  setStatus(
-    "Workspace reset.",
-    "success"
+  restoreChecklist(
+    []
   );
-
 
   calculate();
 
-  updateReportLocation();
+  setStatus(
+    "Current form reset. All transaction values are ₱0.",
+    "success"
+  );
+
+  markDirty();
 
 }
 
-
 /* =========================================================
-   BUTTONS
+   MAIN BUTTONS
    ========================================================= */
 
-$("updateBtn").addEventListener(
-  "click",
-  () => {
+$("saveTransactionBtn")
+  .addEventListener(
+    "click",
+    () => {
 
-    calculate();
+      saveCurrentTransaction();
 
+      $("savedTransactions")
+        .scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
 
-    $("costs").scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    }
+  );
 
-  }
-);
+$("newTransactionBtn")
+  .addEventListener(
+    "click",
+    () => {
 
+      newTransaction(
+        true
+      );
 
-$("resetBtn").addEventListener(
-  "click",
-  resetWorkspace
-);
+      $("workspace")
+        .scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
 
+    }
+  );
+
+$("updateBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      calculate();
+
+      $("costs")
+        .scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
+
+    }
+  );
+
+$("resetBtn")
+  .addEventListener(
+    "click",
+    resetCurrentForm
+  );
 
 /* =========================================================
    PRINT
    ========================================================= */
 
-$("printReportBtn").addEventListener(
-  "click",
-  () => {
+$("printReportBtn")
+  .addEventListener(
+    "click",
+    () => {
 
-    calculate();
+      calculate();
 
-    updateReportLocation();
+      updateReportDate();
 
-    updateChecklistReport();
+      updateReportLocation();
 
-    window.print();
+      updateChecklistReport();
 
-  }
-);
+      window.print();
 
+    }
+  );
 
 /* =========================================================
-   AUTO CALCULATE
+   INPUT EVENTS
    ========================================================= */
 
 [
@@ -5146,12 +6038,17 @@ $("printReportBtn").addEventListener(
 
     $(id).addEventListener(
       "input",
-      calculate
+      () => {
+
+        calculate();
+
+        markDirty();
+
+      }
     );
 
   }
 );
-
 
 [
   "transactionType",
@@ -5161,30 +6058,68 @@ $("printReportBtn").addEventListener(
 
     $(id).addEventListener(
       "change",
-      calculate
+      () => {
+
+        calculate();
+
+        markDirty();
+
+      }
     );
 
   }
 );
 
-
 /* =========================================================
    DARK MODE
    ========================================================= */
 
-const savedTheme =
-  localStorage.getItem(
-    "ph-property-theme"
-  );
+function initializeTheme(){
 
+  let savedTheme =
+    null;
 
-if(savedTheme){
+  try{
 
-  document.documentElement.dataset.theme =
-    savedTheme;
+    savedTheme =
+      localStorage.getItem(
+        THEME_KEY
+      );
+
+  }catch(error){
+
+    console.warn(
+      error
+    );
+
+  }
+
+  if(
+    savedTheme === "light" ||
+    savedTheme === "dark"
+  ){
+
+    document.documentElement.dataset.theme =
+      savedTheme;
+
+  }else{
+
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+
+    document.documentElement.dataset.theme =
+      prefersDark
+        ? "dark"
+        : "light";
+
+  }
+
+  updateThemeButton();
 
 }
-
 
 function updateThemeButton(){
 
@@ -5192,47 +6127,55 @@ function updateThemeButton(){
     document.documentElement.dataset.theme ===
     "dark";
 
-
   $("themeBtn").textContent =
     dark
       ? "☾"
       : "☀";
 
+  $("themeBtn").setAttribute(
+    "aria-label",
+    dark
+      ? "Switch to light mode"
+      : "Switch to dark mode"
+  );
+
 }
 
+$("themeBtn")
+  .addEventListener(
+    "click",
+    () => {
 
-$("themeBtn").addEventListener(
-  "click",
-  () => {
+      const current =
+        document.documentElement.dataset.theme;
 
-    const current =
-      document.documentElement.dataset.theme;
+      const next =
+        current === "dark"
+          ? "light"
+          : "dark";
 
+      document.documentElement.dataset.theme =
+        next;
 
-    const next =
-      current === "dark"
-        ? "light"
-        : "dark";
+      try{
 
+        localStorage.setItem(
+          THEME_KEY,
+          next
+        );
 
-    document.documentElement.dataset.theme =
-      next;
+      }catch(error){
 
+        console.warn(
+          error
+        );
 
-    localStorage.setItem(
-      "ph-property-theme",
-      next
-    );
+      }
 
+      updateThemeButton();
 
-    updateThemeButton();
-
-  }
-);
-
-
-updateThemeButton();
-
+    }
+  );
 
 /* =========================================================
    REPORT DATE
@@ -5243,11 +6186,11 @@ function updateReportDate(){
   const now =
     new Date();
 
-
   $("reportDate").textContent =
     now.toLocaleDateString(
       "en-PH",
       {
+        timeZone:"Asia/Manila",
         year:"numeric",
         month:"long",
         day:"numeric"
@@ -5256,75 +6199,38 @@ function updateReportDate(){
 
 }
 
-
-updateReportDate();
-
-
-/* =========================================================
-   TRANSACTION ID
-   ========================================================= */
-
-function generateTransactionId(){
-
-  const now =
-    new Date();
-
-
-  const year =
-    now.getFullYear();
-
-
-  const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  const day =
-    String(
-      now.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  const random =
-    Math.floor(
-      10000000 +
-      Math.random() *
-      90000000
-    );
-
-
-  $("transactionId").textContent =
-    "PTW-" +
-    year +
-    month +
-    day +
-    "-" +
-    random;
-
-}
-
-
-generateTransactionId();
-
-
 /* =========================================================
    INITIALIZATION
    ========================================================= */
 
-renderChecklist();
+async function initialize(){
 
-calculate();
+  initializeTheme();
 
-updateReportLocation();
+  updateReportDate();
 
-loadProvinces();
+  loadSavedTransactionsFromStorage();
+
+  renderChecklist();
+
+  state.transactionId =
+    createTransactionId();
+
+  ensureTransactionId();
+
+  calculate();
+
+  updateReportLocation();
+
+  renderSavedTransactions();
+
+  updateSaveStateUI();
+
+  await loadProvinces();
+
+}
+
+initialize();
 
 </script>
 
