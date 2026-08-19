@@ -18,6 +18,7 @@
   --accent2:#1d4ed8;
   --success:#059669;
   --danger:#dc2626;
+  --warning:#d97706;
   --shadow:0 10px 35px rgba(15,23,42,.07);
   --radius:18px;
 }
@@ -33,6 +34,7 @@ html[data-theme="dark"]{
   --accent2:#3b82f6;
   --success:#34d399;
   --danger:#f87171;
+  --warning:#f59e0b;
   --shadow:0 10px 35px rgba(0,0,0,.25);
 }
 
@@ -164,6 +166,24 @@ a:hover{
 .primary-btn:hover{
   background:var(--accent2);
   transform:translateY(-1px);
+}
+
+.location-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.location-btn.loading{
+  opacity:.75;
+  cursor:wait;
+}
+
+.location-btn:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
 }
 
 /* =========================================================
@@ -383,6 +403,10 @@ input[readonly]{
   color:var(--success);
 }
 
+.location-status.warning{
+  color:var(--warning);
+}
+
 .location-help{
   color:var(--muted);
   font-size:11px;
@@ -394,6 +418,70 @@ input[readonly]{
   flex-wrap:wrap;
   gap:9px;
   margin-top:17px;
+}
+
+/* =========================================================
+   LOCATION GPS PANEL
+   ========================================================= */
+
+.gps-panel{
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--surface2);
+}
+
+.gps-panel-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.gps-title{
+  font-weight:800;
+  font-size:13px;
+}
+
+.gps-description{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.gps-meta{
+  margin-top:9px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.45;
+}
+
+.gps-status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  display:inline-block;
+  margin-right:5px;
+  background:var(--muted);
+}
+
+.gps-status-dot.active{
+  background:var(--success);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--success) 12%,transparent);
+}
+
+@media(max-width:600px){
+
+  .gps-panel-top{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .gps-panel-top .primary-btn{
+    width:100%;
+  }
+
 }
 
 /* =========================================================
@@ -718,17 +806,6 @@ footer{
    PRINT
    ========================================================= */
 
-/*
-  IMPORTANT:
-
-  The print layout intentionally hides EVERYTHING except #report.
-
-  We do not rely on the browser's current scroll position,
-  navigation structure, or screen layout.
-
-  The report becomes the entire printed document.
-*/
-
 @page{
   size:A4;
   margin:14mm 15mm 14mm 15mm;
@@ -753,17 +830,9 @@ footer{
       sans-serif!important;
   }
 
-  /*
-    Hide the complete application.
-  */
-
   body > *{
     display:none!important;
   }
-
-  /*
-    Restore ONLY the main container.
-  */
 
   body > main.container{
     display:block!important;
@@ -773,17 +842,9 @@ footer{
     padding:0!important;
   }
 
-  /*
-    Everything inside main is hidden by default.
-  */
-
   main.container > *{
     display:none!important;
   }
-
-  /*
-    Restore ONLY the report.
-  */
 
   main.container > #report{
     display:block!important;
@@ -804,17 +865,9 @@ footer{
     overflow:visible!important;
   }
 
-  /*
-    Print button must never appear.
-  */
-
   #report .no-print{
     display:none!important;
   }
-
-  /*
-    Clean report typography.
-  */
 
   #report,
   #report *{
@@ -939,18 +992,10 @@ footer{
     line-height:1.4!important;
   }
 
-  /*
-    Prevent individual report sections from being split.
-  */
-
   #report .report-section{
     page-break-inside:avoid!important;
     break-inside:avoid!important;
   }
-
-  /*
-    Avoid unnecessary browser spacing.
-  */
 
   h1,h2,h3,p{
     orphans:3;
@@ -1040,6 +1085,7 @@ footer{
 
   <!-- BREADCRUMB -->
   <div class="breadcrumb">
+
     <a href="https://joshuadelacruz.solutions/">
       ← Joshua Dela Cruz
     </a>
@@ -1051,6 +1097,7 @@ footer{
     <strong>
       Transaction Workspace
     </strong>
+
   </div>
 
 
@@ -1117,6 +1164,7 @@ footer{
     <div class="card-title">
 
       <div>
+
         <h2>
           Transaction Setup
         </h2>
@@ -1124,6 +1172,7 @@ footer{
         <p>
           Enter the information available from the property documents.
         </p>
+
       </div>
 
       <span class="badge">
@@ -1259,7 +1308,9 @@ footer{
     </div>
 
 
-    <!-- LOCATION -->
+    <!-- ===================================================
+         LOCATION
+         =================================================== -->
 
     <div
       style="
@@ -1278,13 +1329,67 @@ footer{
           </h2>
 
           <p>
-            Philippine Standard Geographic Code hierarchy
+            Select manually or use your current GPS location.
           </p>
 
         </div>
 
       </div>
 
+
+      <!-- GPS -->
+
+      <div class="gps-panel">
+
+        <div class="gps-panel-top">
+
+          <div>
+
+            <div class="gps-title">
+
+              <span
+                id="gpsStatusDot"
+                class="gps-status-dot"
+              ></span>
+
+              Current location
+
+            </div>
+
+            <div class="gps-description">
+
+              Use your device location to automatically identify
+              the Philippine province, city / municipality and
+              barangay when possible.
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="primary-btn location-btn"
+            id="gpsBtn"
+            type="button"
+          >
+            📍 Use My Current Location
+          </button>
+
+        </div>
+
+
+        <div
+          class="gps-meta"
+          id="gpsMeta"
+        >
+          GPS is used only when you press the button.
+          Your location is not continuously tracked.
+        </div>
+
+      </div>
+
+
+      <!-- LOCATION DROPDOWNS -->
 
       <div class="form-grid three">
 
@@ -1357,12 +1462,14 @@ footer{
           <input
             id="zipCode"
             type="text"
-            readonly
-            placeholder="Auto-filled"
+            inputmode="numeric"
+            maxlength="4"
+            placeholder="Enter ZIP Code"
           >
 
           <div class="location-help">
-            Automatically populated when available from the locality reference data.
+            Automatically populated when available.
+            You can edit this ZIP Code manually.
           </div>
 
         </div>
@@ -1430,6 +1537,7 @@ footer{
         line-height:1.5;
       "
     >
+
       <strong style="color:var(--text);">
         Planning note:
       </strong>
@@ -1440,6 +1548,7 @@ footer{
       law, BIR rules, LGU ordinances and the parties' agreement.
       Verify final figures with the appropriate authorities and
       qualified professionals.
+
     </div>
 
 
@@ -1901,8 +2010,6 @@ footer{
     class="card report"
     id="report"
   >
-
-    <!-- REPORT HEADER -->
 
     <div class="report-header">
 
@@ -2379,9 +2486,21 @@ footer{
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
    VERSION 4
+   GPS LOCATION ENABLED
    ========================================================= */
 
 const PSGC_BASE = "https://psgc.cloud/api";
+
+/*
+  Nominatim is used only for one-time reverse geocoding
+  after the user explicitly presses the GPS button.
+
+  IMPORTANT:
+  The browser geolocation API requires HTTPS
+  (or localhost during development).
+*/
+const NOMINATIM_REVERSE =
+  "https://nominatim.openstreetmap.org/reverse";
 
 
 /* =========================================================
@@ -2415,7 +2534,13 @@ const state = {
     "BIR ONETT / eCAR requirements reviewed",
     "LGU transfer requirements reviewed",
     "Registry of Deeds requirements reviewed"
-  ]
+  ],
+
+  gps:{
+    latitude:null,
+    longitude:null,
+    accuracy:null
+  }
 
 };
 
@@ -2651,6 +2776,101 @@ function populateSelect(
 
 
 /* =========================================================
+   TEXT NORMALIZATION
+   ========================================================= */
+
+function normalizeLocationName(value){
+
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^a-z0-9]/g,
+      ""
+    );
+
+}
+
+
+function locationNameMatches(
+  optionText,
+  targetText
+){
+
+  const option =
+    normalizeLocationName(
+      optionText
+    );
+
+  const target =
+    normalizeLocationName(
+      targetText
+    );
+
+
+  if(!option || !target){
+
+    return false;
+
+  }
+
+
+  if(option === target){
+
+    return true;
+
+  }
+
+
+  return (
+    option.includes(target) ||
+    target.includes(option)
+  );
+
+}
+
+
+/* =========================================================
+   FIND OPTION
+   ========================================================= */
+
+function findOptionByLocationName(
+  select,
+  target
+){
+
+  if(!target){
+
+    return null;
+
+  }
+
+
+  const options =
+    Array.from(
+      select.options
+    );
+
+
+  return (
+    options.find(
+      option =>
+        locationNameMatches(
+          option.textContent,
+          target
+        )
+    ) ||
+    null
+  );
+
+}
+
+
+/* =========================================================
    PROVINCES
    ========================================================= */
 
@@ -2781,7 +3001,7 @@ async function loadCities(
       "Select province first"
     );
 
-    return;
+    return [];
 
   }
 
@@ -2851,6 +3071,9 @@ async function loadCities(
     }
 
 
+    return cities;
+
+
   }catch(error){
 
     console.error(error);
@@ -2866,6 +3089,9 @@ async function loadCities(
       "Unable to load cities / municipalities. Please refresh and try again.",
       "error"
     );
+
+
+    return [];
 
   }
 
@@ -2895,7 +3121,7 @@ async function loadBarangays(
       "Select city / municipality first"
     );
 
-    return;
+    return [];
 
   }
 
@@ -2996,6 +3222,9 @@ async function loadBarangays(
     }
 
 
+    return barangays;
+
+
   }catch(error){
 
     console.error(error);
@@ -3012,6 +3241,9 @@ async function loadBarangays(
       "error"
     );
 
+
+    return [];
+
   }
 
 }
@@ -3026,8 +3258,6 @@ async function loadCityZip(
 ){
 
   if(!cityCode){
-
-    zipInput.value = "";
 
     return;
 
@@ -3097,9 +3327,12 @@ async function loadCityZip(
       "";
 
 
-    zipInput.value =
-      zip || "";
+    if(zip){
 
+      zipInput.value =
+        zip;
+
+    }
 
   }catch(error){
 
@@ -3107,8 +3340,6 @@ async function loadCityZip(
       "ZIP lookup unavailable:",
       error
     );
-
-    zipInput.value = "";
 
   }
 
@@ -3155,9 +3386,6 @@ barangaySelect.addEventListener(
   "change",
   () => {
 
-    updateReportLocation();
-
-
     const selectedCity =
       citySelect.options[
         citySelect.selectedIndex
@@ -3170,6 +3398,37 @@ barangaySelect.addEventListener(
         selectedCity.dataset.zip;
 
     }
+
+    updateReportLocation();
+
+  }
+);
+
+
+/* =========================================================
+   ZIP CODE MANUAL CHANGE
+   ========================================================= */
+
+zipInput.addEventListener(
+  "input",
+  () => {
+
+    /*
+      Keep ZIP Code numeric while allowing
+      the user to manually override it.
+    */
+
+    zipInput.value =
+      zipInput.value
+        .replace(
+          /\D/g,
+          ""
+        )
+        .slice(
+          0,
+          4
+        );
+
 
     updateReportLocation();
 
@@ -3205,6 +3464,731 @@ function updateReportLocation(){
     zipInput.value || "—";
 
 }
+
+
+/* =========================================================
+   GPS
+   ========================================================= */
+
+function setGpsLoading(
+  loading
+){
+
+  const button =
+    $("gpsBtn");
+
+
+  if(loading){
+
+    button.disabled =
+      true;
+
+    button.classList.add(
+      "loading"
+    );
+
+    button.textContent =
+      "📍 Detecting location...";
+
+  }else{
+
+    button.disabled =
+      false;
+
+    button.classList.remove(
+      "loading"
+    );
+
+    button.textContent =
+      "📍 Use My Current Location";
+
+  }
+
+}
+
+
+/* =========================================================
+   GET CURRENT POSITION
+   ========================================================= */
+
+function getCurrentPosition(){
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      if(!navigator.geolocation){
+
+        reject(
+          new Error(
+            "Geolocation is not supported by this browser."
+          )
+        );
+
+        return;
+
+      }
+
+
+      navigator.geolocation.getCurrentPosition(
+        resolve,
+        reject,
+        {
+          enableHighAccuracy:true,
+          timeout:15000,
+          maximumAge:300000
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   GPS ERROR
+   ========================================================= */
+
+function getGeolocationErrorMessage(
+  error
+){
+
+  if(!error){
+
+    return "Unable to determine your location.";
+
+  }
+
+
+  switch(error.code){
+
+    case 1:
+
+      return (
+        "Location permission was denied. " +
+        "Please allow location access in your browser settings."
+      );
+
+    case 2:
+
+      return (
+        "Your location could not be determined. " +
+        "Make sure GPS/location services are enabled."
+      );
+
+    case 3:
+
+      return (
+        "Location detection timed out. " +
+        "Please try again."
+      );
+
+    default:
+
+      return (
+        "Unable to determine your current location."
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   REVERSE GEOCODING
+   ========================================================= */
+
+async function reverseGeocode(
+  latitude,
+  longitude
+){
+
+  const url =
+    NOMINATIM_REVERSE +
+    "?format=jsonv2" +
+    "&lat=" +
+    encodeURIComponent(
+      latitude
+    ) +
+    "&lon=" +
+    encodeURIComponent(
+      longitude
+    ) +
+    "&zoom=18" +
+    "&addressdetails=1";
+
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:{
+          "Accept":
+            "application/json"
+        }
+      }
+    );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Reverse geocoding returned HTTP " +
+      response.status
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  return data;
+
+}
+
+
+/* =========================================================
+   EXTRACT PHILIPPINE LOCATION
+   ========================================================= */
+
+function extractPhilippineLocation(
+  data
+){
+
+  const address =
+    data?.address || {};
+
+
+  /*
+    Nominatim can use different names depending
+    on the exact geographic position.
+
+    We intentionally check several possible fields.
+  */
+
+  const province =
+    address.province ||
+    address.state ||
+    address.region ||
+    "";
+
+
+  const city =
+    address.city ||
+    address.municipality ||
+    address.town ||
+    address.city_district ||
+    address.county ||
+    "";
+
+
+  const barangay =
+    address.village ||
+    address.suburb ||
+    address.neighbourhood ||
+    address.quarter ||
+    "";
+
+
+  const postcode =
+    address.postcode ||
+    "";
+
+
+  return {
+
+    province,
+    city,
+    barangay,
+    postcode,
+
+    displayName:
+      data?.display_name || ""
+
+  };
+
+}
+
+
+/* =========================================================
+   SELECT PROVINCE FROM GPS
+   ========================================================= */
+
+async function applyGpsProvince(
+  provinceName
+){
+
+  const option =
+    findOptionByLocationName(
+      provinceSelect,
+      provinceName
+    );
+
+
+  if(!option){
+
+    return false;
+
+  }
+
+
+  provinceSelect.value =
+    option.value;
+
+
+  await loadCities(
+    option.value
+  );
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   SELECT CITY FROM GPS
+   ========================================================= */
+
+async function applyGpsCity(
+  cityName
+){
+
+  const option =
+    findOptionByLocationName(
+      citySelect,
+      cityName
+    );
+
+
+  if(!option){
+
+    return false;
+
+  }
+
+
+  citySelect.value =
+    option.value;
+
+
+  await loadBarangays(
+    option.value
+  );
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   SELECT BARANGAY FROM GPS
+   ========================================================= */
+
+function applyGpsBarangay(
+  barangayName
+){
+
+  const option =
+    findOptionByLocationName(
+      barangaySelect,
+      barangayName
+    );
+
+
+  if(!option){
+
+    return false;
+
+  }
+
+
+  barangaySelect.value =
+    option.value;
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   APPLY GPS LOCATION
+   ========================================================= */
+
+async function applyGpsLocation(
+  location
+){
+
+  const provinceName =
+    location.province;
+
+
+  const cityName =
+    location.city;
+
+
+  const barangayName =
+    location.barangay;
+
+
+  let provinceMatched =
+    false;
+
+  let cityMatched =
+    false;
+
+  let barangayMatched =
+    false;
+
+
+  /*
+    Province
+  */
+
+  if(provinceName){
+
+    provinceMatched =
+      await applyGpsProvince(
+        provinceName
+      );
+
+  }
+
+
+  /*
+    City / Municipality
+  */
+
+  if(
+    provinceMatched &&
+    cityName
+  ){
+
+    cityMatched =
+      await applyGpsCity(
+        cityName
+      );
+
+  }
+
+
+  /*
+    Barangay
+  */
+
+  if(
+    cityMatched &&
+    barangayName
+  ){
+
+    barangayMatched =
+      applyGpsBarangay(
+        barangayName
+      );
+
+  }
+
+
+  /*
+    ZIP Code
+
+    Nominatim postcode is used first because
+    it is directly associated with the detected
+    geographic position.
+
+    The user can still manually change it.
+  */
+
+  if(location.postcode){
+
+    zipInput.value =
+      String(
+        location.postcode
+      )
+      .replace(
+        /\D/g,
+        ""
+      )
+      .slice(
+        0,
+        4
+      );
+
+  }else if(cityMatched){
+
+    await loadCityZip(
+      citySelect.value
+    );
+
+  }
+
+
+  updateReportLocation();
+
+
+  /*
+    Return matching status.
+  */
+
+  return {
+
+    provinceMatched,
+    cityMatched,
+    barangayMatched
+
+  };
+
+}
+
+
+/* =========================================================
+   GPS BUTTON
+   ========================================================= */
+
+$("gpsBtn").addEventListener(
+  "click",
+  async () => {
+
+    setGpsLoading(
+      true
+    );
+
+
+    $("gpsStatusDot")
+      .classList.remove(
+        "active"
+      );
+
+
+    $("gpsMeta").textContent =
+      "Requesting your current device location...";
+
+
+    setStatus(
+      "Requesting GPS location permission..."
+    );
+
+
+    try{
+
+      const position =
+        await getCurrentPosition();
+
+
+      const latitude =
+        position.coords.latitude;
+
+
+      const longitude =
+        position.coords.longitude;
+
+
+      const accuracy =
+        position.coords.accuracy;
+
+
+      state.gps = {
+
+        latitude,
+        longitude,
+        accuracy
+
+      };
+
+
+      $("gpsStatusDot")
+        .classList.add(
+          "active"
+        );
+
+
+      $("gpsMeta").textContent =
+        "GPS position detected. Accuracy approximately " +
+        Math.round(
+          accuracy
+        ) +
+        " meters.";
+
+
+      setStatus(
+        "GPS position detected. Identifying the Philippine locality...",
+        "success"
+      );
+
+
+      const location =
+        await reverseGeocode(
+          latitude,
+          longitude
+        );
+
+
+      /*
+        Reject obvious non-Philippine results.
+      */
+
+      const countryCode =
+        String(
+          location?.address?.country_code ||
+          ""
+        ).toLowerCase();
+
+
+      if(
+        countryCode &&
+        countryCode !== "ph"
+      ){
+
+        throw new Error(
+          "The detected location does not appear to be in the Philippines."
+        );
+
+      }
+
+
+      const extracted =
+        extractPhilippineLocation(
+          location
+        );
+
+
+      if(
+        !extracted.province &&
+        !extracted.city
+      ){
+
+        throw new Error(
+          "The GPS location could not be matched to a Philippine locality."
+        );
+
+      }
+
+
+      const result =
+        await applyGpsLocation(
+          extracted
+        );
+
+
+      /*
+        Build a useful status message.
+      */
+
+      const matchedParts = [];
+
+
+      if(result.provinceMatched){
+
+        matchedParts.push(
+          "province"
+        );
+
+      }
+
+
+      if(result.cityMatched){
+
+        matchedParts.push(
+          "city / municipality"
+        );
+
+      }
+
+
+      if(result.barangayMatched){
+
+        matchedParts.push(
+          "barangay"
+        );
+
+      }
+
+
+      if(matchedParts.length === 3){
+
+        setStatus(
+          "GPS location applied. Province, city / municipality, barangay and ZIP Code have been populated. You can still change the dropdowns or ZIP Code manually.",
+          "success"
+        );
+
+      }else if(
+        matchedParts.length === 2
+      ){
+
+        setStatus(
+          "GPS location applied to the " +
+          matchedParts.join(
+            " and "
+          ) +
+          ". The barangay could not be matched exactly, so you can select it manually.",
+          "success"
+        );
+
+      }else if(
+        matchedParts.length === 1
+      ){
+
+        setStatus(
+          "GPS identified part of the location. Please complete the remaining location fields using the dropdowns.",
+          "warning"
+        );
+
+      }else{
+
+        setStatus(
+          "GPS coordinates were detected, but the location could not be matched to the PSGC dropdowns. Please select the location manually.",
+          "warning"
+        );
+
+      }
+
+
+      updateReportLocation();
+
+
+    }catch(error){
+
+      console.error(
+        "GPS error:",
+        error
+      );
+
+
+      $("gpsStatusDot")
+        .classList.remove(
+          "active"
+        );
+
+
+      $("gpsMeta").textContent =
+        "GPS location was not applied. You can continue using the dropdowns manually.";
+
+
+      setStatus(
+        error?.message ||
+        getGeolocationErrorMessage(
+          error
+        ),
+        "error"
+      );
+
+    }finally{
+
+      setGpsLoading(
+        false
+      );
+
+    }
+
+  }
+);
 
 
 /* =========================================================
@@ -3338,9 +4322,7 @@ function calculate(){
     sellerExpenses;
 
 
-  /*
-    WEB SUMMARY
-  */
+  /* WEB SUMMARY */
 
   $("metricProperty").textContent =
     peso(selling);
@@ -4047,6 +5029,25 @@ function resetWorkspace(){
   };
 
 
+  state.gps = {
+
+    latitude:null,
+    longitude:null,
+    accuracy:null
+
+  };
+
+
+  $("gpsStatusDot")
+    .classList.remove(
+      "active"
+    );
+
+
+  $("gpsMeta").textContent =
+    "GPS is used only when you press the button. Your location is not continuously tracked.";
+
+
   document
     .querySelectorAll(
       "#checklistContainer input[type=checkbox]"
@@ -4071,7 +5072,7 @@ function resetWorkspace(){
 
 
   setStatus(
-    "Workspace reset. All transaction values are ₱0.",
+    "Workspace reset.",
     "success"
   );
 
@@ -4113,26 +5114,9 @@ $("resetBtn").addEventListener(
    PRINT
    ========================================================= */
 
-/*
-  IMPORTANT:
-
-  We intentionally do NOT manipulate the page into a
-  temporary "print mode".
-
-  The @media print rules above turn the report into the
-  entire printed document.
-
-  Calling window.print() therefore prints ONLY #report.
-*/
-
 $("printReportBtn").addEventListener(
   "click",
   () => {
-
-    /*
-      Ensure report values are completely current
-      before opening the print dialog.
-    */
 
     calculate();
 
