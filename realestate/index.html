@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Philippine Property Transaction Workspace for preliminary property sale, tax, expense allocation and transaction planning.">
-<meta name="theme-color" content="#2563eb">
 
 <title>PH Property Transaction Workspace · Joshua Dela Cruz</title>
 
@@ -36,7 +34,7 @@ html[data-theme="dark"]{
   --accent2:#3b82f6;
   --success:#34d399;
   --danger:#f87171;
-  --warning:#f59e0b;
+  --warning:#fbbf24;
   --shadow:0 10px 35px rgba(0,0,0,.25);
 }
 
@@ -81,12 +79,6 @@ input{
     color .18s ease,
     transform .12s ease,
     box-shadow .18s ease;
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-  transform:none!important;
 }
 
 a{
@@ -137,7 +129,6 @@ a:hover{
   background:var(--text);
   color:var(--surface);
   font-weight:900;
-  flex-shrink:0;
 }
 
 .brand small{
@@ -152,10 +143,6 @@ a:hover{
   align-items:center;
   gap:9px;
 }
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
 
 .icon-btn,
 .secondary-btn{
@@ -186,23 +173,6 @@ a:hover{
 .primary-btn:hover{
   background:var(--accent2);
   transform:translateY(-1px);
-}
-
-.danger-btn{
-  border:1px solid color-mix(
-    in srgb,
-    var(--danger) 30%,
-    var(--border)
-  );
-  background:var(--surface);
-  color:var(--danger);
-  border-radius:11px;
-  padding:9px 13px;
-  cursor:pointer;
-}
-
-.danger-btn:hover{
-  border-color:var(--danger);
 }
 
 /* =========================================================
@@ -348,7 +318,6 @@ h1{
   background:
     color-mix(in srgb,var(--success) 12%,transparent);
   color:var(--success);
-  white-space:nowrap;
 }
 
 /* =========================================================
@@ -413,14 +382,6 @@ input[readonly]{
   cursor:not-allowed;
 }
 
-input.input-error,
-select.input-error{
-  border-color:var(--danger);
-  box-shadow:
-    0 0 0 3px
-    color-mix(in srgb,var(--danger) 10%,transparent);
-}
-
 .location-status{
   margin-top:9px;
   min-height:20px;
@@ -444,6 +405,17 @@ select.input-error{
   color:var(--muted);
   font-size:11px;
   margin-top:5px;
+}
+
+.planning-note{
+  margin:20px 0 0;
+  padding:13px;
+  border-radius:12px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
 }
 
 .button-row{
@@ -493,7 +465,6 @@ select.input-error{
   font-size:21px;
   font-weight:850;
   letter-spacing:-.03em;
-  overflow-wrap:anywhere;
 }
 
 /* =========================================================
@@ -528,7 +499,6 @@ select.input-error{
 
 .cost-amount{
   font-weight:850;
-  text-align:right;
 }
 
 /* =========================================================
@@ -576,7 +546,6 @@ th{
   gap:16px;
   padding:20px 10px 0;
   border-bottom:1px solid var(--border);
-  overflow-x:auto;
 }
 
 .bar-wrap{
@@ -587,7 +556,7 @@ th{
   justify-content:flex-end;
   align-items:center;
   gap:7px;
-  min-width:70px;
+  min-width:55px;
 }
 
 .bar{
@@ -607,7 +576,6 @@ th{
 .bar-value{
   font-size:10px;
   font-weight:800;
-  text-align:center;
 }
 
 /* =========================================================
@@ -649,11 +617,6 @@ th{
   min-height:18px;
   margin-top:2px;
   accent-color:var(--accent);
-}
-
-.check-item label{
-  cursor:pointer;
-  color:var(--text);
 }
 
 .check-item.done label{
@@ -722,15 +685,9 @@ html[data-theme="dark"] .report{
   font-size:13px;
 }
 
-.report-line strong{
-  text-align:right;
-  overflow-wrap:anywhere;
-}
-
 .report-total{
   display:flex;
   justify-content:space-between;
-  gap:15px;
   margin-top:15px;
   padding:15px 0 0;
   border-top:2px solid #111827;
@@ -747,10 +704,11 @@ html[data-theme="dark"] .report{
   line-height:1.55;
 }
 
-.report-meta{
-  font-size:10px;
+.report-source{
+  margin-top:10px;
   color:#64748b;
-  margin-top:6px;
+  font-size:10px;
+  line-height:1.5;
 }
 
 @media(max-width:600px){
@@ -763,45 +721,8 @@ html[data-theme="dark"] .report{
   }
 
   .report-header > div:last-child{
-    text-align:left!important;
+    text-align:left !important;
   }
-
-  .report-total{
-    font-size:15px;
-  }
-}
-
-/* =========================================================
-   NOTICES
-   ========================================================= */
-
-.info-box{
-  margin-top:18px;
-  padding:13px 14px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:var(--surface2);
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.55;
-}
-
-.info-box strong{
-  color:var(--text);
-}
-
-.autosave-status{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:9px;
-}
-
-.autosave-status.saved{
-  color:var(--success);
-}
-
-.autosave-status.error{
-  color:var(--danger);
 }
 
 /* =========================================================
@@ -821,6 +742,33 @@ footer{
 }
 
 /* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:9999;
+  max-width:360px;
+  padding:13px 16px;
+  border-radius:12px;
+  background:var(--text);
+  color:var(--surface);
+  box-shadow:var(--shadow);
+  font-size:12px;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.2s ease;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* =========================================================
    PRINT
    ========================================================= */
 
@@ -828,7 +776,7 @@ footer{
 
   @page{
     size:A4;
-    margin:14mm;
+    margin:12mm;
   }
 
   body{
@@ -844,7 +792,8 @@ footer{
   #analytics,
   #checklist,
   .no-print,
-  footer{
+  footer,
+  .toast{
     display:none!important;
   }
 
@@ -863,63 +812,6 @@ footer{
   .report{
     border:0;
   }
-
-  .report-section{
-    break-inside:avoid;
-  }
-
-  .report-header{
-    break-after:avoid;
-  }
-
-  .report-warning{
-    break-inside:avoid;
-  }
-}
-
-/* =========================================================
-   SMALL SCREENS
-   ========================================================= */
-
-@media(max-width:600px){
-
-  .topbar-inner{
-    padding:11px 14px;
-  }
-
-  .container{
-    padding:20px 14px 50px;
-  }
-
-  .brand small{
-    display:none;
-  }
-
-  .secondary-btn{
-    padding:8px 10px;
-    font-size:12px;
-  }
-
-  .icon-btn{
-    padding:8px 11px;
-  }
-
-  .card{
-    padding:16px;
-  }
-
-  .cost-row{
-    grid-template-columns:1fr;
-  }
-
-  .cost-amount{
-    text-align:left;
-  }
-
-  th,
-  td{
-    white-space:nowrap;
-  }
 }
 </style>
 </head>
@@ -927,19 +819,21 @@ footer{
 <body>
 
 <header class="topbar">
+
   <div class="topbar-inner">
 
     <a
       class="brand"
       href="https://joshuadelacruz.solutions/"
-      aria-label="Joshua Dela Cruz portfolio"
     >
+
       <div class="logo">PH</div>
 
       <div>
         Joshua Dela Cruz
         <small>Property Workspace</small>
       </div>
+
     </a>
 
     <div class="top-actions">
@@ -956,7 +850,6 @@ footer{
         id="themeBtn"
         type="button"
         aria-label="Toggle dark mode"
-        title="Toggle dark mode"
       >
         ☀
       </button>
@@ -964,12 +857,13 @@ footer{
     </div>
 
   </div>
-</header>
 
+</header>
 
 <main class="container">
 
   <div class="breadcrumb">
+
     <a href="https://joshuadelacruz.solutions/">
       ← Joshua Dela Cruz
     </a>
@@ -979,8 +873,8 @@ footer{
     Real Estate /
 
     <strong>Transaction Workspace</strong>
-  </div>
 
+  </div>
 
   <section class="hero">
 
@@ -1001,55 +895,28 @@ footer{
 
   </section>
 
+  <nav class="workspace-nav">
 
-  <nav
-    class="workspace-nav"
-    aria-label="Workspace navigation"
-  >
-
-    <a href="#workspace">
-      ▦ Transaction
-    </a>
-
-    <a href="#costs">
-      ◒ Costs
-    </a>
-
-    <a href="#allocation">
-      ⇄ Allocation
-    </a>
-
-    <a href="#analytics">
-      ◔ Analytics
-    </a>
-
-    <a href="#checklist">
-      ✓ Checklist
-    </a>
-
-    <a href="#report">
-      ▤ Report
-    </a>
+    <a href="#workspace">▦ Transaction</a>
+    <a href="#costs">◒ Costs</a>
+    <a href="#allocation">⇄ Allocation</a>
+    <a href="#analytics">◔ Analytics</a>
+    <a href="#checklist">✓ Checklist</a>
+    <a href="#report">▤ Report</a>
 
   </nav>
 
-
-  <!-- =====================================================
+  <!-- =======================================================
        WORKSPACE
-       ===================================================== -->
+       ======================================================= -->
 
-  <section
-    class="card"
-    id="workspace"
-  >
+  <section class="card" id="workspace">
 
     <div class="card-title">
 
       <div>
 
-        <h2>
-          Transaction Setup
-        </h2>
+        <h2>Transaction Setup</h2>
 
         <p>
           Enter the information available from the property documents.
@@ -1062,7 +929,6 @@ footer{
       </span>
 
     </div>
-
 
     <div class="form-grid">
 
@@ -1089,7 +955,6 @@ footer{
         </select>
 
       </div>
-
 
       <div class="field">
 
@@ -1119,7 +984,6 @@ footer{
 
       </div>
 
-
       <div class="field">
 
         <label for="sellingPrice">
@@ -1131,12 +995,10 @@ footer{
           type="number"
           min="0"
           step="1000"
-          inputmode="decimal"
           placeholder="0"
         >
 
       </div>
-
 
       <div class="field">
 
@@ -1149,12 +1011,10 @@ footer{
           type="number"
           min="0"
           step="1000"
-          inputmode="decimal"
           placeholder="0"
         >
 
       </div>
-
 
       <div class="field">
 
@@ -1167,12 +1027,10 @@ footer{
           type="number"
           min="0"
           step="1000"
-          inputmode="decimal"
           placeholder="0"
         >
 
       </div>
-
 
       <div class="field">
 
@@ -1185,14 +1043,12 @@ footer{
           type="number"
           min="0"
           step="1000"
-          inputmode="decimal"
           placeholder="0"
         >
 
       </div>
 
     </div>
-
 
     <div
       style="
@@ -1218,7 +1074,6 @@ footer{
 
       </div>
 
-
       <div class="form-grid three">
 
         <div class="field">
@@ -1227,10 +1082,7 @@ footer{
             Province
           </label>
 
-          <select
-            id="province"
-            disabled
-          >
+          <select id="province" disabled>
 
             <option value="">
               Loading provinces...
@@ -1240,17 +1092,13 @@ footer{
 
         </div>
 
-
         <div class="field">
 
           <label for="cityMunicipality">
             City / Municipality
           </label>
 
-          <select
-            id="cityMunicipality"
-            disabled
-          >
+          <select id="cityMunicipality" disabled>
 
             <option value="">
               Select province first
@@ -1260,17 +1108,13 @@ footer{
 
         </div>
 
-
         <div class="field">
 
           <label for="barangay">
             Barangay
           </label>
 
-          <select
-            id="barangay"
-            disabled
-          >
+          <select id="barangay" disabled>
 
             <option value="">
               Select city / municipality first
@@ -1279,7 +1123,6 @@ footer{
           </select>
 
         </div>
-
 
         <div class="field">
 
@@ -1295,14 +1138,12 @@ footer{
           >
 
           <div class="location-help">
-            Automatically populated when available from the
-            locality reference data.
+            Automatically populated when available from the locality reference data.
           </div>
 
         </div>
 
       </div>
-
 
       <div
         id="locationStatus"
@@ -1311,7 +1152,6 @@ footer{
       ></div>
 
     </div>
-
 
     <div class="form-grid">
 
@@ -1326,12 +1166,10 @@ footer{
           type="number"
           min="0"
           step="0.01"
-          inputmode="decimal"
           placeholder="0"
         >
 
       </div>
-
 
       <div class="field">
 
@@ -1345,28 +1183,24 @@ footer{
           min="0"
           max="100"
           step="0.1"
-          inputmode="decimal"
           placeholder="2"
-          value="2"
         >
 
       </div>
 
     </div>
 
-
-    <div class="info-box">
+    <div class="planning-note">
 
       <strong>Planning note:</strong>
       The calculator uses illustrative rates for preliminary planning.
       Actual taxes, fees, tax bases and payment responsibilities may
       depend on the transaction, property classification, applicable
       law, BIR rules, LGU ordinances and the parties' agreement.
-      Verify the final figures with the appropriate authorities and
+      Verify final figures with the appropriate authorities and
       qualified professionals.
 
     </div>
-
 
     <div class="button-row">
 
@@ -1378,7 +1212,6 @@ footer{
         Update workspace →
       </button>
 
-
       <button
         class="secondary-btn"
         id="resetBtn"
@@ -1389,24 +1222,13 @@ footer{
 
     </div>
 
-
-    <div
-      id="autosaveStatus"
-      class="autosave-status"
-      aria-live="polite"
-    >
-      Workspace ready.
-    </div>
-
   </section>
-
 
   <br>
 
-
-  <!-- =====================================================
+  <!-- =======================================================
        SUMMARY
-       ===================================================== -->
+       ======================================================= -->
 
   <section class="card">
 
@@ -1427,7 +1249,6 @@ footer{
 
       </div>
 
-
       <div class="metric">
 
         <div class="metric-label">
@@ -1442,7 +1263,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="metric">
 
@@ -1459,7 +1279,6 @@ footer{
 
       </div>
 
-
       <div class="metric">
 
         <div class="metric-label">
@@ -1474,7 +1293,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="metric">
 
@@ -1495,18 +1313,13 @@ footer{
 
   </section>
 
-
   <br>
 
-
-  <!-- =====================================================
+  <!-- =======================================================
        COSTS
-       ===================================================== -->
+       ======================================================= -->
 
-  <section
-    class="card"
-    id="costs"
-  >
+  <section class="card" id="costs">
 
     <div class="card-title">
 
@@ -1524,7 +1337,6 @@ footer{
 
     </div>
 
-
     <div class="cost-list">
 
       <div class="cost-row">
@@ -1536,8 +1348,7 @@ footer{
           </div>
 
           <div class="cost-note">
-            Illustrative seller-side CGT for a qualifying
-            capital-asset sale.
+            Illustrative seller-side CGT for a qualifying capital-asset sale.
           </div>
 
         </div>
@@ -1550,7 +1361,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="cost-row">
 
@@ -1575,7 +1385,6 @@ footer{
 
       </div>
 
-
       <div class="cost-row">
 
         <div>
@@ -1598,7 +1407,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="cost-row">
 
@@ -1623,7 +1431,6 @@ footer{
 
       </div>
 
-
       <div class="cost-row">
 
         <div>
@@ -1646,7 +1453,6 @@ footer{
         </div>
 
       </div>
-
 
       <div
         class="cost-row"
@@ -1673,18 +1479,13 @@ footer{
 
   </section>
 
-
   <br>
 
-
-  <!-- =====================================================
+  <!-- =======================================================
        ALLOCATION
-       ===================================================== -->
+       ======================================================= -->
 
-  <section
-    class="card"
-    id="allocation"
-  >
+  <section class="card" id="allocation">
 
     <div class="card-title">
 
@@ -1701,7 +1502,6 @@ footer{
       </div>
 
     </div>
-
 
     <div class="table-wrap">
 
@@ -1733,7 +1533,6 @@ footer{
 
     </div>
 
-
     <p
       style="
         color:var(--muted);
@@ -1748,18 +1547,13 @@ footer{
 
   </section>
 
-
   <br>
 
-
-  <!-- =====================================================
+  <!-- =======================================================
        ANALYTICS
-       ===================================================== -->
+       ======================================================= -->
 
-  <section
-    class="card"
-    id="analytics"
-  >
+  <section class="card" id="analytics">
 
     <div class="card-title">
 
@@ -1777,27 +1571,20 @@ footer{
 
     </div>
 
-
     <div
       class="chart"
       id="chart"
-      aria-label="Transaction cost chart"
     ></div>
 
   </section>
 
-
   <br>
 
-
-  <!-- =====================================================
+  <!-- =======================================================
        CHECKLIST
-       ===================================================== -->
+       ======================================================= -->
 
-  <section
-    class="card"
-    id="checklist"
-  >
+  <section class="card" id="checklist">
 
     <div class="card-title">
 
@@ -1819,7 +1606,6 @@ footer{
 
     </div>
 
-
     <div class="progress">
 
       <div
@@ -1829,7 +1615,6 @@ footer{
 
     </div>
 
-
     <div
       class="checklist"
       id="checklistContainer"
@@ -1837,13 +1622,11 @@ footer{
 
   </section>
 
-
   <br>
 
-
-  <!-- =====================================================
+  <!-- =======================================================
        REPORT
-       ===================================================== -->
+       ======================================================= -->
 
   <section
     class="card report"
@@ -1864,7 +1647,6 @@ footer{
 
       </div>
 
-
       <div style="text-align:right">
 
         <strong id="reportDate"></strong>
@@ -1877,7 +1659,6 @@ footer{
 
     </div>
 
-
     <!-- PROPERTY DETAILS -->
 
     <div class="report-section">
@@ -1886,116 +1667,60 @@ footer{
         Property Details
       </h3>
 
-
       <div class="report-grid">
 
         <div class="report-line">
-
-          <span>
-            Transaction
-          </span>
-
+          <span>Transaction</span>
           <strong id="rTransaction">
             Sale of property
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Property type
-          </span>
-
+          <span>Property type</span>
           <strong id="rPropertyType">
             House & Lot
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Province
-          </span>
-
+          <span>Province</span>
           <strong id="rProvince">
             —
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            City / Municipality
-          </span>
-
+          <span>City / Municipality</span>
           <strong id="rCity">
             —
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Barangay
-          </span>
-
+          <span>Barangay</span>
           <strong id="rBarangay">
             —
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            ZIP Code
-          </span>
-
+          <span>ZIP Code</span>
           <strong id="rZip">
             —
           </strong>
-
         </div>
 
-
         <div class="report-line">
-
-          <span>
-            Lot area
-          </span>
-
+          <span>Lot area</span>
           <strong id="rLotArea">
             0 sqm
           </strong>
-
-        </div>
-
-
-        <div class="report-line">
-
-          <span>
-            Transaction ID
-          </span>
-
-          <strong id="transactionId">
-            —
-          </strong>
-
         </div>
 
       </div>
 
     </div>
-
 
     <!-- VALUATION -->
 
@@ -2004,7 +1729,6 @@ footer{
       <h3>
         Valuation
       </h3>
-
 
       <div class="report-grid">
 
@@ -2020,7 +1744,6 @@ footer{
 
         </div>
 
-
         <div class="report-line">
 
           <span>
@@ -2032,7 +1755,6 @@ footer{
           </strong>
 
         </div>
-
 
         <div class="report-line">
 
@@ -2046,7 +1768,6 @@ footer{
 
         </div>
 
-
         <div class="report-line">
 
           <span>
@@ -2058,7 +1779,6 @@ footer{
           </strong>
 
         </div>
-
 
         <div class="report-line">
 
@@ -2076,7 +1796,6 @@ footer{
 
     </div>
 
-
     <!-- FINANCIAL SUMMARY -->
 
     <div class="report-section">
@@ -2084,7 +1803,6 @@ footer{
       <h3>
         Financial Summary
       </h3>
-
 
       <div class="report-grid">
 
@@ -2100,7 +1818,6 @@ footer{
 
         </div>
 
-
         <div class="report-line">
 
           <span>
@@ -2112,7 +1829,6 @@ footer{
           </strong>
 
         </div>
-
 
         <div class="report-line">
 
@@ -2128,7 +1844,6 @@ footer{
 
       </div>
 
-
       <div class="report-total">
 
         <span>
@@ -2143,7 +1858,6 @@ footer{
 
     </div>
 
-
     <!-- COST BREAKDOWN -->
 
     <div class="report-section">
@@ -2151,7 +1865,6 @@ footer{
       <h3>
         Estimated Cost Breakdown
       </h3>
-
 
       <div class="report-grid">
 
@@ -2167,7 +1880,6 @@ footer{
 
         </div>
 
-
         <div class="report-line">
 
           <span>
@@ -2179,7 +1891,6 @@ footer{
           </strong>
 
         </div>
-
 
         <div class="report-line">
 
@@ -2193,7 +1904,6 @@ footer{
 
         </div>
 
-
         <div class="report-line">
 
           <span>
@@ -2205,7 +1915,6 @@ footer{
           </strong>
 
         </div>
-
 
         <div class="report-line">
 
@@ -2223,15 +1932,13 @@ footer{
 
     </div>
 
-
-    <!-- PREPARATION -->
+    <!-- CHECKLIST -->
 
     <div class="report-section">
 
       <h3>
         Preparation Status
       </h3>
-
 
       <div class="report-grid">
 
@@ -2247,21 +1954,18 @@ footer{
 
         </div>
 
-
         <div class="report-line">
 
           <span>
             Transaction ID
           </span>
 
-          <strong id="rTransactionId">
-            —
+          <strong id="transactionId">
           </strong>
 
         </div>
 
       </div>
-
 
       <div class="report-warning">
 
@@ -2272,23 +1976,24 @@ footer{
         This is a preliminary planning estimate only.
         It is not a BIR assessment, official computation,
         legal opinion or substitute for professional advice.
-
         Actual taxes, fees, valuation bases, payment allocations
         and documentary requirements should be verified with
         the BIR, applicable LGU, Registry of Deeds and qualified
         professionals.
 
-        <div class="report-meta">
-          Geographic reference data provided through PSGC Cloud.
-          The service describes its dataset as community-provided
-          and recommends independent verification for critical
-          geographic information.
-        </div>
+      </div>
+
+      <div class="report-source">
+
+        Geographic reference data provided through PSGC Cloud.
+        PSGC Cloud describes its service as a structured Philippine
+        Standard Geographic Code reference API. Independently verify
+        critical geographic information before relying on it for
+        a legal, tax, banking or property transaction.
 
       </div>
 
     </div>
-
 
     <div
       class="button-row no-print"
@@ -2309,45 +2014,51 @@ footer{
 
 </main>
 
-
 <footer>
 
   <div>
     © 2026 Joshua Dela Cruz · PH Property Transaction Workspace
   </div>
 
-  <a
-    href="https://joshuadelacruz.solutions/"
-  >
+  <a href="https://joshuadelacruz.solutions/">
     ← Back to main portfolio
   </a>
 
 </footer>
 
+<div
+  id="toast"
+  class="toast"
+  role="status"
+  aria-live="polite"
+></div>
 
 <script>
+"use strict";
+
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
-   VERSION 4 — CORRECTED / PRODUCTION-READY FRONTEND
+   VERSION 4.1
+   =========================================================
+
+   IMPORTANT PSGC FIX
+
+   PSGC Cloud documented endpoints:
+
+   v2:
+   https://psgc.cloud/api/v2/provinces
+   https://psgc.cloud/api/v2/provinces/{code}/cities-municipalities
+   https://psgc.cloud/api/v2/cities-municipalities/{code}/barangays
+
+   This version uses v2 consistently.
    ========================================================= */
 
+const PSGC_BASE = "https://psgc.cloud/api/v2";
 
-/* =========================================================
-   CONFIGURATION
-   ========================================================= */
+const STORAGE_KEY = "ph-property-workspace-v4";
+const THEME_KEY = "ph-property-theme";
 
-const PSGC_BASE =
-  "https://psgc.cloud/api/v1";
-
-const STORAGE_KEY =
-  "ph-property-workspace-v4";
-
-const THEME_KEY =
-  "ph-property-theme";
-
-const DEFAULT_COMMISSION_RATE =
-  2;
-
+const $ = id => document.getElementById(id);
 
 /* =========================================================
    STATE
@@ -2355,23 +2066,23 @@ const DEFAULT_COMMISSION_RATE =
 
 const state = {
 
-  costs: {
-    cgt: 0,
-    dst: 0,
-    transfer: 0,
-    registration: 0,
-    commission: 0
+  costs:{
+    cgt:0,
+    dst:0,
+    transfer:0,
+    registration:0,
+    commission:0
   },
 
-  allocation: {
-    cgt: "Seller",
-    dst: "Buyer",
-    transfer: "Buyer",
-    registration: "Buyer",
-    commission: "Seller"
+  allocation:{
+    cgt:"Seller",
+    dst:"Buyer",
+    transfer:"Buyer",
+    registration:"Buyer",
+    commission:"Seller"
   },
 
-  checklist: [
+  checklist:[
     "Certified True Copy of Title",
     "Current Tax Declaration",
     "Valid IDs and TIN details",
@@ -2382,420 +2093,250 @@ const state = {
     "Registry of Deeds requirements reviewed"
   ],
 
-  checklistChecked: [],
+  checklistState:[],
 
-  transactionId: "",
+  transactionId:"",
 
-  initialized: false
+  location:{
+    provinces:[],
+    cities:[],
+    barangays:[]
+  }
+
 };
 
-
 /* =========================================================
-   ELEMENT HELPERS
+   ELEMENTS
    ========================================================= */
 
-const $ = id =>
-  document.getElementById(id);
-
-
-const provinceSelect =
-  $("province");
-
-const citySelect =
-  $("cityMunicipality");
-
-const barangaySelect =
-  $("barangay");
-
-const zipInput =
-  $("zipCode");
-
-const locationStatus =
-  $("locationStatus");
-
-const autosaveStatus =
-  $("autosaveStatus");
-
+const provinceSelect = $("province");
+const citySelect = $("cityMunicipality");
+const barangaySelect = $("barangay");
+const zipInput = $("zipCode");
+const locationStatus = $("locationStatus");
 
 /* =========================================================
-   NUMBER / CURRENCY HELPERS
+   TOAST
    ========================================================= */
 
-function safeNumber(value){
+let toastTimer = null;
 
-  const number =
-    Number.parseFloat(value);
+function showToast(message){
 
-  if(!Number.isFinite(number)){
-    return 0;
-  }
+  const toast = $("toast");
 
-  return Math.max(0,number);
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  },3000);
+
 }
 
-
-function numberValue(id){
-
-  const element =
-    $(id);
-
-  if(!element){
-    return 0;
-  }
-
-  return safeNumber(
-    element.value
-  );
-}
-
+/* =========================================================
+   FORMATTING
+   ========================================================= */
 
 function peso(value){
 
-  const number =
-    safeNumber(value);
+  const number = Number(value) || 0;
 
-  return number.toLocaleString(
-    "en-PH",
-    {
-      style:"currency",
-      currency:"PHP",
-      minimumFractionDigits:0,
-      maximumFractionDigits:0
-    }
-  );
+  return number.toLocaleString("en-PH",{
+    style:"currency",
+    currency:"PHP",
+    minimumFractionDigits:0,
+    maximumFractionDigits:0
+  });
+
 }
 
+function numberValue(id){
 
-function pesoDecimal(value){
+  const value = parseFloat($(id).value);
 
-  const number =
-    safeNumber(value);
+  return Number.isFinite(value) && value >= 0
+    ? value
+    : 0;
 
-  return number.toLocaleString(
-    "en-PH",
-    {
-      style:"currency",
-      currency:"PHP",
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    }
-  );
 }
-
-
-/* =========================================================
-   SELECT HELPERS
-   ========================================================= */
 
 function selectedText(select){
 
-  if(
-    !select ||
-    !select.value
-  ){
+  if(!select || !select.value){
     return "—";
   }
 
   const option =
-    select.options[
-      select.selectedIndex
-    ];
+    select.options[select.selectedIndex];
 
   return option
     ? option.textContent
     : "—";
+
 }
 
+function setStatus(message,type=""){
 
-function setSelectValue(
-  select,
-  value
-){
-
-  if(
-    !select ||
-    !value
-  ){
-    return false;
-  }
-
-  const option =
-    [...select.options].find(
-      item =>
-        item.value === value
-    );
-
-  if(!option){
-    return false;
-  }
-
-  select.value =
-    value;
-
-  return true;
-}
-
-
-/* =========================================================
-   STATUS
-   ========================================================= */
-
-function setStatus(
-  message,
-  type = ""
-){
-
-  locationStatus.textContent =
-    message;
+  locationStatus.textContent = message;
 
   locationStatus.className =
     "location-status" +
-    (
-      type
-        ? " " + type
-        : ""
-    );
+    (type ? " " + type : "");
+
 }
-
-
-function setAutosaveStatus(
-  message,
-  type = ""
-){
-
-  autosaveStatus.textContent =
-    message;
-
-  autosaveStatus.className =
-    "autosave-status" +
-    (
-      type
-        ? " " + type
-        : ""
-    );
-}
-
 
 /* =========================================================
-   PSGC API
+   API HELPERS
    ========================================================= */
 
-async function fetchJSON(
-  url,
-  options = {}
-){
+async function fetchJSON(url){
 
-  const controller =
-    new AbortController();
+  const response = await fetch(url,{
+    method:"GET",
+    headers:{
+      "Accept":"application/json"
+    },
+    cache:"no-store"
+  });
 
-  const timeout =
-    setTimeout(
-      () => controller.abort(),
-      15000
+  if(!response.ok){
+
+    throw new Error(
+      "HTTP " + response.status +
+      " returned from " + url
     );
-
-  try{
-
-    const response =
-      await fetch(
-        url,
-        {
-          ...options,
-          headers:{
-            "Accept":
-              "application/json",
-            ...(options.headers || {})
-          },
-          signal:
-            controller.signal
-        }
-      );
-
-    if(!response.ok){
-
-      throw new Error(
-        "Location service returned HTTP " +
-        response.status
-      );
-    }
-
-    const data =
-      await response.json();
-
-    return normalizeCollection(
-      data
-    );
-
-  }catch(error){
-
-    if(
-      error.name ===
-      "AbortError"
-    ){
-
-      throw new Error(
-        "Location service request timed out."
-      );
-    }
-
-    throw error;
-
-  }finally{
-
-    clearTimeout(timeout);
 
   }
-}
 
+  const data = await response.json();
 
-function normalizeCollection(
-  data
-){
+  /*
+    PSGC v2 collection endpoints return arrays.
+
+    We also support common wrapped responses just in case
+    the API changes its response envelope.
+  */
 
   if(Array.isArray(data)){
     return data;
   }
 
-  if(
-    data &&
-    Array.isArray(data.data)
-  ){
+  if(Array.isArray(data.data)){
     return data.data;
   }
 
-  if(
-    data &&
-    Array.isArray(data.results)
-  ){
+  if(Array.isArray(data.results)){
     return data.results;
   }
 
-  if(
-    data &&
-    Array.isArray(data.items)
-  ){
-    return data.items;
-  }
-
-  if(
-    data &&
-    typeof data === "object" &&
-    data.code
-  ){
-    return [data];
-  }
-
   return [];
+
 }
 
-
 /* =========================================================
-   PSGC SELECT HELPERS
+   SELECT HELPERS
    ========================================================= */
 
 function resetSelect(
   select,
-  placeholder
+  placeholder,
+  disabled=true
 ){
 
-  if(!select){
-    return;
-  }
-
-  select.innerHTML =
-    "";
+  select.innerHTML = "";
 
   const option =
-    document.createElement(
-      "option"
-    );
+    document.createElement("option");
 
-  option.value =
-    "";
+  option.value = "";
+  option.textContent = placeholder;
 
-  option.textContent =
-    placeholder;
+  select.appendChild(option);
 
-  select.appendChild(
-    option
-  );
+  select.disabled = disabled;
 
-  select.disabled =
-    true;
 }
 
-
-function populateSelect(
+function populateLocationSelect(
   select,
   items,
-  placeholder
+  placeholder,
+  type=""
 ){
 
   resetSelect(
     select,
-    placeholder
+    placeholder,
+    items.length === 0
   );
-
-  const fragment =
-    document.createDocumentFragment();
 
   for(const item of items){
 
-    if(!item){
-      continue;
-    }
-
     const option =
-      document.createElement(
-        "option"
-      );
+      document.createElement("option");
 
     option.value =
-      String(
-        item.code ??
-        item.id ??
-        ""
-      );
+      item.code ||
+      item.id ||
+      item.name ||
+      "";
 
-    option.textContent =
-      String(
-        item.name ??
-        item.label ??
-        "Unnamed location"
-      );
+    let label =
+      item.name ||
+      "Unnamed location";
+
+    /*
+      Cities and municipalities from PSGC v2 expose type.
+    */
+
+    if(
+      type === "city-municipality" &&
+      item.type
+    ){
+
+      const normalizedType =
+        String(item.type)
+          .toLowerCase();
+
+      if(
+        normalizedType.includes("city")
+      ){
+
+        label += " (City)";
+
+      }else if(
+        normalizedType.includes("mun")
+      ){
+
+        label += " (Municipality)";
+
+      }
+
+    }
+
+    option.textContent = label;
 
     option.dataset.name =
-      String(
-        item.name ??
-        ""
-      );
+      item.name || "";
 
     option.dataset.zip =
-      String(
-        item.zip_code ??
-        item.zip ??
-        ""
-      );
+      item.zip_code ||
+      item.zip ||
+      "";
 
-    option.dataset.type =
-      String(
-        item.type ??
-        ""
-      );
+    select.appendChild(option);
 
-    fragment.appendChild(
-      option
-    );
   }
 
-  select.appendChild(
-    fragment
-  );
-
   select.disabled =
-    select.options.length <= 1;
-}
+    items.length === 0;
 
+}
 
 /* =========================================================
    LOAD PROVINCES
@@ -2805,21 +2346,23 @@ async function loadProvinces(){
 
   resetSelect(
     provinceSelect,
-    "Loading provinces..."
+    "Loading provinces...",
+    true
   );
 
   resetSelect(
     citySelect,
-    "Select province first"
+    "Select province first",
+    true
   );
 
   resetSelect(
     barangaySelect,
-    "Select city / municipality first"
+    "Select city / municipality first",
+    true
   );
 
-  zipInput.value =
-    "";
+  zipInput.value = "";
 
   setStatus(
     "Loading Philippine location data...",
@@ -2830,52 +2373,82 @@ async function loadProvinces(){
 
     const provinces =
       await fetchJSON(
-        PSGC_BASE +
-        "/provinces"
+        PSGC_BASE + "/provinces"
       );
 
     provinces.sort(
       (a,b) =>
-        String(a.name)
+        String(a.name || "")
           .localeCompare(
-            String(b.name)
+            String(b.name || "")
           )
     );
 
-    populateSelect(
+    state.location.provinces =
+      provinces;
+
+    populateLocationSelect(
       provinceSelect,
       provinces,
       "Select province"
     );
 
-    if(
-      provinces.length > 0
-    ){
-
-      setStatus(
-        "Philippine location data ready.",
-        "success"
-      );
-
-    }else{
+    if(!provinces.length){
 
       throw new Error(
-        "No provinces were returned."
+        "PSGC returned zero provinces."
       );
+
     }
 
-    return true;
+    setStatus(
+      "Philippine location data ready.",
+      "success"
+    );
+
+    /*
+      If a saved workspace exists, restore its province
+      after the API has loaded.
+    */
+
+    const saved =
+      getSavedWorkspace();
+
+    if(saved?.location?.provinceCode){
+
+      const exists =
+        provinces.some(
+          item =>
+            String(item.code) ===
+            String(saved.location.provinceCode)
+        );
+
+      if(exists){
+
+        provinceSelect.value =
+          saved.location.provinceCode;
+
+        await loadCities(
+          saved.location.provinceCode,
+          saved.location.cityCode,
+          saved.location.barangayCode
+        );
+
+      }
+
+    }
 
   }catch(error){
 
     console.error(
-      "Province loading error:",
+      "PSGC province loading failed:",
       error
     );
 
     resetSelect(
       provinceSelect,
-      "Unable to load provinces"
+      "Unable to load provinces",
+      true
     );
 
     setStatus(
@@ -2883,46 +2456,45 @@ async function loadProvinces(){
       "error"
     );
 
-    return false;
   }
-}
 
+}
 
 /* =========================================================
    LOAD CITIES / MUNICIPALITIES
    ========================================================= */
 
 async function loadCities(
-  provinceCode
+  provinceCode,
+  restoreCityCode=null,
+  restoreBarangayCode=null
 ){
 
   resetSelect(
     citySelect,
-    "Loading cities / municipalities..."
+    "Loading cities / municipalities...",
+    true
   );
 
   resetSelect(
     barangaySelect,
-    "Select city / municipality first"
+    "Select city / municipality first",
+    true
   );
 
-  zipInput.value =
-    "";
+  zipInput.value = "";
 
   if(!provinceCode){
 
     resetSelect(
       citySelect,
-      "Select province first"
+      "Select province first",
+      true
     );
 
-    return false;
-  }
+    return;
 
-  setStatus(
-    "Loading cities and municipalities...",
-    "loading"
-  );
+  }
 
   try{
 
@@ -2930,56 +2502,84 @@ async function loadCities(
       await fetchJSON(
         PSGC_BASE +
         "/provinces/" +
-        encodeURIComponent(
-          provinceCode
-        ) +
+        encodeURIComponent(provinceCode) +
         "/cities-municipalities"
       );
 
     cities.sort(
       (a,b) =>
-        String(a.name)
+        String(a.name || "")
           .localeCompare(
-            String(b.name)
+            String(b.name || "")
           )
     );
 
-    populateSelect(
+    state.location.cities =
+      cities;
+
+    populateLocationSelect(
       citySelect,
       cities,
-      "Select city / municipality"
+      "Select city / municipality",
+      "city-municipality"
     );
 
-    if(
-      cities.length > 0
-    ){
+    if(!cities.length){
 
       setStatus(
-        "Cities and municipalities loaded.",
-        "success"
+        "No cities or municipalities were returned for this province.",
+        "error"
       );
 
-      return true;
+      return;
 
     }
 
     setStatus(
-      "No cities or municipalities were returned for this province.",
-      "error"
+      "Select the city or municipality.",
+      "success"
     );
 
-    return false;
+    /*
+      Restore previously selected locality.
+    */
+
+    if(restoreCityCode){
+
+      const exists =
+        cities.some(
+          item =>
+            String(item.code) ===
+            String(restoreCityCode)
+        );
+
+      if(exists){
+
+        citySelect.value =
+          restoreCityCode;
+
+        await loadBarangays(
+          restoreCityCode,
+          restoreBarangayCode
+        );
+
+      }
+
+    }
+
+    updateReportLocation();
 
   }catch(error){
 
     console.error(
-      "City loading error:",
+      "PSGC city/municipality loading failed:",
       error
     );
 
     resetSelect(
       citySelect,
-      "Unable to load cities / municipalities"
+      "Unable to load cities / municipalities",
+      true
     );
 
     setStatus(
@@ -2987,41 +2587,38 @@ async function loadCities(
       "error"
     );
 
-    return false;
   }
-}
 
+}
 
 /* =========================================================
    LOAD BARANGAYS
    ========================================================= */
 
 async function loadBarangays(
-  cityCode
+  cityCode,
+  restoreBarangayCode=null
 ){
 
   resetSelect(
     barangaySelect,
-    "Loading barangays..."
+    "Loading barangays...",
+    true
   );
 
-  zipInput.value =
-    "";
+  zipInput.value = "";
 
   if(!cityCode){
 
     resetSelect(
       barangaySelect,
-      "Select city / municipality first"
+      "Select city / municipality first",
+      true
     );
 
-    return false;
-  }
+    return;
 
-  setStatus(
-    "Loading barangays...",
-    "loading"
-  );
+  }
 
   try{
 
@@ -3029,158 +2626,113 @@ async function loadBarangays(
       await fetchJSON(
         PSGC_BASE +
         "/cities-municipalities/" +
-        encodeURIComponent(
-          cityCode
-        ) +
+        encodeURIComponent(cityCode) +
         "/barangays"
       );
 
     barangays.sort(
       (a,b) =>
-        String(a.name)
+        String(a.name || "")
           .localeCompare(
-            String(b.name)
+            String(b.name || "")
           )
     );
 
-    populateSelect(
+    state.location.barangays =
+      barangays;
+
+    populateLocationSelect(
       barangaySelect,
       barangays,
       "Select barangay"
     );
 
-    await loadCityZip(
-      cityCode
-    );
+    /*
+      ZIP code belongs to the city / municipality
+      record in PSGC Cloud v2.
+    */
 
-    if(
-      barangays.length > 0
-    ){
+    const selectedCity =
+      citySelect.options[
+        citySelect.selectedIndex
+      ];
 
-      if(zipInput.value){
+    const cityZip =
+      selectedCity?.dataset.zip || "";
 
-        setStatus(
-          "Location loaded. ZIP Code automatically populated.",
-          "success"
+    zipInput.value =
+      cityZip;
+
+    if(restoreBarangayCode){
+
+      const exists =
+        barangays.some(
+          item =>
+            String(item.code) ===
+            String(restoreBarangayCode)
         );
 
-      }else{
+      if(exists){
 
-        setStatus(
-          "Location loaded. ZIP Code is not available in the reference data for this locality.",
-          "success"
-        );
+        barangaySelect.value =
+          restoreBarangayCode;
+
       }
 
-      return true;
     }
 
-    setStatus(
-      "No barangays were returned for this locality.",
-      "error"
-    );
+    if(cityZip){
 
-    return false;
+      setStatus(
+        "Location loaded. ZIP Code automatically populated.",
+        "success"
+      );
+
+    }else{
+
+      setStatus(
+        "Location loaded. ZIP Code is not available in the reference data for this locality.",
+        "success"
+      );
+
+    }
+
+    updateReportLocation();
 
   }catch(error){
 
     console.error(
-      "Barangay loading error:",
+      "PSGC barangay loading failed:",
       error
     );
 
     resetSelect(
       barangaySelect,
-      "Unable to load barangays"
+      "Unable to load barangays",
+      true
     );
 
+    /*
+      Even if barangays fail, still try to preserve
+      the city-level ZIP.
+    */
+
+    const selectedCity =
+      citySelect.options[
+        citySelect.selectedIndex
+      ];
+
+    zipInput.value =
+      selectedCity?.dataset.zip || "";
+
     setStatus(
-      "Unable to load barangays. Please try again.",
+      "City loaded, but barangay data could not be loaded. Please try again.",
       "error"
     );
 
-    return false;
   }
+
 }
-
-
-/* =========================================================
-   CITY ZIP
-   ========================================================= */
-
-async function loadCityZip(
-  cityCode
-){
-
-  if(!cityCode){
-
-    zipInput.value =
-      "";
-
-    return;
-  }
-
-  const selectedCity =
-    citySelect.options[
-      citySelect.selectedIndex
-    ];
-
-  const existingZip =
-    selectedCity?.dataset.zip ||
-    "";
-
-  if(existingZip){
-
-    zipInput.value =
-      existingZip;
-
-    return;
-  }
-
-  /*
-    The v1 city/municipality collection
-    includes zip_code when available.
-
-    If the nested response didn't include it,
-    perform a direct locality lookup.
-  */
-
-  try{
-
-    const locality =
-      await fetchJSON(
-        PSGC_BASE +
-        "/cities-municipalities/" +
-        encodeURIComponent(
-          cityCode
-        )
-      );
-
-    const item =
-      Array.isArray(locality)
-        ? locality[0]
-        : locality;
-
-    const zip =
-      item?.zip_code ||
-      item?.zip ||
-      "";
-
-    zipInput.value =
-      String(zip || "");
-
-  }catch(error){
-
-    console.warn(
-      "ZIP lookup unavailable:",
-      error
-    );
-
-    zipInput.value =
-      "";
-  }
-}
-
 
 /* =========================================================
    LOCATION EVENTS
@@ -3189,9 +2741,6 @@ async function loadCityZip(
 provinceSelect.addEventListener(
   "change",
   async () => {
-
-    zipInput.value =
-      "";
 
     const provinceCode =
       provinceSelect.value;
@@ -3203,16 +2752,13 @@ provinceSelect.addEventListener(
     updateReportLocation();
 
     saveWorkspace();
+
   }
 );
-
 
 citySelect.addEventListener(
   "change",
   async () => {
-
-    zipInput.value =
-      "";
 
     const cityCode =
       citySelect.value;
@@ -3224,9 +2770,9 @@ citySelect.addEventListener(
     updateReportLocation();
 
     saveWorkspace();
+
   }
 );
-
 
 barangaySelect.addEventListener(
   "change",
@@ -3234,23 +2780,10 @@ barangaySelect.addEventListener(
 
     updateReportLocation();
 
-    const selectedCity =
-      citySelect.options[
-        citySelect.selectedIndex
-      ];
-
-    if(
-      selectedCity?.dataset.zip
-    ){
-
-      zipInput.value =
-        selectedCity.dataset.zip;
-    }
-
     saveWorkspace();
+
   }
 );
-
 
 /* =========================================================
    LOCATION REPORT
@@ -3259,25 +2792,18 @@ barangaySelect.addEventListener(
 function updateReportLocation(){
 
   $("rProvince").textContent =
-    selectedText(
-      provinceSelect
-    );
+    selectedText(provinceSelect);
 
   $("rCity").textContent =
-    selectedText(
-      citySelect
-    );
+    selectedText(citySelect);
 
   $("rBarangay").textContent =
-    selectedText(
-      barangaySelect
-    );
+    selectedText(barangaySelect);
 
   $("rZip").textContent =
-    zipInput.value ||
-    "—";
-}
+    zipInput.value || "—";
 
+}
 
 /* =========================================================
    CALCULATION
@@ -3286,44 +2812,23 @@ function updateReportLocation(){
 function calculate(){
 
   const selling =
-    numberValue(
-      "sellingPrice"
-    );
+    numberValue("sellingPrice");
 
   const fair =
-    numberValue(
-      "fairMarketValue"
-    );
+    numberValue("fairMarketValue");
 
   const zonal =
-    numberValue(
-      "zonalValue"
-    );
-
-  const acquisition =
-    numberValue(
-      "acquisitionPrice"
-    );
+    numberValue("zonalValue");
 
   const commissionRate =
-    Math.min(
-      100,
-      numberValue(
-        "commissionRate"
-      )
-    );
+    numberValue("commissionRate");
 
   /*
-    Preliminary planning base.
+    Illustrative tax base.
 
-    For this workspace, the illustrative base is the
-    highest supplied value among:
-      - Gross selling price
-      - Fair market value
-      - BIR zonal value
+    For this planning tool we use the highest supplied value.
 
-    This is intentionally labeled illustrative and
-    should not be represented as an official BIR assessment.
+    This is NOT an official BIR computation.
   */
 
   const taxBase =
@@ -3332,7 +2837,6 @@ function calculate(){
       fair,
       zonal
     );
-
 
   /*
     Illustrative planning rates.
@@ -3352,10 +2856,7 @@ function calculate(){
 
   const commission =
     selling *
-    (
-      commissionRate / 100
-    );
-
+    (commissionRate / 100);
 
   state.costs = {
     cgt,
@@ -3365,46 +2866,24 @@ function calculate(){
     commission
   };
 
-
-  const total =
-    cgt +
-    dst +
-    transfer +
-    registration +
-    commission;
-
-
-  let sellerExpenses =
-    0;
-
-  let buyerExpenses =
-    0;
-
+  let sellerExpenses = 0;
+  let buyerExpenses = 0;
 
   for(
     const [key,value]
-    of Object.entries(
-      state.costs
-    )
+    of Object.entries(state.costs)
   ){
 
     const payer =
       state.allocation[key];
 
+    if(payer === "Seller"){
 
-    if(
-      payer === "Seller"
-    ){
+      sellerExpenses += value;
 
-      sellerExpenses +=
-        value;
+    }else if(payer === "Buyer"){
 
-    }else if(
-      payer === "Buyer"
-    ){
-
-      buyerExpenses +=
-        value;
+      buyerExpenses += value;
 
     }else{
 
@@ -3413,94 +2892,77 @@ function calculate(){
 
       buyerExpenses +=
         value / 2;
+
     }
+
   }
 
+  const totalCosts =
+    sellerExpenses +
+    buyerExpenses;
 
   const sellerNet =
     selling -
     sellerExpenses;
 
+  /*
+    Summary.
+  */
 
   $("metricProperty").textContent =
-    peso(
-      selling
-    );
+    peso(selling);
 
   $("metricTax").textContent =
-    peso(
-      taxBase
-    );
+    peso(taxBase);
 
   $("metricSeller").textContent =
-    peso(
-      sellerExpenses
-    );
+    peso(sellerExpenses);
 
   $("metricBuyer").textContent =
-    peso(
-      buyerExpenses
-    );
+    peso(buyerExpenses);
 
   $("metricNet").textContent =
-    peso(
-      sellerNet
-    );
+    peso(sellerNet);
 
+  /*
+    Cost cards.
+  */
 
   $("cgtAmount").textContent =
-    peso(
-      cgt
-    );
+    peso(cgt);
 
   $("dstAmount").textContent =
-    peso(
-      dst
-    );
+    peso(dst);
 
   $("transferAmount").textContent =
-    peso(
-      transfer
-    );
+    peso(transfer);
 
   $("registrationAmount").textContent =
-    peso(
-      registration
-    );
+    peso(registration);
 
   $("commissionAmount").textContent =
-    peso(
-      commission
-    );
+    peso(commission);
 
   $("totalCosts").textContent =
-    peso(
-      total
-    );
-
+    peso(totalCosts);
 
   updateAllocationTable();
 
   updateChart();
 
-
   updateReport({
     selling,
     fair,
     zonal,
-    acquisition,
     taxBase,
     sellerExpenses,
     buyerExpenses,
     sellerNet
   });
 
+  saveWorkspace();
 
-  saveWorkspace(
-    false
-  );
 }
-
 
 /* =========================================================
    ALLOCATION TABLE
@@ -3511,9 +2973,7 @@ function updateAllocationTable(){
   const body =
     $("allocationBody");
 
-  body.innerHTML =
-    "";
-
+  body.innerHTML = "";
 
   const labels = {
 
@@ -3531,84 +2991,60 @@ function updateAllocationTable(){
 
     commission:
       "Broker Commission"
+
   };
 
-
   for(
-    const key of Object.keys(
-      state.costs
-    )
+    const key
+    of Object.keys(state.costs)
   ){
 
     const row =
-      document.createElement(
-        "tr"
-      );
-
+      document.createElement("tr");
 
     const name =
-      document.createElement(
-        "td"
-      );
+      document.createElement("td");
 
     name.textContent =
       labels[key];
 
-
     const amount =
-      document.createElement(
-        "td"
-      );
+      document.createElement("td");
 
     amount.textContent =
-      peso(
-        state.costs[key]
-      );
-
+      peso(state.costs[key]);
 
     const payerCell =
-      document.createElement(
-        "td"
-      );
-
+      document.createElement("td");
 
     const select =
-      document.createElement(
-        "select"
-      );
+      document.createElement("select");
 
     select.className =
       "payer-select";
-
 
     [
       "Seller",
       "Buyer",
       "Split 50/50"
-    ].forEach(
-      optionValue => {
+    ].forEach(optionValue => {
 
-        const option =
-          document.createElement(
-            "option"
-          );
+      const option =
+        document.createElement("option");
 
-        option.value =
-          optionValue;
+      option.value =
+        optionValue;
 
-        option.textContent =
-          optionValue;
+      option.textContent =
+        optionValue;
 
-        option.selected =
-          state.allocation[key] ===
-          optionValue;
+      option.selected =
+        state.allocation[key] ===
+        optionValue;
 
-        select.appendChild(
-          option
-        );
-      }
-    );
+      select.appendChild(option);
 
+    });
 
     select.addEventListener(
       "change",
@@ -3618,32 +3054,21 @@ function updateAllocationTable(){
           select.value;
 
         calculate();
+
       }
     );
 
+    payerCell.appendChild(select);
 
-    payerCell.appendChild(
-      select
-    );
+    row.appendChild(name);
+    row.appendChild(amount);
+    row.appendChild(payerCell);
 
-    row.appendChild(
-      name
-    );
+    body.appendChild(row);
 
-    row.appendChild(
-      amount
-    );
-
-    row.appendChild(
-      payerCell
-    );
-
-    body.appendChild(
-      row
-    );
   }
-}
 
+}
 
 /* =========================================================
    CHART
@@ -3654,9 +3079,7 @@ function updateChart(){
   const chart =
     $("chart");
 
-  chart.innerHTML =
-    "";
-
+  chart.innerHTML = "";
 
   const items = [
 
@@ -3687,15 +3110,11 @@ function updateChart(){
 
   ];
 
-
   const max =
     Math.max(
-      ...items.map(
-        item => item[1]
-      ),
+      ...items.map(item => item[1]),
       1
     );
-
 
   for(
     const [label,value]
@@ -3703,18 +3122,13 @@ function updateChart(){
   ){
 
     const wrap =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     wrap.className =
       "bar-wrap";
 
-
     const amount =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     amount.className =
       "bar-value";
@@ -3722,15 +3136,11 @@ function updateChart(){
     amount.textContent =
       peso(value);
 
-
     const bar =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     bar.className =
       "bar";
-
 
     const height =
       value === 0
@@ -3740,15 +3150,11 @@ function updateChart(){
             (value / max) * 190
           );
 
-
     bar.style.height =
       height + "px";
 
-
     const labelElement =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     labelElement.className =
       "bar-label";
@@ -3756,160 +3162,88 @@ function updateChart(){
     labelElement.textContent =
       label;
 
+    wrap.appendChild(amount);
+    wrap.appendChild(bar);
+    wrap.appendChild(labelElement);
 
-    wrap.appendChild(
-      amount
-    );
+    chart.appendChild(wrap);
 
-    wrap.appendChild(
-      bar
-    );
-
-    wrap.appendChild(
-      labelElement
-    );
-
-    chart.appendChild(
-      wrap
-    );
   }
-}
 
+}
 
 /* =========================================================
    REPORT
    ========================================================= */
 
-function updateReport(
-  data
-){
+function updateReport(data){
 
   $("rTransaction").textContent =
-    $("transactionType").value ||
-    "—";
-
+    $("transactionType").value;
 
   $("rPropertyType").textContent =
-    $("propertyType").value ||
-    "—";
-
+    $("propertyType").value;
 
   $("rSelling").textContent =
-    peso(
-      data.selling
-    );
-
+    peso(data.selling);
 
   $("rFair").textContent =
-    peso(
-      data.fair
-    );
-
+    peso(data.fair);
 
   $("rZonal").textContent =
-    peso(
-      data.zonal
-    );
-
+    peso(data.zonal);
 
   $("rAcquisition").textContent =
     peso(
-      data.acquisition
+      numberValue("acquisitionPrice")
     );
-
 
   $("rTaxBase").textContent =
-    peso(
-      data.taxBase
-    );
-
+    peso(data.taxBase);
 
   $("rSellerExpenses").textContent =
-    peso(
-      data.sellerExpenses
-    );
-
+    peso(data.sellerExpenses);
 
   $("rBuyerExpenses").textContent =
-    peso(
-      data.buyerExpenses
-    );
-
+    peso(data.buyerExpenses);
 
   $("rCommission").textContent =
-    peso(
-      state.costs.commission
-    );
-
+    peso(state.costs.commission);
 
   $("rSellerNet").textContent =
-    peso(
-      data.sellerNet
-    );
-
+    peso(data.sellerNet);
 
   $("rCGT").textContent =
-    peso(
-      state.costs.cgt
-    );
-
+    peso(state.costs.cgt);
 
   $("rDST").textContent =
-    peso(
-      state.costs.dst
-    );
-
+    peso(state.costs.dst);
 
   $("rTransfer").textContent =
-    peso(
-      state.costs.transfer
-    );
-
+    peso(state.costs.transfer);
 
   $("rRegistration").textContent =
-    peso(
-      state.costs.registration
-    );
-
+    peso(state.costs.registration);
 
   $("rCommission2").textContent =
-    peso(
-      state.costs.commission
-    );
-
+    peso(state.costs.commission);
 
   const lotArea =
-    numberValue(
-      "lotArea"
-    );
-
+    numberValue("lotArea");
 
   $("rLotArea").textContent =
     lotArea.toLocaleString(
       "en-PH",
       {
-        minimumFractionDigits:0,
         maximumFractionDigits:2
       }
-    ) +
-    " sqm";
-
-
-  $("transactionId").textContent =
-    state.transactionId ||
-    "—";
-
-
-  $("rTransactionId").textContent =
-    state.transactionId ||
-    "—";
-
+    ) + " sqm";
 
   updateReportLocation();
 
   updateChecklist();
-}
 
+}
 
 /* =========================================================
    CHECKLIST
@@ -3920,26 +3254,19 @@ function renderChecklist(){
   const container =
     $("checklistContainer");
 
-  container.innerHTML =
-    "";
-
+  container.innerHTML = "";
 
   state.checklist.forEach(
     (item,index) => {
 
       const wrapper =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
       wrapper.className =
         "check-item";
 
-
       const checkbox =
-        document.createElement(
-          "input"
-        );
+        document.createElement("input");
 
       checkbox.type =
         "checkbox";
@@ -3947,17 +3274,13 @@ function renderChecklist(){
       checkbox.id =
         "check-" + index;
 
-
       checkbox.checked =
         Boolean(
-          state.checklistChecked[index]
+          state.checklistState[index]
         );
-
 
       const label =
-        document.createElement(
-          "label"
-        );
+        document.createElement("label");
 
       label.htmlFor =
         checkbox.id;
@@ -3965,16 +3288,10 @@ function renderChecklist(){
       label.textContent =
         item;
 
-
-      if(
+      wrapper.classList.toggle(
+        "done",
         checkbox.checked
-      ){
-
-        wrapper.classList.add(
-          "done"
-        );
-      }
-
+      );
 
       checkbox.addEventListener(
         "change",
@@ -3985,15 +3302,15 @@ function renderChecklist(){
             checkbox.checked
           );
 
-          state.checklistChecked[index] =
+          state.checklistState[index] =
             checkbox.checked;
 
           updateChecklist();
 
           saveWorkspace();
+
         }
       );
-
 
       wrapper.appendChild(
         checkbox
@@ -4006,16 +3323,16 @@ function renderChecklist(){
       container.appendChild(
         wrapper
       );
+
     }
   );
 
-
   updateChecklist();
+
 }
 
-
 /* =========================================================
-   UPDATE CHECKLIST
+   CHECKLIST UPDATE
    ========================================================= */
 
 function updateChecklist(){
@@ -4025,41 +3342,34 @@ function updateChecklist(){
       "#checklistContainer input[type=checkbox]"
     );
 
-
   const completed =
-    [...checkboxes].filter(
+    [
+      ...checkboxes
+    ].filter(
       checkbox =>
         checkbox.checked
     ).length;
 
-
   const total =
     checkboxes.length;
-
 
   const percent =
     total
       ? Math.round(
-          (
-            completed /
-            total
-          ) * 100
+          (completed / total) * 100
         )
       : 0;
-
 
   $("checkPercent").textContent =
     percent + "%";
 
-
   $("checkProgress").style.width =
     percent + "%";
 
-
   $("rChecklist").textContent =
     percent + "%";
-}
 
+}
 
 /* =========================================================
    TRANSACTION ID
@@ -4067,40 +3377,109 @@ function updateChecklist(){
 
 function createTransactionId(){
 
-  const randomPart =
+  const date =
+    new Date();
+
+  const y =
+    date.getFullYear();
+
+  const m =
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0");
+
+  const d =
+    String(
+      date.getDate()
+    ).padStart(2,"0");
+
+  const random =
     Math.floor(
       10000000 +
-      Math.random() *
-      90000000
+      Math.random() * 90000000
     );
-
-
-  const datePart =
-    new Date()
-      .toISOString()
-      .slice(0,10)
-      .replaceAll(
-        "-",
-        ""
-      );
-
 
   return (
     "PTW-" +
-    datePart +
+    y +
+    m +
+    d +
     "-" +
-    randomPart
+    random
   );
+
 }
 
+function generateTransactionId(){
+
+  if(!state.transactionId){
+
+    state.transactionId =
+      createTransactionId();
+
+  }
+
+  $("transactionId").textContent =
+    state.transactionId;
+
+}
+
+/* =========================================================
+   REPORT DATE
+   ========================================================= */
+
+function updateReportDate(){
+
+  const now =
+    new Date();
+
+  $("reportDate").textContent =
+    now.toLocaleDateString(
+      "en-PH",
+      {
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+      }
+    );
+
+}
 
 /* =========================================================
    LOCAL STORAGE
    ========================================================= */
 
+function getSavedWorkspace(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
+    if(!raw){
+      return null;
+    }
+
+    return JSON.parse(raw);
+
+  }catch(error){
+
+    console.warn(
+      "Unable to read saved workspace:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
 function collectWorkspace(){
 
-  const values = {
+  return {
 
     transactionType:
       $("transactionType").value,
@@ -4126,46 +3505,40 @@ function collectWorkspace(){
     commissionRate:
       $("commissionRate").value,
 
-    province:
-      provinceSelect.value,
+    location:{
 
-    city:
-      citySelect.value,
+      provinceCode:
+        provinceSelect.value,
 
-    barangay:
-      barangaySelect.value,
+      cityCode:
+        citySelect.value,
 
-    zip:
-      zipInput.value,
+      barangayCode:
+        barangaySelect.value,
+
+      zip:
+        zipInput.value
+
+    },
 
     allocation:
       {
         ...state.allocation
       },
 
-    checklistChecked:
+    checklistState:
       [
-        ...state.checklistChecked
+        ...state.checklistState
       ],
 
     transactionId:
-      state.transactionId,
+      state.transactionId
 
-    theme:
-      document.documentElement
-        .dataset
-        .theme ||
-      "light"
   };
 
-
-  return values;
 }
 
-
-function saveWorkspace(
-  showStatus = true
-){
+function saveWorkspace(){
 
   try{
 
@@ -4176,15 +3549,6 @@ function saveWorkspace(
       )
     );
 
-
-    if(showStatus){
-
-      setAutosaveStatus(
-        "Workspace saved locally.",
-        "saved"
-      );
-    }
-
   }catch(error){
 
     console.warn(
@@ -4192,373 +3556,174 @@ function saveWorkspace(
       error
     );
 
-    if(showStatus){
-
-      setAutosaveStatus(
-        "Local save unavailable.",
-        "error"
-      );
-    }
   }
+
 }
 
+function restoreBasicWorkspace(){
 
-/* =========================================================
-   RESTORE WORKSPACE
-   ========================================================= */
-
-function getSavedWorkspace(){
-
-  try{
-
-    const raw =
-      localStorage.getItem(
-        STORAGE_KEY
-      );
-
-    if(!raw){
-      return null;
-    }
-
-    const parsed =
-      JSON.parse(
-        raw
-      );
-
-    if(
-      !parsed ||
-      typeof parsed !==
-      "object"
-    ){
-
-      return null;
-    }
-
-    return parsed;
-
-  }catch(error){
-
-    console.warn(
-      "Saved workspace could not be read:",
-      error
-    );
-
-    return null;
-  }
-}
-
-
-/* =========================================================
-   RESTORE INPUTS
-   ========================================================= */
-
-function restoreBasicInputs(
-  saved
-){
+  const saved =
+    getSavedWorkspace();
 
   if(!saved){
-    return;
+    return false;
   }
 
+  if(saved.transactionType){
 
-  const simpleFields = {
+    $("transactionType").value =
+      saved.transactionType;
 
-    transactionType:
-      "transactionType",
-
-    propertyType:
-      "propertyType",
-
-    sellingPrice:
-      "sellingPrice",
-
-    fairMarketValue:
-      "fairMarketValue",
-
-    zonalValue:
-      "zonalValue",
-
-    acquisitionPrice:
-      "acquisitionPrice",
-
-    lotArea:
-      "lotArea",
-
-    commissionRate:
-      "commissionRate"
-  };
-
-
-  for(
-    const [
-      key,id
-    ]
-    of Object.entries(
-      simpleFields
-    )
-  ){
-
-    if(
-      saved[key] !==
-      undefined &&
-      $(id)
-    ){
-
-      $(id).value =
-        saved[key];
-    }
   }
 
+  if(saved.propertyType){
 
-  if(
-    !saved.commissionRate
-  ){
+    $("propertyType").value =
+      saved.propertyType;
 
-    $("commissionRate").value =
-      DEFAULT_COMMISSION_RATE;
   }
-
-
-  if(
-    saved.allocation &&
-    typeof saved.allocation ===
-      "object"
-  ){
-
-    state.allocation = {
-      ...state.allocation,
-      ...saved.allocation
-    };
-  }
-
-
-  if(
-    Array.isArray(
-      saved.checklistChecked
-    )
-  ){
-
-    state.checklistChecked =
-      saved.checklistChecked;
-  }
-
-
-  if(
-    saved.transactionId
-  ){
-
-    state.transactionId =
-      String(
-        saved.transactionId
-      );
-
-  }else{
-
-    state.transactionId =
-      createTransactionId();
-  }
-
-
-  if(
-    saved.theme ===
-    "dark" ||
-    saved.theme ===
-    "light"
-  ){
-
-    document.documentElement
-      .dataset
-      .theme =
-      saved.theme;
-  }
-}
-
-
-/* =========================================================
-   RESTORE LOCATION
-   ========================================================= */
-
-async function restoreLocation(
-  saved
-){
-
-  if(!saved){
-    return;
-  }
-
-
-  if(!saved.province){
-    return;
-  }
-
-
-  const provinceLoaded =
-    await loadProvinces();
-
-
-  if(!provinceLoaded){
-    return;
-  }
-
-
-  const provinceSelected =
-    setSelectValue(
-      provinceSelect,
-      saved.province
-    );
-
-
-  if(!provinceSelected){
-    return;
-  }
-
-
-  const citiesLoaded =
-    await loadCities(
-      saved.province
-    );
-
-
-  if(
-    !citiesLoaded ||
-    !saved.city
-  ){
-
-    return;
-  }
-
-
-  const citySelected =
-    setSelectValue(
-      citySelect,
-      saved.city
-    );
-
-
-  if(!citySelected){
-    return;
-  }
-
-
-  await loadBarangays(
-    saved.city
-  );
-
-
-  if(saved.barangay){
-
-    setSelectValue(
-      barangaySelect,
-      saved.barangay
-    );
-  }
-
-
-  /*
-    Preserve saved ZIP if the API does not
-    provide one.
-  */
-
-  if(
-    !zipInput.value &&
-    saved.zip
-  ){
-
-    zipInput.value =
-      saved.zip;
-  }
-
-
-  updateReportLocation();
-}
-
-
-/* =========================================================
-   RESET WORKSPACE
-   ========================================================= */
-
-async function resetWorkspace(){
-
-  const confirmed =
-    window.confirm(
-      "Reset the entire property transaction workspace?\n\n" +
-      "This will clear the transaction values, location, " +
-      "payer allocation, checklist and locally saved workspace."
-    );
-
-
-  if(!confirmed){
-    return;
-  }
-
 
   [
     "sellingPrice",
     "fairMarketValue",
     "zonalValue",
     "acquisitionPrice",
-    "lotArea"
-  ].forEach(
-    id => {
+    "lotArea",
+    "commissionRate"
+  ].forEach(id => {
+
+    if(
+      Object.prototype.hasOwnProperty.call(
+        saved,
+        id
+      )
+    ){
 
       $(id).value =
-        "";
+        saved[id] ?? "";
+
     }
-  );
 
+  });
 
-  $("commissionRate").value =
-    DEFAULT_COMMISSION_RATE;
+  if(saved.allocation){
 
+    state.allocation = {
+
+      cgt:
+        saved.allocation.cgt ||
+        "Seller",
+
+      dst:
+        saved.allocation.dst ||
+        "Buyer",
+
+      transfer:
+        saved.allocation.transfer ||
+        "Buyer",
+
+      registration:
+        saved.allocation.registration ||
+        "Buyer",
+
+      commission:
+        saved.allocation.commission ||
+        "Seller"
+
+    };
+
+  }
+
+  if(
+    Array.isArray(
+      saved.checklistState
+    )
+  ){
+
+    state.checklistState =
+      saved.checklistState;
+
+  }
+
+  if(saved.transactionId){
+
+    state.transactionId =
+      saved.transactionId;
+
+  }
+
+  if(saved.location?.zip){
+
+    zipInput.value =
+      saved.location.zip;
+
+  }
+
+  return true;
+
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+async function resetWorkspace(){
+
+  const confirmed =
+    window.confirm(
+      "Reset the entire property transaction workspace?"
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  [
+    "sellingPrice",
+    "fairMarketValue",
+    "zonalValue",
+    "acquisitionPrice",
+    "lotArea",
+    "commissionRate"
+  ].forEach(id => {
+
+    $(id).value = "";
+
+  });
 
   $("transactionType").value =
     "Sale of property";
 
-
   $("propertyType").value =
     "House & Lot";
 
-
-  resetSelect(
-    provinceSelect,
-    "Loading provinces..."
-  );
-
+  provinceSelect.value =
+    "";
 
   resetSelect(
     citySelect,
-    "Select province first"
+    "Select province first",
+    true
   );
-
 
   resetSelect(
     barangaySelect,
-    "Select city / municipality first"
+    "Select city / municipality first",
+    true
   );
-
 
   zipInput.value =
     "";
 
-
   state.allocation = {
 
-    cgt:
-      "Seller",
+    cgt:"Seller",
+    dst:"Buyer",
+    transfer:"Buyer",
+    registration:"Buyer",
+    commission:"Seller"
 
-    dst:
-      "Buyer",
-
-    transfer:
-      "Buyer",
-
-    registration:
-      "Buyer",
-
-    commission:
-      "Seller"
   };
-
 
   state.costs = {
 
@@ -4567,16 +3732,16 @@ async function resetWorkspace(){
     transfer:0,
     registration:0,
     commission:0
+
   };
 
-
-  state.checklistChecked =
-    [];
-
+  state.checklistState =
+    state.checklist.map(
+      () => false
+    );
 
   state.transactionId =
     createTransactionId();
-
 
   try{
 
@@ -4586,223 +3751,78 @@ async function resetWorkspace(){
 
   }catch(error){
 
-    console.warn(
-      "Unable to clear local storage:",
-      error
-    );
+    console.warn(error);
+
   }
 
-
   renderChecklist();
+
+  generateTransactionId();
 
   calculate();
 
   updateReportLocation();
 
-
   setStatus(
-    "Workspace reset.",
+    "Workspace reset. All transaction values are ₱0.",
     "success"
   );
 
-
-  setAutosaveStatus(
-    "Workspace reset. No previous transaction data is saved.",
-    "saved"
+  showToast(
+    "Workspace reset successfully."
   );
 
+  /*
+    Restore the province list after reset,
+    but do not restore a saved location.
+  */
 
-  await loadProvinces();
+  if(
+    state.location.provinces.length
+  ){
+
+    populateLocationSelect(
+      provinceSelect,
+      state.location.provinces,
+      "Select province"
+    );
+
+  }else{
+
+    await loadProvinces();
+
+  }
+
 }
 
-
 /* =========================================================
-   VALIDATION
-   ========================================================= */
-
-function validateInputs(){
-
-  const numericFields = [
-
-    "sellingPrice",
-    "fairMarketValue",
-    "zonalValue",
-    "acquisitionPrice",
-    "lotArea",
-    "commissionRate"
-
-  ];
-
-
-  let valid =
-    true;
-
-
-  numericFields.forEach(
-    id => {
-
-      const element =
-        $(id);
-
-      if(!element){
-        return;
-      }
-
-
-      const value =
-        safeNumber(
-          element.value
-        );
-
-
-      const raw =
-        element.value.trim();
-
-
-      element.classList.remove(
-        "input-error"
-      );
-
-
-      if(
-        raw !== "" &&
-        value < 0
-      ){
-
-        element.classList.add(
-          "input-error"
-        );
-
-        valid =
-          false;
-      }
-
-
-      if(
-        id ===
-          "commissionRate" &&
-        value > 100
-      ){
-
-        element.classList.add(
-          "input-error"
-        );
-
-        valid =
-          false;
-      }
-    }
-  );
-
-
-  if(!valid){
-
-    setAutosaveStatus(
-      "Please correct the highlighted values.",
-      "error"
-    );
-
-    return false;
-  }
-
-
-  return true;
-}
-
-
-/* =========================================================
-   INPUT EVENTS
-   ========================================================= */
-
-const numericInputIds = [
-
-  "sellingPrice",
-  "fairMarketValue",
-  "zonalValue",
-  "acquisitionPrice",
-  "lotArea",
-  "commissionRate"
-
-];
-
-
-numericInputIds.forEach(
-  id => {
-
-    $(id).addEventListener(
-      "input",
-      () => {
-
-        if(
-          validateInputs()
-        ){
-
-          calculate();
-        }
-      }
-    );
-  }
-);
-
-
-[
-  "transactionType",
-  "propertyType"
-].forEach(
-  id => {
-
-    $(id).addEventListener(
-      "change",
-      () => {
-
-        calculate();
-      }
-    );
-  }
-);
-
-
-/* =========================================================
-   UPDATE BUTTON
+   BUTTONS
    ========================================================= */
 
 $("updateBtn").addEventListener(
   "click",
   () => {
 
-    if(
-      !validateInputs()
-    ){
-      return;
-    }
-
-
     calculate();
 
+    saveWorkspace();
 
-    $("costs").scrollIntoView(
-      {
-        behavior:"smooth",
-        block:"start"
-      }
+    showToast(
+      "Workspace updated and saved."
     );
+
+    $("costs").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
   }
 );
-
-
-/* =========================================================
-   RESET BUTTON
-   ========================================================= */
 
 $("resetBtn").addEventListener(
   "click",
   resetWorkspace
 );
-
-
-/* =========================================================
-   PRINT
-   ========================================================= */
 
 $("printBtn").addEventListener(
   "click",
@@ -4810,10 +3830,52 @@ $("printBtn").addEventListener(
 
     calculate();
 
+    updateReportDate();
+
     window.print();
+
   }
 );
 
+/* =========================================================
+   AUTO CALCULATE
+   ========================================================= */
+
+[
+  "sellingPrice",
+  "fairMarketValue",
+  "zonalValue",
+  "acquisitionPrice",
+  "lotArea",
+  "commissionRate"
+].forEach(id => {
+
+  $(id).addEventListener(
+    "input",
+    () => {
+
+      calculate();
+
+    }
+  );
+
+});
+
+[
+  "transactionType",
+  "propertyType"
+].forEach(id => {
+
+  $(id).addEventListener(
+    "change",
+    () => {
+
+      calculate();
+
+    }
+  );
+
+});
 
 /* =========================================================
    DARK MODE
@@ -4822,17 +3884,11 @@ $("printBtn").addEventListener(
 function updateThemeButton(){
 
   const dark =
-    document.documentElement
-      .dataset
-      .theme ===
+    document.documentElement.dataset.theme ===
     "dark";
 
-
   $("themeBtn").textContent =
-    dark
-      ? "☾"
-      : "☀";
-
+    dark ? "☾" : "☀";
 
   $("themeBtn").setAttribute(
     "aria-label",
@@ -4841,21 +3897,11 @@ function updateThemeButton(){
       : "Switch to dark mode"
   );
 
-
-  $("themeBtn").setAttribute(
-    "title",
-    dark
-      ? "Switch to light mode"
-      : "Switch to dark mode"
-  );
 }
-
 
 function initializeTheme(){
 
-  let savedTheme =
-    null;
-
+  let savedTheme = null;
 
   try{
 
@@ -4866,30 +3912,22 @@ function initializeTheme(){
 
   }catch(error){
 
-    console.warn(
-      "Theme preference unavailable:",
-      error
-    );
+    console.warn(error);
+
   }
 
-
   if(
-    savedTheme ===
-      "dark" ||
-    savedTheme ===
-      "light"
+    savedTheme === "dark" ||
+    savedTheme === "light"
   ){
 
-    document.documentElement
-      .dataset
-      .theme =
+    document.documentElement.dataset.theme =
       savedTheme;
 
   }else{
 
     /*
-      Respect system preference
-      when no preference exists.
+      Follow system preference initially.
     */
 
     const prefersDark =
@@ -4898,42 +3936,31 @@ function initializeTheme(){
         "(prefers-color-scheme: dark)"
       ).matches;
 
-
-    document.documentElement
-      .dataset
-      .theme =
+    document.documentElement.dataset.theme =
       prefersDark
         ? "dark"
         : "light";
+
   }
 
-
   updateThemeButton();
-}
 
+}
 
 $("themeBtn").addEventListener(
   "click",
   () => {
 
     const current =
-      document.documentElement
-        .dataset
-        .theme;
-
+      document.documentElement.dataset.theme;
 
     const next =
-      current ===
-        "dark"
+      current === "dark"
         ? "light"
         : "dark";
 
-
-    document.documentElement
-      .dataset
-      .theme =
+    document.documentElement.dataset.theme =
       next;
-
 
     try{
 
@@ -4944,67 +3971,14 @@ $("themeBtn").addEventListener(
 
     }catch(error){
 
-      console.warn(
-        "Theme could not be saved:",
-        error
-      );
-    }
+      console.warn(error);
 
+    }
 
     updateThemeButton();
 
-    saveWorkspace(
-      false
-    );
   }
 );
-
-
-/* =========================================================
-   REPORT DATE
-   ========================================================= */
-
-function updateReportDate(){
-
-  const now =
-    new Date();
-
-
-  $("reportDate").textContent =
-    now.toLocaleDateString(
-      "en-PH",
-      {
-        year:"numeric",
-        month:"long",
-        day:"numeric"
-      }
-    );
-}
-
-
-/* =========================================================
-   GENERATE / RESTORE TRANSACTION ID
-   ========================================================= */
-
-function initializeTransactionId(){
-
-  if(
-    !state.transactionId
-  ){
-
-    state.transactionId =
-      createTransactionId();
-  }
-
-
-  $("transactionId").textContent =
-    state.transactionId;
-
-
-  $("rTransactionId").textContent =
-    state.transactionId;
-}
-
 
 /* =========================================================
    INITIALIZATION
@@ -5016,33 +3990,9 @@ async function initialize(){
 
   updateReportDate();
 
+  restoreBasicWorkspace();
 
-  const saved =
-    getSavedWorkspace();
-
-
-  /*
-    Load basic fields first so the
-    calculator can render immediately.
-  */
-
-  if(saved){
-
-    restoreBasicInputs(
-      saved
-    );
-
-  }else{
-
-    state.transactionId =
-      createTransactionId();
-
-    $("commissionRate").value =
-      DEFAULT_COMMISSION_RATE;
-  }
-
-
-  initializeTransactionId();
+  generateTransactionId();
 
   renderChecklist();
 
@@ -5050,58 +4000,33 @@ async function initialize(){
 
   updateReportLocation();
 
+  const restored =
+    getSavedWorkspace();
 
-  /*
-    Load the geographic hierarchy.
-  */
+  if(restored){
 
-  await restoreLocation(
-    saved
-  );
+    setStatus(
+      "Saved workspace restored locally.",
+      "success"
+    );
 
-
-  /*
-    If there was no saved province,
-    load provinces normally.
-  */
-
-  if(
-    !saved ||
-    !saved.province
-  ){
-
-    await loadProvinces();
   }
 
-
   /*
-    Final report refresh after
-    asynchronous location loading.
+    Load PSGC location hierarchy.
+
+    The corrected API is:
+
+    /api/v2/provinces
+    /api/v2/provinces/{code}/cities-municipalities
+    /api/v2/cities-municipalities/{code}/barangays
   */
 
-  updateReportLocation();
+  await loadProvinces();
 
   calculate();
 
-
-  state.initialized =
-    true;
-
-
-  setAutosaveStatus(
-    saved
-      ? "Saved workspace restored locally."
-      : "Workspace ready.",
-    saved
-      ? "saved"
-      : ""
-  );
 }
-
-
-/* =========================================================
-   START
-   ========================================================= */
 
 initialize();
 
