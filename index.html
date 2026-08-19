@@ -1,122 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joshua Dela Cruz | Cybersecurity & IT</title>
-  <style>
-    body { font-family: Segoe UI, sans-serif; max-width: 800px; margin: 60px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.7; }
-    h1 { font-size: 2em; border-bottom: 3px solid #0078d4; padding-bottom: 10px; }
-    h2 { color: #0078d4; margin-top: 40px; }
-    h3 { margin-top: 24px; }
-    ul { padding-left: 20px; }
-    li { margin-bottom: 6px; }
-    .badge { display: inline-block; background: #0078d4; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; margin-right: 6px; }
-    .stack { margin: 16px 0; }
-    footer { margin-top: 60px; font-size: 0.85em; color: #888; border-top: 1px solid #eee; padding-top: 16px; }
-    .highlight { color: #0078d4; font-weight: bold; }
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Joshua Dela Cruz — IT, cybersecurity, cloud and software portfolio.">
+<title>Joshua Dela Cruz | Technology Portfolio</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--soft:#eef2f7;--text:#101828;--muted:#667085;--line:#e4e7ec;--primary:#2563eb;--primary2:#7c3aed;--good:#16a34a;--shadow:0 12px 40px rgba(16,24,40,.07);--r:20px}html.dark{--bg:#080b12;--card:#111827;--soft:#182131;--text:#f8fafc;--muted:#94a3b8;--line:#263244;--primary:#60a5fa;--primary2:#a78bfa;--good:#4ade80;--shadow:0 16px 50px rgba(0,0,0,.3)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 Inter,Segoe UI,system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .18s,color .18s}a{color:inherit;text-decoration:none}button{font:inherit}.app{min-height:100vh}.sidebar{position:fixed;z-index:10;inset:0 auto 0 0;width:245px;padding:24px 15px;background:color-mix(in srgb,var(--card) 82%,transparent);backdrop-filter:blur(18px);border-right:1px solid var(--line)}.brand{display:flex;align-items:center;gap:11px;padding:5px 9px 28px}.logo{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;color:#fff;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));box-shadow:0 8px 25px #2563eb35}.brand b{display:block;font-size:13px}.brand small{color:var(--muted);font-size:10px}.nav-label{padding:12px 10px 6px;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.nav a{display:block;padding:10px;border-radius:11px;color:var(--muted);font-weight:650;font-size:12px;transition:.18s}.nav a:hover,.nav a.active{background:var(--soft);color:var(--primary);transform:translateX(2px)}.status{position:absolute;bottom:22px;left:15px;right:15px;padding:11px;border:1px solid var(--line);border-radius:13px;background:var(--soft);color:var(--muted);font-size:10px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--good);margin-right:7px;box-shadow:0 0 0 4px #16a34a18}main{margin-left:245px;padding:24px 32px 55px;max-width:1500px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;color:var(--muted);font-size:11px}.actions{display:flex;gap:7px}.icon{width:37px;height:37px;border:1px solid var(--line);border-radius:11px;background:var(--card);color:var(--text);cursor:pointer}.mobile{display:none}.hero{padding:34px;border:1px solid var(--line);border-radius:25px;background:radial-gradient(circle at 90% 15%,#2563eb1c,transparent 30%),var(--card);box-shadow:var(--shadow)}.heroGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:35px;align-items:center}.pill{display:inline-flex;padding:6px 10px;border-radius:99px;background:#2563eb14;color:var(--primary);font-size:9px;font-weight:800}.hero h1{font-size:clamp(36px,5vw,58px);line-height:1.02;letter-spacing:-.05em;margin:17px 0 0}.accent{color:var(--primary)}.hero p{max-width:650px;color:var(--muted);font-size:14px;margin:17px 0}.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 15px;border-radius:11px;font-size:11px;font-weight:750;transition:transform .18s}.btn:hover{transform:translateY(-2px)}.primary{color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary2));box-shadow:0 10px 25px #2563eb28}.secondary{border:1px solid var(--line);background:var(--card)}.profile{padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--soft)}.avatar{width:70px;height:70px;display:grid;place-items:center;border-radius:19px;color:#fff;font-size:21px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2))}.profile h3{margin:14px 0 2px}.profile p{margin:0;font-size:11px}.meta{margin-top:16px;display:grid;gap:8px}.meta div{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}.meta b{color:var(--text)}section{margin-top:27px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:13px}.head h2{font-size:18px;letter-spacing:-.02em;margin:0}.head p{color:var(--muted);font-size:10px;margin:3px 0 0}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow)}.stat{padding:19px}.stat small{color:var(--muted);font-weight:650}.stat strong{display:block;font-size:28px;letter-spacing:-.04em;margin-top:8px}.green{color:var(--good);font-size:9px}.grid2{display:grid;grid-template-columns:1.5fr .5fr;gap:13px;margin-top:13px}.chartCard{padding:20px}.chart{height:225px;display:flex;align-items:end;gap:10px;padding:18px 4px 23px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 43px,var(--line) 44px)}.bar{flex:1;max-width:48px;margin:auto;background:linear-gradient(to top,var(--primary),var(--primary2));border-radius:7px 7px 2px 2px;transform-origin:bottom;animation:grow .65s cubic-bezier(.2,.8,.2,1) both}.barBox{height:100%;flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center}.barBox small{color:var(--muted);font-size:8px;margin-top:6px}@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}.focus{padding:20px}.focusItem{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.focusItem:last-child{border:0}.ico{width:31px;height:31px;display:grid;place-items:center;border-radius:9px;background:var(--soft)}.focusItem b{font-size:11px}.focusItem small{display:block;color:var(--muted);font-size:9px}.skills,.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.skill,.project{padding:18px}.skill h3,.project h3{font-size:13px;margin:0}.skill p,.project p{font-size:10px;color:var(--muted);line-height:1.6}.track{height:5px;background:var(--soft);border-radius:9px;margin-top:12px;overflow:hidden}.track span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--primary),var(--primary2))}.cover{height:125px;margin:-18px -18px 17px;padding:15px;display:flex;align-items:end;border-radius:19px 19px 0 0;background:linear-gradient(135deg,#2563eb18,#7c3aed18)}.cover.greenish{background:linear-gradient(135deg,#16a34a1b,#2563eb16)}.cover.purple{background:linear-gradient(135deg,#7c3aed1d,#f59e0b18)}.projectIcon{width:45px;height:45px;display:grid;place-items:center;border-radius:13px;background:var(--card);font-size:21px}.tags{display:flex;flex-wrap:wrap;gap:5px}.tag{padding:4px 7px;border-radius:7px;background:var(--soft);color:var(--muted);font-size:8px;font-weight:700}.timeline{display:grid;gap:12px}.timelineItem{padding:17px 19px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.date{color:var(--primary);font-size:9px;font-weight:800}.timelineItem h3{font-size:13px;margin:4px 0}.timelineItem p{color:var(--muted);font-size:10px;margin:0}.feature{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;border:1px solid var(--line);border-radius:23px;background:linear-gradient(135deg,var(--card),var(--soft));box-shadow:var(--shadow)}.feature h2{font-size:25px;line-height:1.1;letter-spacing:-.03em;margin:8px 0}.feature p{color:var(--muted);font-size:11px}.featureList{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}.featureList div{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--muted);font-size:9px}.featureList b{display:block;color:var(--text);margin-bottom:2px}.mock{padding:17px;border:1px solid var(--line);border-radius:17px;background:var(--card)}.mockTop{display:flex;justify-content:space-between;font-size:10px;font-weight:750}.mockValue{font-size:28px;font-weight:800;margin-top:20px}.mock small{color:var(--good);font-size:9px}.mockBars{height:110px;display:flex;align-items:end;gap:7px;margin-top:12px}.mockBars span{flex:1;background:linear-gradient(to top,var(--primary),var(--primary2));border-radius:5px 5px 2px 2px}footer{display:flex;justify-content:space-between;margin-top:45px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:9px}@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.skills,.projects{grid-template-columns:repeat(2,1fr)}.heroGrid{grid-template-columns:1fr}.feature{grid-template-columns:1fr}}@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}.mobile{display:block}main{margin:0;padding:17px 14px 40px}.hero{padding:23px}.hero h1{font-size:38px}.stats,.skills,.projects{grid-template-columns:1fr}.featureList{grid-template-columns:1fr}footer{flex-direction:column;gap:5px}}
+</style>
 </head>
 <body>
-
-  <h1>Joshua Dela Cruz</h1>
-  <p><span class="highlight">IT Support Specialist → Cybersecurity Architect</span> | Cloud Certifications | DadIT Creator</p>
-  <p>
-    <a href="mailto:josh.delacruz19@gmail.com">josh.delacruz19@gmail.com</a> |
-    <a href="https://www.linkedin.com/in/joshua-l-delacruz" target="_blank">LinkedIn</a> |
-    <a href="https://youtube.com/@DadITLabs" target="_blank">YouTube: DadIT Labs</a>
-  </p>
-
-  <h2>Current Focus (2026)</h2>
-  <p>Transitioning from IT support to cybersecurity engineering. Pursuing multi-cloud security certifications (Azure, Google Cloud, AWS) with a goal of becoming a Cybersecurity Architect by 2032. Currently building DadIT—a YouTube channel sharing cybersecurity best practices for IT professionals.</p>
-
-  <div class="stack">
-    <span class="badge">Azure Security</span>
-    <span class="badge">Cloud Architecture</span>
-    <span class="badge">Incident Response</span>
-    <span class="badge">Multi-Cloud</span>
-    <span class="badge">Active Directory</span>
-    <span class="badge">IAM</span>
-  </div>
-
-  <h2>Certifications & Exam Schedule</h2>
-  
-  <h3>2026-2027: Multi-Cloud Security Foundation</h3>
-  <ul>
-    <li><strong>Microsoft Azure Administrator (AZ-104)</strong> - Retaking June 29, 2026</li>
-    <li><strong>Azure Security Engineer Expert (SC-100)</strong> - August 2026</li>
-    <li><strong>Google Cloud Professional Security Engineer (GPSE)</strong> - October 2026</li>
-    <li><strong>AWS Certified Cloud Practitioner (CCP)</strong> - November 2026</li>
-    <li><strong>AWS Certified Security - Specialty (CSS)</strong> - January 2027</li>
-  </ul>
-
-  <h3>2027-2028: Security Leadership Path</h3>
-  <ul>
-    <li><strong>CompTIA Security+</strong> - 2027-2028 (stepping stone to CISSP)</li>
-  </ul>
-
-  <h3>2032: Leadership Milestone</h3>
-  <ul>
-    <li><strong>Certified Information Systems Security Professional (CISSP)</strong> - Target June 2032 (requires 5 years security experience)</li>
-  </ul>
-
-  <h3>Completed</h3>
-  <ul>
-    <li>Salesforce Certified Advanced Administrator - April 2022</li>
-    <li>Salesforce Certified Administrator - April 2022</li>
-  </ul>
-
-  <h2>Hybrid Active Directory Lab</h2>
-  <p>Windows Server 2022 Domain Controller connected to Microsoft Azure via Entra Cloud Sync. Built to develop hands-on infrastructure and identity management skills aligned with cloud and security environments.</p>
-
-  <div class="stack">
-    <span class="badge">Windows Server 2022</span>
-    <span class="badge">Active Directory</span>
-    <span class="badge">Azure Entra ID</span>
-    <span class="badge">Group Policy</span>
-    <span class="badge">Cloud Sync</span>
-    <span class="badge">Cloudflare</span>
-  </div>
-
-  <h3>What I Built</h3>
-  <ul>
-    <li><strong>Domain Controller (DC01)</strong> - Windows Server 2022 on VMware, domain: ad.joshuadelacruz.solutions</li>
-    <li><strong>Active Directory</strong> - OUs (IT, HR, Finance, Workstations), users, security groups</li>
-    <li><strong>Group Policy Objects</strong> - Password Policy (12 char min, 90-day max age), Lock Screen timeout, USB Storage restriction</li>
-    <li><strong>Hybrid Identity</strong> - Microsoft Entra Cloud Sync connecting on-prem AD to Azure Entra ID</li>
-    <li><strong>DNS</strong> - Internal DNS on DC01, public DNS managed via Cloudflare</li>
-    <li><strong>Custom Domain</strong> - joshuadelacruz.solutions verified in Microsoft Entra ID</li>
-  </ul>
-
-  <h3>Architecture</h3>
-  <ul>
-    <li>Host: Lenovo ThinkPad T14 Gen 2 (i7-1185G7, 16GB RAM)</li>
-    <li>Hypervisor: VMware Workstation Pro 25</li>
-    <li>On-prem: Windows Server 2022 (DC01, 3GB RAM, 60GB)</li>
-    <li>Cloud: Microsoft Entra ID Free (tenant: joshuadelacruz.solutions)</li>
-    <li>Sync: Microsoft Entra Provisioning Agent (Cloud Sync)</li>
-    <li>Internet: PLDT 1Gbps / 700Mbps upload</li>
-  </ul>
-
-  <h2>DadIT Labs YouTube Channel</h2>
-  <p>Creating practical cybersecurity education content for IT professionals. Topics include Azure security, cloud best practices, incident response, and career transition guidance.</p>
-  <ul>
-    <li>Channel: <a href="https://youtube.com/@DadITLabs" target="_blank">youtube.com/@DadITLabs</a></li>
-    <li>Focus: Cybersecurity fundamentals, Azure security, hands-on labs</li>
-    <li>Audience: IT professionals, helpdesk teams, security career changers</li>
-  </ul>
-
-  <h2>Also Working With</h2>
-  <ul>
-    <li>Ubuntu Server - LAMP stack, FreePBX/Asterisk VoIP, UFW/iptables</li>
-    <li>ServiceNow - 4+ years enterprise ITSM</li>
-    <li>Microsoft Intune - MDM device enrollment and management</li>
-    <li>SailPoint / IDLocker - Enterprise IAM</li>
-  </ul>
-
-  <footer>
-    Joshua Dela Cruz - Sta. Maria, Bulacan, Philippines | Updated June 2026
-  </footer>
-
+<aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">JD</div><div><b>Joshua Dela Cruz</b><small>Technology Portfolio</small></div></div><nav class="nav"><div class="nav-label">Workspace</div><a class="active" href="#dashboard">⌂ &nbsp; Dashboard</a><a href="#about">◉ &nbsp; About</a><a href="#skills">◆ &nbsp; Skills</a><a href="#projects">▣ &nbsp; Projects</a><a href="#experience">◷ &nbsp; Experience</a><div class="nav-label">Connect</div><a href="#contact">✉ &nbsp; Contact</a></nav><div class="status"><span class="dot"></span>Building new solutions</div></aside>
+<main><div class="top"><span>Portfolio / <b style="color:var(--text)">Dashboard</b></span><div class="actions"><button class="icon mobile" id="menu">☰</button><button class="icon" id="theme" title="Toggle light/dark mode">☾</button></div></div>
+<section class="hero" id="about"><div class="heroGrid"><div><span class="pill">IT · CLOUD · CYBERSECURITY · SOFTWARE</span><h1>Building practical <span class="accent">technology solutions.</span></h1><p>I'm Joshua Dela Cruz, an IT professional focused on service operations, cloud technologies, identity and security, while building practical software projects that solve real-world problems.</p><div class="buttons"><a class="btn primary" href="#projects">View Projects →</a><a class="btn secondary" href="mailto:josh.delacruz19@gmail.com">Contact Me</a></div></div><div class="profile"><div class="avatar">JD</div><h3>Joshua Dela Cruz</h3><p>IT Service Desk Professional · Technology Builder · Cybersecurity & Cloud Learner</p><div class="meta"><div><span>Focus</span><b>Technology</b></div><div><span>Direction</span><b>Cybersecurity</b></div><div><span>Projects</span><b>Building</b></div></div></div></div></section>
+<section id="dashboard"><div class="head"><div><h2>Portfolio Dashboard</h2><p>A quick view of my professional and technical journey.</p></div></div><div class="stats"><div class="card stat"><small>IT Experience</small><strong>5+</strong><span class="green">Years in IT</span></div><div class="card stat"><small>Active Projects</small><strong>2</strong><span class="green">Currently building</span></div><div class="card stat"><small>Technology Areas</small><strong>8+</strong><span class="green">Growing continuously</span></div><div class="card stat"><small>Current Focus</small><strong>IAM</strong><span class="green">Identity & security</span></div></div><div class="grid2"><div class="card chartCard"><div class="head"><div><h2 style="font-size:14px">Technology Journey</h2><p>Illustrative portfolio focus by year</p></div><span class="pill">2022–2026</span></div><div class="chart"><div class="barBox"><i class="bar" style="height:38%"></i><small>2022</small></div><div class="barBox"><i class="bar" style="height:50%"></i><small>2023</small></div><div class="barBox"><i class="bar" style="height:61%"></i><small>2024</small></div><div class="barBox"><i class="bar" style="height:76%"></i><small>2025</small></div><div class="barBox"><i class="bar" style="height:92%"></i><small>2026</small></div></div></div><div class="card focus"><div class="head"><div><h2 style="font-size:14px">Current Focus</h2><p>Areas I'm developing</p></div></div><div class="focusItem"><div class="ico">🛡️</div><div><b>Identity Security</b><small>IAM · Entra · SailPoint</small></div></div><div class="focusItem"><div class="ico">☁️</div><div><b>Cloud</b><small>Azure · AWS · Architecture</small></div></div><div class="focusItem"><div class="ico">💻</div><div><b>Software</b><small>Web applications · APIs</small></div></div><div class="focusItem"><div class="ico">🇵🇭</div><div><b>Philippine Tech</b><small>Practical local solutions</small></div></div></div></div></section>
+<section id="skills"><div class="head"><div><h2>Technical Skills</h2><p>Areas of experience and continuous development.</p></div></div><div class="skills"><div class="card skill"><h3>IT Service Management</h3><p>Incident management, troubleshooting, escalation and enterprise support.</p><div class="track"><span style="width:88%"></span></div></div><div class="card skill"><h3>Identity & Access</h3><p>Identity lifecycle, authentication, authorization and access management.</p><div class="track"><span style="width:76%"></span></div></div><div class="card skill"><h3>Cloud Technologies</h3><p>Azure, AWS fundamentals and cloud architecture concepts.</p><div class="track"><span style="width:64%"></span></div></div><div class="card skill"><h3>APIs & Web</h3><p>HTTP, REST APIs, JSON, troubleshooting and web development.</p><div class="track"><span style="width:61%"></span></div></div><div class="card skill"><h3>Cybersecurity</h3><p>Security operations, IAM, identity security and architecture.</p><div class="track"><span style="width:59%"></span></div></div><div class="card skill"><h3>Software Projects</h3><p>Building practical applications with modern platforms.</p><div class="track"><span style="width:57%"></span></div></div></div></section>
+<section id="projects"><div class="head"><div><h2>Featured Projects</h2><p>Practical applications I'm building.</p></div></div><div class="projects"><article class="card project"><div class="cover purple"><div class="projectIcon">🟣</div></div><h3>Pi Network 2048</h3><p>A Pi Network Mini App combining a 2048-style game with authentication, backend services and a production leaderboard.</p><div class="tags"><span class="tag">Pi Network</span><span class="tag">JavaScript</span><span class="tag">Vercel</span><span class="tag">Neon</span></div></article><article class="card project"><div class="cover greenish"><div class="projectIcon">🏠</div></div><h3>Philippine Property Transaction Toolkit</h3><p>A planned platform for Philippine brokers and salespersons to calculate transaction costs, prepare documents and manage property transactions.</p><div class="tags"><span class="tag">Real Estate</span><span class="tag">Calculator</span><span class="tag">SaaS</span><span class="tag">Philippines</span></div><div class="buttons"><a class="btn primary" href="/realestate">Open Toolkit →</a></div></article><article class="card project"><div class="cover"><div class="projectIcon">⚡</div></div><h3>More Coming</h3><p>Additional cloud, cybersecurity, automation and software projects will be added as they are built.</p><div class="tags"><span class="tag">Cloud</span><span class="tag">Security</span><span class="tag">Automation</span></div></article></div></section>
+<section><div class="feature"><div><span class="pill" style="color:var(--good);background:#16a34a14">FEATURED BUILD</span><h2>Philippine Property Transaction Toolkit</h2><p>A dedicated digital workspace designed to help Philippine real-estate brokers and salespersons prepare property transactions more efficiently.</p><div class="featureList"><div><b>Taxes & Fees</b>CGT, DST and estimates</div><div><b>Buyer Costs</b>Total acquisition costs</div><div><b>Seller Net</b>Estimated proceeds</div><div><b>Documents</b>Transaction checklist</div></div><div class="buttons"><a class="btn primary" href="/realestate">Open Real Estate Toolkit →</a></div></div><div class="mock"><div class="mockTop"><span>Transaction Dashboard</span><span class="pill">CONCEPT</span></div><div class="mockValue">₱10.0M</div><small>Illustrative property transaction value</small><div class="mockBars"><span style="height:32%"></span><span style="height:47%"></span><span style="height:39%"></span><span style="height:65%"></span><span style="height:78%"></span><span style="height:58%"></span><span style="height:88%"></span></div></div></div></section>
+<section id="experience"><div class="head"><div><h2>Experience</h2><p>Professional journey in technology.</p></div></div><div class="timeline"><div class="timelineItem"><span class="date">CURRENT</span><h3>IT Service Desk — Cognizant Technology Solutions</h3><p>Supporting enterprise technology environments, troubleshooting incidents, assisting users and working within structured IT service management processes.</p></div><div class="timelineItem"><span class="date">PREVIOUS EXPERIENCE</span><h3>IT Support & Service Operations</h3><p>Experience across IT support environments, developing practical troubleshooting, customer service, incident management and technical problem-solving skills.</p></div><div class="timelineItem"><span class="date">NEXT CHAPTER</span><h3>Cybersecurity & Cloud Architecture</h3><p>Building deeper expertise in identity security, cloud architecture, security operations and cybersecurity architecture.</p></div></div></section>
+<section id="contact"><div class="card" style="padding:21px"><div class="head"><div><h2>Let's Connect</h2><p>Interested in technology, collaboration or one of my projects?</p></div><a class="btn primary" href="mailto:josh.delacruz19@gmail.com">Email Me →</a></div></div></section>
+<footer><span>© 2026 Joshua Dela Cruz</span><span>Built with HTML, CSS & JavaScript · joshuadelacruz.solutions</span></footer>
+</main>
+<script>
+const root=document.documentElement,theme=document.getElementById('theme'),sidebar=document.getElementById('sidebar');if(localStorage.jdtheme==='dark')root.classList.add('dark');function icon(){theme.textContent=root.classList.contains('dark')?'☀':'☾'}icon();theme.onclick=()=>{root.classList.toggle('dark');localStorage.jdtheme=root.classList.contains('dark')?'dark':'light';icon()};document.getElementById('menu').onclick=()=>sidebar.classList.toggle('open');document.querySelectorAll('.nav a').forEach(a=>a.onclick=()=>sidebar.classList.remove('open'));
+</script>
 </body>
 </html>
