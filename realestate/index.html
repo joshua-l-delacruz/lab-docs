@@ -3019,7 +3019,60 @@ function captureTransaction(){
    SAVE TRANSACTION
    ========================================================= */
 
+function validateLocationBeforeSave(){
+
+  const missing = [];
+
+  if(!provinceSelect.value){
+    missing.push("Province");
+  }
+
+  if(!citySelect.value){
+    missing.push("City / Municipality");
+  }
+
+  if(!barangaySelect.value){
+    missing.push("Barangay");
+  }
+
+  if(missing.length){
+
+    setStatus(
+      "Please complete the property location before saving. Missing: " +
+      missing.join(", ") +
+      ".",
+      "error"
+    );
+
+    $("workspace").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+    if(!provinceSelect.value){
+      provinceSelect.focus();
+    }else if(!citySelect.value){
+      citySelect.focus();
+    }else if(!barangaySelect.value){
+      barangaySelect.focus();
+    }
+
+    return false;
+  }
+
+  return true;
+
+}
+
+/* =========================================================
+   SAVE TRANSACTION
+   ========================================================= */
+
 function saveCurrentTransaction(){
+
+  if(!validateLocationBeforeSave()){
+    return false;
+  }
 
   const transaction =
     captureTransaction();
@@ -3066,6 +3119,21 @@ function saveCurrentTransaction(){
   renderSavedTransactions();
 
   markClean();
+
+  const locationParts = [
+    selectedName(barangaySelect),
+    selectedName(citySelect),
+    selectedName(provinceSelect)
+  ].filter(Boolean);
+
+  setStatus(
+    "Transaction saved successfully for " +
+    locationParts.join(", ") +
+    ".",
+    "success"
+  );
+
+  return true;
 
 }
 
@@ -5949,13 +6017,18 @@ $("saveTransactionBtn")
     "click",
     () => {
 
-      saveCurrentTransaction();
+      const saved =
+        saveCurrentTransaction();
 
-      $("savedTransactions")
-        .scrollIntoView({
-          behavior:"smooth",
-          block:"start"
-        });
+      if(saved){
+
+        $("savedTransactions")
+          .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+          });
+
+      }
 
     }
   );
