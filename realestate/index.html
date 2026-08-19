@@ -1,5 +1,2338 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Philippine Property Transaction Toolkit — preliminary real estate transaction estimates for brokers and salespersons."><title>Philippine Property Transaction Toolkit</title><style>
-:root{--bg:#f5f7fb;--card:#fff;--soft:#eef2f7;--text:#101828;--muted:#667085;--line:#e4e7ec;--p:#2563eb;--p2:#7c3aed;--good:#16a34a;--warn:#b45309;--shadow:0 12px 40px #10182810}html.dark{--bg:#080b12;--card:#111827;--soft:#182131;--text:#f8fafc;--muted:#94a3b8;--line:#263244;--p:#60a5fa;--p2:#a78bfa;--good:#4ade80;--warn:#fbbf24;--shadow:0 16px 50px #0005}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 Inter,Segoe UI,system-ui,sans-serif;transition:.18s}button,input,select{font:inherit}button{cursor:pointer}.shell{display:flex;min-height:100vh}.side{position:fixed;inset:0 auto 0 0;width:245px;padding:23px 15px;background:var(--card);border-right:1px solid var(--line);z-index:5}.brand{display:flex;gap:10px;align-items:center;padding:3px 8px 25px}.logo{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-weight:900}.brand b{font-size:12px}.brand small{display:block;color:var(--muted);font-size:9px}.label{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.12em;padding:12px 10px 5px;text-transform:uppercase}.nav a{display:block;padding:10px;border-radius:10px;color:var(--muted);font-size:11px;font-weight:700}.nav a:hover,.nav a.active{background:var(--soft);color:var(--p)}.disclaimer{position:absolute;left:15px;right:15px;bottom:18px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--soft);font-size:8px;color:var(--muted)}main{margin-left:245px;width:calc(100% - 245px);max-width:1450px;padding:23px 31px 55px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;color:var(--muted);font-size:10px}.tools{display:flex;gap:7px}.icon{width:36px;height:36px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px}.hero{padding:27px;border:1px solid var(--line);border-radius:23px;background:radial-gradient(circle at 90% 15%,#2563eb1c,transparent 30%),var(--card);box-shadow:var(--shadow)}.hero h1{font-size:clamp(30px,4vw,48px);line-height:1.04;letter-spacing:-.045em;margin:12px 0 8px}.hero p{max-width:720px;color:var(--muted);font-size:11px}.pill{display:inline-block;padding:5px 9px;border-radius:99px;background:#2563eb14;color:var(--p);font-size:8px;font-weight:850}.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:14px;margin-top:14px}.card{border:1px solid var(--line);border-radius:19px;background:var(--card);box-shadow:var(--shadow)}.panel{padding:20px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:14px}.head h2{margin:0;font-size:15px}.head p{margin:3px 0 0;color:var(--muted);font-size:9px}.form{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.field label{display:block;color:var(--muted);font-size:9px;font-weight:750;margin-bottom:5px}.field input,.field select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);outline:none}.field input:focus,.field select:focus{border-color:var(--p);box-shadow:0 0 0 3px #2563eb14}.wide{grid-column:1/-1}.actions{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:10px 14px;font-size:10px;font-weight:800}.primary{color:#fff;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 9px 22px #2563eb25}.secondary{border:1px solid var(--line);background:var(--card);color:var(--text)}.results{display:grid;gap:9px}.result{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--soft)}.result .rline{display:flex;justify-content:space-between;align-items:center}.result b{font-size:11px}.amount{font-weight:850;font-size:14px}.note{font-size:8px;color:var(--muted);margin-top:2px}.total{padding:16px;border-radius:14px;background:linear-gradient(135deg,#2563eb12,#7c3aed12);border:1px solid #2563eb28}.total .amount{font-size:25px}.chart{height:215px;display:flex;align-items:end;gap:12px;padding:15px 10px 23px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 42px,var(--line) 43px)}.barbox{height:100%;flex:1;display:flex;align-items:center;flex-direction:column;justify-content:end}.bar{width:min(48px,75%);border-radius:7px 7px 2px 2px;background:linear-gradient(to top,var(--p),var(--p2));transform-origin:bottom;animation:g .55s both}.barbox small{font-size:8px;color:var(--muted);margin-top:6px}@keyframes g{from{transform:scaleY(0)}to{transform:scaleY(1)}}.check{display:grid;gap:7px}.check label{display:flex;gap:8px;align-items:center;padding:8px;border-bottom:1px solid var(--line);font-size:9px}.check input{accent-color:var(--p)}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mini{padding:15px}.mini small{display:block;color:var(--muted);font-size:8px}.mini strong{display:block;font-size:18px;margin-top:5px}.notice{margin-top:14px;padding:11px;border:1px solid #f59e0b33;background:#f59e0b0d;border-radius:11px;color:var(--warn);font-size:8px}.footer{margin-top:35px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:8px;display:flex;justify-content:space-between}.mobile{display:none}@media(max-width:1000px){.layout{grid-template-columns:1fr}.side{width:220px}main{margin-left:220px;width:calc(100% - 220px)}}@media(max-width:700px){.side{transform:translateX(-100%);transition:.2s;width:245px}.side.open{transform:none}.mobile{display:block}main{margin:0;width:100%;padding:15px}.form,.summary{grid-template-columns:1fr}.hero{padding:20px}.footer{flex-direction:column;gap:5px}}
-</style></head><body><div class="shell"><aside class="side" id="side"><div class="brand"><div class="logo">PH</div><div><b>Property Toolkit</b><small>Philippines · Transaction Workspace</small></div></div><nav class="nav"><div class="label">Workspace</div><a class="active" href="#calculator">▦ &nbsp; Calculator</a><a href="#breakdown">◒ &nbsp; Cost Breakdown</a><a href="#checklist">✓ &nbsp; Checklist</a><a href="#report">▤ &nbsp; Report</a><div class="label">Reference</div><a href="https://www.bir.gov.ph/" target="_blank" rel="noopener">BIR ↗</a><a href="https://web-services.bir.gov.ph/trraportal/" target="_blank" rel="noopener">BIR ONETT ↗</a></nav><div class="disclaimer"><b>Preliminary estimate</b><br>This tool is for planning only. Actual taxes, assessments, fees and documentary requirements must be confirmed with the BIR, LGU, Registry of Deeds and appropriate professionals.</div></aside><main><div class="top"><span>Real Estate / <b style="color:var(--text)">Transaction Toolkit</b></span><div class="tools"><button class="icon mobile" id="menu">☰</button><button class="icon" id="theme">☾</button></div></div><section class="hero"><span class="pill">MVP · PHILIPPINE REAL ESTATE</span><h1>Prepare the transaction.<br><span style="color:var(--p)">See the numbers clearly.</span></h1><p>A practical workspace for Philippine brokers and salespersons to make preliminary property transaction estimates, organize requirements and prepare a client-ready summary.</p></section><div class="layout" id="calculator"><section class="card panel"><div class="head"><div><h2>Transaction Calculator</h2><p>Enter the values available from the property documents.</p></div><span class="pill">LIVE ESTIMATE</span></div><div class="form"><div class="field"><label>Transaction</label><select id="type"><option>Sale of capital asset</option><option>Sale of ordinary asset</option><option>Purchase planning</option></select></div><div class="field"><label>Property type</label><select id="property"><option>House & Lot</option><option>Vacant Land</option><option>Condominium</option><option>Commercial Property</option></select></div><div class="field"><label>Gross selling price (₱)</label><input id="price" type="number" value="10000000" min="0"></div><div class="field"><label>Fair market value (₱)</label><input id="fmv" type="number" value="10000000" min="0"></div><div class="field"><label>BIR zonal value (₱)</label><input id="zonal" type="number" value="0" min="0"></div><div class="field"><label>Acquisition price (₱)</label><input id="acq" type="number" value="6000000" min="0"></div><div class="field"><label>Location / LGU</label><input id="location" placeholder="e.g. Antipolo, Rizal"></div><div class="field"><label>Lot area (sqm)</label><input id="lot" type="number" value="0" min="0"></div></div><div class="actions"><button class="btn primary" id="calc">Calculate estimate →</button><button class="btn secondary" id="reset">Reset</button></div><div class="notice">The initial MVP uses the higher of the gross selling price and entered fair market value for the illustrative CGT/DST base. Local transfer taxes and registration costs are intentionally marked as estimates because they can vary by LGU and transaction.</div></section><section class="card panel" id="breakdown"><div class="head"><div><h2>Estimated Costs</h2><p id="basis">Tax base will appear here.</p></div></div><div class="results"><div class="result"><div class="rline"><b>Capital Gains Tax</b><span class="amount" id="cgt">₱0</span></div><div class="note">6% illustrative rate for qualifying capital-asset real property sales.</div></div><div class="result"><div class="rline"><b>Documentary Stamp Tax</b><span class="amount" id="dst">₱0</span></div><div class="note">₱15 per ₱1,000 of the applicable base (1.5%).</div></div><div class="result"><div class="rline"><b>Transfer Tax — estimate</b><span class="amount" id="transfer">₱0</span></div><div class="note">Illustrative 0.5%; actual LGU rate must be confirmed.</div></div><div class="result"><div class="rline"><b>Registration / other — estimate</b><span class="amount" id="registration">₱0</span></div><div class="note">Illustrative placeholder for planning; not an official fee schedule.</div></div><div class="total"><div class="rline"><b>Estimated transaction costs</b><span class="amount" id="total">₱0</span></div><div class="note">Preliminary planning estimate only.</div></div></div></section></div><div class="summary"><div class="card mini"><small>Property Value</small><strong id="sprice">₱10,000,000</strong></div><div class="card mini"><small>Estimated Seller CGT</small><strong id="scgt">₱600,000</strong></div><div class="card mini"><small>Estimated Total</small><strong id="stotal">₱0</strong></div></div><div class="layout" style="margin-top:14px"><section class="card panel"><div class="head"><div><h2>Cost Visualization</h2><p>Relative size of the preliminary cost components.</p></div></div><div class="chart"><div class="barbox"><i class="bar" id="b1" style="height:70%"></i><small>CGT</small></div><div class="barbox"><i class="bar" id="b2" style="height:30%"></i><small>DST</small></div><div class="barbox"><i class="bar" id="b3" style="height:20%"></i><small>Transfer</small></div><div class="barbox"><i class="bar" id="b4" style="height:10%"></i><small>Other</small></div></div></section><section class="card panel" id="checklist"><div class="head"><div><h2>Transaction Checklist</h2><p>Planning checklist for an onerous transfer.</p></div></div><div class="check"><label><input type="checkbox"> Certified True Copy of Title (OCT/TCT/CCT)</label><label><input type="checkbox"> Current / relevant Tax Declaration</label><label><input type="checkbox"> Notarized Deed of Absolute Sale / transfer</label><label><input type="checkbox"> Valid government IDs / TIN details</label><label><input type="checkbox"> SPA / corporate authorization, if applicable</label><label><input type="checkbox"> Location plan / vicinity map, if required</label><label><input type="checkbox"> BIR ONETT / eCAR requirements reviewed</label></div></section></div><section class="card panel" id="report" style="margin-top:14px"><div class="head"><div><h2>Transaction Report</h2><p>Generate a printable preliminary summary from the current calculation.</p></div><button class="btn primary" onclick="window.print()">Print / Save PDF →</button></div><p style="color:var(--muted);font-size:9px">The report is intended as a planning aid. It is not a BIR computation sheet, tax assessment, legal opinion or substitute for professional advice.</p></section><div class="footer"><span>© 2026 Joshua Dela Cruz · Philippine Property Transaction Toolkit</span><span>Version 1.0 MVP</span></div></main></div><script>
-const root=document.documentElement,theme=document.getElementById('theme');if(localStorage.pet==='dark')root.classList.add('dark');const sync=()=>theme.textContent=root.classList.contains('dark')?'☀':'☾';sync();theme.onclick=()=>{root.classList.toggle('dark');localStorage.pet=root.classList.contains('dark')?'dark':'light';sync()};document.getElementById('menu').onclick=()=>document.getElementById('side').classList.toggle('open');const money=n=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0}).format(n||0);function calc(){let price=+document.getElementById('price').value||0,fmv=+document.getElementById('fmv').value||0,zonal=+document.getElementById('zonal').value||0;let base=Math.max(price,fmv,zonal);let cgt=base*.06,dst=base*.015,transfer=base*.005,registration=base*.0025,total=cgt+dst+transfer+registration;document.getElementById('cgt').textContent=money(cgt);document.getElementById('dst').textContent=money(dst);document.getElementById('transfer').textContent=money(transfer);document.getElementById('registration').textContent=money(registration);document.getElementById('total').textContent=money(total);document.getElementById('sprice').textContent=money(price);document.getElementById('scgt').textContent=money(cgt);document.getElementById('stotal').textContent=money(total);document.getElementById('basis').textContent='Illustrative base: '+money(base);let vals=[cgt,dst,transfer,registration],mx=Math.max(...vals,1);['b1','b2','b3','b4'].forEach((id,i)=>document.getElementById(id).style.height=(Math.max(vals[i]/mx*88,7))+'%')}document.getElementById('calc').onclick=calc;document.getElementById('reset').onclick=()=>{document.getElementById('price').value=10000000;document.getElementById('fmv').value=10000000;document.getElementById('zonal').value=0;document.getElementById('acq').value=6000000;document.getElementById('location').value='';calc()};calc();
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Philippine Property Transaction Toolkit</title>
+
+<style>
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --soft:#eef2f7;
+  --text:#101828;
+  --muted:#667085;
+  --line:#e4e7ec;
+  --primary:#2563eb;
+  --primary2:#7c3aed;
+  --warning:#b45309;
+  --success:#16a34a;
+}
+
+html.dark{
+  --bg:#080b12;
+  --card:#111827;
+  --soft:#182131;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --line:#263244;
+  --primary:#60a5fa;
+  --primary2:#a78bfa;
+  --warning:#fbbf24;
+  --success:#4ade80;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Segoe UI,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  transition:background .18s,color .18s;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  position:fixed;
+  inset:0 auto 0 0;
+  width:245px;
+  padding:23px 15px;
+  background:var(--card);
+  border-right:1px solid var(--line);
+  z-index:10;
+}
+
+.brand{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:3px 8px 25px;
+}
+
+.logo{
+  display:grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:white;
+  font-weight:900;
+}
+
+.brand b{
+  font-size:12px;
+}
+
+.brand small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.nav-label{
+  font-size:9px;
+  color:var(--muted);
+  font-weight:800;
+  letter-spacing:.12em;
+  padding:12px 10px 5px;
+  text-transform:uppercase;
+}
+
+.nav a{
+  display:block;
+  padding:10px;
+  border-radius:10px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+}
+
+.nav a:hover,
+.nav a.active{
+  background:var(--soft);
+  color:var(--primary);
+}
+
+.disclaimer{
+  position:absolute;
+  left:15px;
+  right:15px;
+  bottom:18px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--soft);
+  font-size:8px;
+  color:var(--muted);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+main{
+  margin-left:245px;
+  width:calc(100% - 245px);
+  max-width:1450px;
+  padding:23px 31px 55px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.tools{
+  display:flex;
+  gap:7px;
+}
+
+.icon{
+  width:36px;
+  height:36px;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--text);
+  border-radius:10px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  padding:27px;
+  border:1px solid var(--line);
+  border-radius:23px;
+  background:
+    radial-gradient(
+      circle at 90% 15%,
+      #2563eb1c,
+      transparent 30%
+    ),
+    var(--card);
+}
+
+.hero h1{
+  font-size:clamp(30px,4vw,48px);
+  line-height:1.04;
+  letter-spacing:-.045em;
+  margin:12px 0 8px;
+}
+
+.hero p{
+  max-width:720px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.pill{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:99px;
+  background:#2563eb14;
+  color:var(--primary);
+  font-size:8px;
+  font-weight:850;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);
+  gap:14px;
+  margin-top:14px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:19px;
+  background:var(--card);
+}
+
+.panel{
+  padding:20px;
+}
+
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:14px;
+}
+
+.head h2{
+  margin:0;
+  font-size:15px;
+}
+
+.head p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:9px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:11px;
+}
+
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:750;
+  margin-bottom:5px;
+}
+
+.field input,
+.field select{
+  width:100%;
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--card);
+  color:var(--text);
+  outline:none;
+}
+
+.field input:focus,
+.field select:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px #2563eb14;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:13px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.primary{
+  color:#fff;
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary2)
+  );
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--text);
+}
+
+/* =========================
+   RESULTS
+========================= */
+
+.results{
+  display:grid;
+  gap:9px;
+}
+
+.result{
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:var(--soft);
+}
+
+.rline{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.result b{
+  font-size:11px;
+}
+
+.amount{
+  font-weight:850;
+  font-size:14px;
+}
+
+.note{
+  font-size:8px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.total{
+  padding:16px;
+  border-radius:14px;
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb12,
+      #7c3aed12
+    );
+  border:1px solid #2563eb28;
+}
+
+.total .amount{
+  font-size:25px;
+}
+
+.notice{
+  margin-top:14px;
+  padding:11px;
+  border:1px solid #f59e0b33;
+  background:#f59e0b0d;
+  border-radius:11px;
+  color:var(--warning);
+  font-size:8px;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:14px;
+}
+
+.mini{
+  padding:15px;
+}
+
+.mini small{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+}
+
+.mini strong{
+  display:block;
+  font-size:18px;
+  margin-top:5px;
+}
+
+/* =========================
+   CHART
+========================= */
+
+.chart{
+  height:215px;
+  display:flex;
+  align-items:end;
+  gap:12px;
+  padding:15px 10px 23px;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 42px,
+      var(--line) 43px
+    );
+}
+
+.barbox{
+  height:100%;
+  flex:1;
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  justify-content:end;
+}
+
+.bar{
+  width:min(48px,75%);
+  border-radius:7px 7px 2px 2px;
+  background:
+    linear-gradient(
+      to top,
+      var(--primary),
+      var(--primary2)
+    );
+  transform-origin:bottom;
+  animation:grow .55s both;
+}
+
+.barbox small{
+  font-size:8px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+@keyframes grow{
+  from{
+    transform:scaleY(0);
+  }
+  to{
+    transform:scaleY(1);
+  }
+}
+
+/* =========================
+   CHECKLIST
+========================= */
+
+.check{
+  display:grid;
+  gap:7px;
+}
+
+.check label{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  padding:8px;
+  border-bottom:1px solid var(--line);
+  font-size:9px;
+}
+
+.check input{
+  accent-color:var(--primary);
+}
+
+/* =========================
+   REPORT
+========================= */
+
+.report{
+  margin-top:14px;
+  padding:28px;
+}
+
+.report-header{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+
+  border-bottom:2px solid var(--text);
+  padding-bottom:16px;
+  margin-bottom:18px;
+}
+
+.report-title h2{
+  font-size:24px;
+  letter-spacing:-.03em;
+  margin:8px 0 3px;
+}
+
+.report-title p{
+  margin:0;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.report-meta{
+  text-align:right;
+  font-size:9px;
+  color:var(--muted);
+  min-width:150px;
+}
+
+.report-meta strong{
+  display:block;
+  color:var(--text);
+  font-size:11px;
+  margin-bottom:6px;
+}
+
+.report-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.report-section{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px;
+}
+
+.report-section h3{
+  font-size:11px;
+  margin:0 0 10px;
+  letter-spacing:.03em;
+}
+
+.kv{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  font-size:9px;
+}
+
+.kv span{
+  color:var(--muted);
+}
+
+.kv b{
+  text-align:right;
+}
+
+.report-total{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+
+  margin-top:16px;
+  padding:16px 0 8px;
+
+  border-top:2px solid var(--text);
+}
+
+.report-total small{
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800;
+}
+
+.report-total strong{
+  font-size:27px;
+  letter-spacing:-.03em;
+}
+
+/* =========================
+   REPORT GRAPH
+========================= */
+
+.report-chart{
+  height:210px;
+  display:flex;
+  align-items:end;
+  gap:18px;
+  padding:12px 20px 22px;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 39px,
+      var(--line) 40px
+    );
+}
+
+.report-chart .bar{
+  max-width:58px;
+}
+
+.report-footer{
+  margin-top:18px;
+  padding-top:13px;
+
+  border-top:1px solid var(--line);
+
+  font-size:8px;
+  line-height:1.6;
+  color:var(--muted);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  margin-top:35px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:8px;
+
+  display:flex;
+  justify-content:space-between;
+}
+
+.mobile{
+  display:none;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    width:220px;
+  }
+
+  main{
+    margin-left:220px;
+    width:calc(100% - 220px);
+  }
+}
+
+@media(max-width:700px){
+
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.2s;
+    width:245px;
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .mobile{
+    display:block;
+  }
+
+  main{
+    margin:0;
+    width:100%;
+    padding:15px;
+  }
+
+  .form,
+  .summary,
+  .report-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:20px;
+  }
+
+  .report-header{
+    flex-direction:column;
+  }
+
+  .report-meta{
+    text-align:left;
+  }
+
+  .footer{
+    flex-direction:column;
+    gap:5px;
+  }
+}
+
+/* =========================
+   PRINT / PDF
+========================= */
+
+@media print{
+
+  *{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+
+  html,
+  body{
+    background:#fff !important;
+    color:#111827 !important;
+  }
+
+  body{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11pt;
+  }
+
+  /*
+     Hide the entire application UI.
+     Only the report remains.
+  */
+
+  .sidebar,
+  .top,
+  .hero,
+  #calculator,
+  #breakdown,
+  .summary,
+  .layout,
+  .notice,
+  .footer,
+  .screen-only{
+    display:none !important;
+  }
+
+  main{
+    margin:0 !important;
+    width:100% !important;
+    max-width:none !important;
+    padding:0 !important;
+  }
+
+  .report{
+    display:block !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    border:0 !important;
+    border-radius:0 !important;
+
+    background:#fff !important;
+    color:#111827 !important;
+  }
+
+  .report-header{
+    border-color:#111827 !important;
+  }
+
+  .report-section{
+    border:1px solid #d0d5dd !important;
+    background:#fff !important;
+  }
+
+  .report-title h2,
+  .report-meta strong,
+  .report-section h3,
+  .kv b,
+  .report-total{
+    color:#111827 !important;
+  }
+
+  .report-title p,
+  .report-meta,
+  .kv span,
+  .report-total small,
+  .report-footer{
+    color:#667085 !important;
+  }
+
+  .report-total{
+    border-color:#111827 !important;
+  }
+
+  .report-chart{
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 39px,
+        #e4e7ec 40px
+      ) !important;
+  }
+
+  .report-chart .bar{
+    background:#2563eb !important;
+    animation:none !important;
+  }
+
+  .report-chart .barbox small{
+    color:#667085 !important;
+  }
+
+  .report-footer{
+    margin-top:14px;
+  }
+
+  @page{
+    size:A4;
+    margin:14mm;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="shell">
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+
+    <div class="logo">
+      PH
+    </div>
+
+    <div>
+      <b>Property Toolkit</b>
+      <small>
+        Philippines · Transaction Workspace
+      </small>
+    </div>
+
+  </div>
+
+  <nav class="nav">
+
+    <div class="nav-label">
+      Workspace
+    </div>
+
+    <a class="active" href="#calculator">
+      ▦ &nbsp; Calculator
+    </a>
+
+    <a href="#breakdown">
+      ◒ &nbsp; Cost Breakdown
+    </a>
+
+    <a href="#checklist">
+      ✓ &nbsp; Checklist
+    </a>
+
+    <a href="#report">
+      ▤ &nbsp; Transaction Report
+    </a>
+
+    <div class="nav-label">
+      Reference
+    </div>
+
+    <a
+      href="https://www.bir.gov.ph/"
+      target="_blank"
+      rel="noopener"
+    >
+      BIR ↗
+    </a>
+
+    <a
+      href="https://web-services.bir.gov.ph/trraportal/"
+      target="_blank"
+      rel="noopener"
+    >
+      BIR ONETT ↗
+    </a>
+
+  </nav>
+
+  <div class="disclaimer">
+
+    <b>Preliminary estimate</b>
+
+    <br>
+
+    This tool is for planning only.
+    Actual taxes, assessments, fees and
+    documentary requirements must be
+    confirmed with the BIR, LGU, Registry
+    of Deeds and appropriate professionals.
+
+  </div>
+
+</aside>
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main>
+
+  <div class="top">
+
+    <span>
+      Real Estate /
+      <b style="color:var(--text)">
+        Transaction Toolkit
+      </b>
+    </span>
+
+    <div class="tools">
+
+      <button
+        class="icon mobile"
+        id="menu"
+      >
+        ☰
+      </button>
+
+      <button
+        class="icon"
+        id="theme"
+        title="Toggle light/dark mode"
+      >
+        ☾
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <section class="hero">
+
+    <span class="pill">
+      MVP · PHILIPPINE REAL ESTATE
+    </span>
+
+    <h1>
+      Prepare the transaction.
+      <br>
+
+      <span style="color:var(--primary)">
+        See the numbers clearly.
+      </span>
+    </h1>
+
+    <p>
+      A practical workspace for Philippine
+      brokers and salespersons to make
+      preliminary property transaction
+      estimates, organize requirements and
+      prepare a client-ready summary.
+    </p>
+
+  </section>
+
+  <!-- =========================
+       CALCULATOR
+  ========================= -->
+
+  <div
+    class="layout"
+    id="calculator"
+  >
+
+    <section class="card panel">
+
+      <div class="head">
+
+        <div>
+
+          <h2>
+            Transaction Calculator
+          </h2>
+
+          <p>
+            Enter the values available
+            from the property documents.
+          </p>
+
+        </div>
+
+        <span class="pill">
+          LIVE ESTIMATE
+        </span>
+
+      </div>
+
+      <div class="form">
+
+        <div class="field">
+
+          <label>
+            Transaction
+          </label>
+
+          <select id="type">
+
+            <option>
+              Sale of capital asset
+            </option>
+
+            <option>
+              Sale of ordinary asset
+            </option>
+
+            <option>
+              Purchase planning
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Property type
+          </label>
+
+          <select id="property">
+
+            <option>
+              House & Lot
+            </option>
+
+            <option>
+              Vacant Land
+            </option>
+
+            <option>
+              Condominium
+            </option>
+
+            <option>
+              Commercial Property
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Gross selling price (₱)
+          </label>
+
+          <input
+            id="price"
+            type="number"
+            value="10000000"
+            min="0"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Fair market value (₱)
+          </label>
+
+          <input
+            id="fmv"
+            type="number"
+            value="10000000"
+            min="0"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            BIR zonal value (₱)
+          </label>
+
+          <input
+            id="zonal"
+            type="number"
+            value="0"
+            min="0"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Acquisition price (₱)
+          </label>
+
+          <input
+            id="acq"
+            type="number"
+            value="6000000"
+            min="0"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Location / LGU
+          </label>
+
+          <input
+            id="location"
+            placeholder="e.g. Antipolo, Rizal"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Lot area (sqm)
+          </label>
+
+          <input
+            id="lot"
+            type="number"
+            value="0"
+            min="0"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn primary"
+          id="calc"
+        >
+          Calculate estimate →
+        </button>
+
+        <button
+          class="btn secondary"
+          id="reset"
+        >
+          Reset
+        </button>
+
+      </div>
+
+      <div class="notice">
+
+        The MVP uses the higher of the entered
+        selling price, fair market value and
+        zonal value for the illustrative tax base.
+        Local transfer taxes and registration
+        costs are planning estimates and must
+        be confirmed.
+
+      </div>
+
+    </section>
+
+    <!-- =========================
+         RESULTS
+    ========================= -->
+
+    <section
+      class="card panel"
+      id="breakdown"
+    >
+
+      <div class="head">
+
+        <div>
+
+          <h2>
+            Estimated Costs
+          </h2>
+
+          <p id="basis">
+            Tax base will appear here.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="results">
+
+        <div class="result">
+
+          <div class="rline">
+
+            <b>
+              Capital Gains Tax
+            </b>
+
+            <span
+              class="amount"
+              id="cgt"
+            >
+              ₱0
+            </span>
+
+          </div>
+
+          <div class="note">
+            6% illustrative rate for qualifying
+            capital-asset real property sales.
+          </div>
+
+        </div>
+
+        <div class="result">
+
+          <div class="rline">
+
+            <b>
+              Documentary Stamp Tax
+            </b>
+
+            <span
+              class="amount"
+              id="dst"
+            >
+              ₱0
+            </span>
+
+          </div>
+
+          <div class="note">
+            1.5% illustrative rate on the
+            applicable base.
+          </div>
+
+        </div>
+
+        <div class="result">
+
+          <div class="rline">
+
+            <b>
+              Transfer Tax — estimate
+            </b>
+
+            <span
+              class="amount"
+              id="transfer"
+            >
+              ₱0
+            </span>
+
+          </div>
+
+          <div class="note">
+            Illustrative 0.5%; actual LGU rate
+            must be confirmed.
+          </div>
+
+        </div>
+
+        <div class="result">
+
+          <div class="rline">
+
+            <b>
+              Registration / other — estimate
+            </b>
+
+            <span
+              class="amount"
+              id="registration"
+            >
+              ₱0
+            </span>
+
+          </div>
+
+          <div class="note">
+            Illustrative planning placeholder,
+            not an official fee schedule.
+          </div>
+
+        </div>
+
+        <div class="total">
+
+          <div class="rline">
+
+            <b>
+              Estimated transaction costs
+            </b>
+
+            <span
+              class="amount"
+              id="total"
+            >
+              ₱0
+            </span>
+
+          </div>
+
+          <div class="note">
+            Preliminary planning estimate only.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- =========================
+       SUMMARY
+  ========================= -->
+
+  <div class="summary">
+
+    <div class="card mini">
+
+      <small>
+        Property Value
+      </small>
+
+      <strong id="sprice">
+        ₱10,000,000
+      </strong>
+
+    </div>
+
+    <div class="card mini">
+
+      <small>
+        Estimated Seller CGT
+      </small>
+
+      <strong id="scgt">
+        ₱600,000
+      </strong>
+
+    </div>
+
+    <div class="card mini">
+
+      <small>
+        Estimated Total
+      </small>
+
+      <strong id="stotal">
+        ₱0
+      </strong>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       GRAPH + CHECKLIST
+  ========================= -->
+
+  <div class="layout">
+
+    <section class="card panel">
+
+      <div class="head">
+
+        <div>
+
+          <h2>
+            Cost Visualization
+          </h2>
+
+          <p>
+            Relative size of preliminary
+            cost components.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="chart">
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="b1"
+            style="height:70%"
+          ></i>
+
+          <small>
+            CGT
+          </small>
+
+        </div>
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="b2"
+            style="height:30%"
+          ></i>
+
+          <small>
+            DST
+          </small>
+
+        </div>
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="b3"
+            style="height:20%"
+          ></i>
+
+          <small>
+            Transfer
+          </small>
+
+        </div>
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="b4"
+            style="height:10%"
+          ></i>
+
+          <small>
+            Other
+          </small>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section
+      class="card panel"
+      id="checklist"
+    >
+
+      <div class="head">
+
+        <div>
+
+          <h2>
+            Transaction Checklist
+          </h2>
+
+          <p>
+            Planning checklist for an
+            onerous transfer.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="check">
+
+        <label>
+          <input type="checkbox">
+          Certified True Copy of Title
+        </label>
+
+        <label>
+          <input type="checkbox">
+          Current Tax Declaration
+        </label>
+
+        <label>
+          <input type="checkbox">
+          Notarized Deed of Absolute Sale
+        </label>
+
+        <label>
+          <input type="checkbox">
+          Valid IDs / TIN details
+        </label>
+
+        <label>
+          <input type="checkbox">
+          SPA / corporate authorization,
+          if applicable
+        </label>
+
+        <label>
+          <input type="checkbox">
+          Location plan / vicinity map,
+          if required
+        </label>
+
+        <label>
+          <input type="checkbox">
+          BIR ONETT / eCAR requirements
+          reviewed
+        </label>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- =====================================================
+       CLEAN TRANSACTION REPORT
+  ===================================================== -->
+
+  <section
+    class="card report"
+    id="report"
+  >
+
+    <div class="report-header">
+
+      <div class="report-title">
+
+        <span class="pill">
+          PRELIMINARY TRANSACTION REPORT
+        </span>
+
+        <h2>
+          Property Transaction Estimate
+        </h2>
+
+        <p>
+          Prepared using the information
+          entered in the calculator.
+        </p>
+
+      </div>
+
+      <div class="report-meta">
+
+        <span>
+          Report date
+        </span>
+
+        <strong id="rdate">
+          —
+        </strong>
+
+        <span>
+          Location
+        </span>
+
+        <strong id="rlocation">
+          —
+        </strong>
+
+      </div>
+
+    </div>
+
+    <!-- PROPERTY + VALUATION -->
+
+    <div class="report-grid">
+
+      <div class="report-section">
+
+        <h3>
+          PROPERTY DETAILS
+        </h3>
+
+        <div class="kv">
+
+          <span>
+            Transaction
+          </span>
+
+          <b id="rtype">
+            —
+          </b>
+
+          <span>
+            Property type
+          </span>
+
+          <b id="rproperty">
+            —
+          </b>
+
+          <span>
+            Location / LGU
+          </span>
+
+          <b id="rlocation2">
+            —
+          </b>
+
+          <span>
+            Lot area
+          </span>
+
+          <b id="rlot">
+            —
+          </b>
+
+        </div>
+
+      </div>
+
+      <div class="report-section">
+
+        <h3>
+          PROPERTY VALUATION
+        </h3>
+
+        <div class="kv">
+
+          <span>
+            Gross selling price
+          </span>
+
+          <b id="rprice">
+            ₱0
+          </b>
+
+          <span>
+            Fair market value
+          </span>
+
+          <b id="rfmv">
+            ₱0
+          </b>
+
+          <span>
+            BIR zonal value
+          </span>
+
+          <b id="rzonal">
+            ₱0
+          </b>
+
+          <span>
+            Illustrative tax base
+          </span>
+
+          <b id="rbase">
+            ₱0
+          </b>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAXES -->
+
+    <div
+      class="report-section"
+      style="margin-top:16px"
+    >
+
+      <h3>
+        ESTIMATED TAXES & FEES
+      </h3>
+
+      <div class="kv">
+
+        <span>
+          Capital Gains Tax
+        </span>
+
+        <b id="rcgt">
+          ₱0
+        </b>
+
+        <span>
+          Documentary Stamp Tax
+        </span>
+
+        <b id="rdst">
+          ₱0
+        </b>
+
+        <span>
+          Transfer Tax — estimate
+        </span>
+
+        <b id="rtransfer">
+          ₱0
+        </b>
+
+        <span>
+          Registration / other — estimate
+        </span>
+
+        <b id="rregistration">
+          ₱0
+        </b>
+
+      </div>
+
+      <div class="report-total">
+
+        <div>
+
+          <small>
+            ESTIMATED TRANSACTION COSTS
+          </small>
+
+        </div>
+
+        <strong id="rtotal">
+          ₱0
+        </strong>
+
+      </div>
+
+    </div>
+
+    <!-- REPORT GRAPH -->
+
+    <div
+      class="report-section"
+      style="margin-top:16px"
+    >
+
+      <h3>
+        COST GRAPH
+      </h3>
+
+      <div class="report-chart">
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="rb1"
+            style="height:70%"
+          ></i>
+
+          <small>
+            CGT
+          </small>
+
+        </div>
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="rb2"
+            style="height:30%"
+          ></i>
+
+          <small>
+            DST
+          </small>
+
+        </div>
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="rb3"
+            style="height:20%"
+          ></i>
+
+          <small>
+            Transfer
+          </small>
+
+        </div>
+
+        <div class="barbox">
+
+          <i
+            class="bar"
+            id="rb4"
+            style="height:10%"
+          ></i>
+
+          <small>
+            Other
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DISCLAIMER -->
+
+    <div class="report-footer">
+
+      <b>Important:</b>
+
+      This is a preliminary planning estimate only.
+      It is not a BIR assessment, official computation,
+      legal opinion or substitute for professional advice.
+
+      Actual taxes, fees, valuation bases and
+      documentary requirements should be verified
+      with the BIR, applicable LGU, Registry of Deeds
+      and qualified professionals.
+
+    </div>
+
+    <div class="actions screen-only">
+
+      <button
+        class="btn primary"
+        id="print"
+      >
+        Print / Save as PDF →
+      </button>
+
+    </div>
+
+  </section>
+
+  <div class="footer">
+
+    <span>
+      © 2026 Joshua Dela Cruz ·
+      Philippine Property Transaction Toolkit
+    </span>
+
+    <span>
+      Version 1.0 MVP
+    </span>
+
+  </div>
+
+</main>
+</div>
+
+<script>
+
+/* =====================================================
+   THEME
+   Uses the same localStorage key as the main portfolio.
+===================================================== */
+
+const root = document.documentElement;
+const themeButton = document.getElementById("theme");
+
+const savedTheme = localStorage.getItem("jdtheme");
+
+const prefersDark =
+  window.matchMedia &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+if (
+  savedTheme === "dark" ||
+  (!savedTheme && prefersDark)
+) {
+  root.classList.add("dark");
+}
+
+function updateThemeIcon(){
+
+  themeButton.textContent =
+    root.classList.contains("dark")
+      ? "☀"
+      : "☾";
+
+}
+
+updateThemeIcon();
+
+themeButton.addEventListener("click",()=>{
+
+  root.classList.toggle("dark");
+
+  localStorage.setItem(
+    "jdtheme",
+    root.classList.contains("dark")
+      ? "dark"
+      : "light"
+  );
+
+  updateThemeIcon();
+
+});
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+document
+  .getElementById("menu")
+  .addEventListener("click",()=>{
+
+    document
+      .getElementById("sidebar")
+      .classList.toggle("open");
+
+  });
+
+
+/* =====================================================
+   MONEY FORMAT
+===================================================== */
+
+function money(value){
+
+  return new Intl.NumberFormat(
+    "en-PH",
+    {
+      style:"currency",
+      currency:"PHP",
+      maximumFractionDigits:0
+    }
+  ).format(value || 0);
+
+}
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const priceEl =
+  document.getElementById("price");
+
+const fmvEl =
+  document.getElementById("fmv");
+
+const zonalEl =
+  document.getElementById("zonal");
+
+const acqEl =
+  document.getElementById("acq");
+
+const locationEl =
+  document.getElementById("location");
+
+const lotEl =
+  document.getElementById("lot");
+
+const typeEl =
+  document.getElementById("type");
+
+const propertyEl =
+  document.getElementById("property");
+
+const cgtEl =
+  document.getElementById("cgt");
+
+const dstEl =
+  document.getElementById("dst");
+
+const transferEl =
+  document.getElementById("transfer");
+
+const registrationEl =
+  document.getElementById("registration");
+
+const totalEl =
+  document.getElementById("total");
+
+const sprice =
+  document.getElementById("sprice");
+
+const scgt =
+  document.getElementById("scgt");
+
+const stotal =
+  document.getElementById("stotal");
+
+const basis =
+  document.getElementById("basis");
+
+
+/* =====================================================
+   CALCULATOR
+===================================================== */
+
+function calculate(){
+
+  const price =
+    Number(priceEl.value) || 0;
+
+  const fmv =
+    Number(fmvEl.value) || 0;
+
+  const zonal =
+    Number(zonalEl.value) || 0;
+
+  /*
+    Illustrative tax base.
+
+    For this MVP we use the highest
+    entered value.
+  */
+
+  const taxBase =
+    Math.max(
+      price,
+      fmv,
+      zonal
+    );
+
+  /*
+    Illustrative rates.
+  */
+
+  const cgt =
+    taxBase * 0.06;
+
+  const dst =
+    taxBase * 0.015;
+
+  const transfer =
+    taxBase * 0.005;
+
+  const registration =
+    taxBase * 0.0025;
+
+  const total =
+    cgt +
+    dst +
+    transfer +
+    registration;
+
+  const values = [
+    cgt,
+    dst,
+    transfer,
+    registration
+  ];
+
+  const max =
+    Math.max(...values,1);
+
+
+  /* Dashboard */
+
+  cgtEl.textContent =
+    money(cgt);
+
+  dstEl.textContent =
+    money(dst);
+
+  transferEl.textContent =
+    money(transfer);
+
+  registrationEl.textContent =
+    money(registration);
+
+  totalEl.textContent =
+    money(total);
+
+  sprice.textContent =
+    money(price);
+
+  scgt.textContent =
+    money(cgt);
+
+  stotal.textContent =
+    money(total);
+
+  basis.textContent =
+    "Illustrative tax base: " +
+    money(taxBase);
+
+
+  /* Dashboard graph */
+
+  [
+    "b1",
+    "b2",
+    "b3",
+    "b4"
+  ].forEach((id,index)=>{
+
+    const height =
+      Math.max(
+        (values[index] / max) * 88,
+        7
+      );
+
+    document
+      .getElementById(id)
+      .style.height =
+      height + "%";
+
+  });
+
+
+  /* =================================================
+     REPORT
+  ================================================= */
+
+  document
+    .getElementById("rdate")
+    .textContent =
+    new Date().toLocaleDateString(
+      "en-PH",
+      {
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+      }
+    );
+
+  document
+    .getElementById("rlocation")
+    .textContent =
+    locationEl.value ||
+    "Not specified";
+
+  document
+    .getElementById("rlocation2")
+    .textContent =
+    locationEl.value ||
+    "Not specified";
+
+  document
+    .getElementById("rtype")
+    .textContent =
+    typeEl.value;
+
+  document
+    .getElementById("rproperty")
+    .textContent =
+    propertyEl.value;
+
+  document
+    .getElementById("rlot")
+    .textContent =
+    (
+      Number(lotEl.value) || 0
+    ).toLocaleString("en-PH") +
+    " sqm";
+
+  document
+    .getElementById("rprice")
+    .textContent =
+    money(price);
+
+  document
+    .getElementById("rfmv")
+    .textContent =
+    money(fmv);
+
+  document
+    .getElementById("rzonal")
+    .textContent =
+    money(zonal);
+
+  document
+    .getElementById("rbase")
+    .textContent =
+    money(taxBase);
+
+  document
+    .getElementById("rcgt")
+    .textContent =
+    money(cgt);
+
+  document
+    .getElementById("rdst")
+    .textContent =
+    money(dst);
+
+  document
+    .getElementById("rtransfer")
+    .textContent =
+    money(transfer);
+
+  document
+    .getElementById("rregistration")
+    .textContent =
+    money(registration);
+
+  document
+    .getElementById("rtotal")
+    .textContent =
+    money(total);
+
+
+  /* Report graph */
+
+  [
+    "rb1",
+    "rb2",
+    "rb3",
+    "rb4"
+  ].forEach((id,index)=>{
+
+    const height =
+      Math.max(
+        (values[index] / max) * 88,
+        7
+      );
+
+    document
+      .getElementById(id)
+      .style.height =
+      height + "%";
+
+  });
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+document
+  .getElementById("calc")
+  .addEventListener(
+    "click",
+    calculate
+  );
+
+
+[
+  priceEl,
+  fmvEl,
+  zonalEl,
+  acqEl,
+  locationEl,
+  lotEl,
+  typeEl,
+  propertyEl
+].forEach(element=>{
+
+  element.addEventListener(
+    "input",
+    calculate
+  );
+
+  element.addEventListener(
+    "change",
+    calculate
+  );
+
+});
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+document
+  .getElementById("reset")
+  .addEventListener("click",()=>{
+
+    priceEl.value =
+      10000000;
+
+    fmvEl.value =
+      10000000;
+
+    zonalEl.value =
+      0;
+
+    acqEl.value =
+      6000000;
+
+    locationEl.value =
+      "";
+
+    lotEl.value =
+      0;
+
+    typeEl.selectedIndex =
+      0;
+
+    propertyEl.selectedIndex =
+      0;
+
+    calculate();
+
+  });
+
+
+/* =====================================================
+   PRINT / SAVE PDF
+===================================================== */
+
+document
+  .getElementById("print")
+  .addEventListener(
+    "click",
+    ()=>{
+      calculate();
+      window.print();
+    }
+  );
+
+
+/* =====================================================
+   INITIAL CALCULATION
+===================================================== */
+
+calculate();
+
+</script>
+
+</body>
+</html>
