@@ -18,7 +18,6 @@
   --accent2:#1d4ed8;
   --success:#059669;
   --danger:#dc2626;
-  --warning:#d97706;
   --shadow:0 10px 35px rgba(15,23,42,.07);
   --radius:18px;
 }
@@ -34,7 +33,6 @@ html[data-theme="dark"]{
   --accent2:#3b82f6;
   --success:#34d399;
   --danger:#f87171;
-  --warning:#fbbf24;
   --shadow:0 10px 35px rgba(0,0,0,.25);
 }
 
@@ -269,6 +267,7 @@ h1{
 }
 
 @media(max-width:900px){
+
   .grid-2,
   .grid-3{
     grid-template-columns:1fr;
@@ -335,6 +334,7 @@ h1{
 }
 
 @media(max-width:700px){
+
   .form-grid,
   .form-grid.three{
     grid-template-columns:1fr;
@@ -397,25 +397,10 @@ input[readonly]{
   color:var(--success);
 }
 
-.location-status.loading{
-  color:var(--accent);
-}
-
 .location-help{
   color:var(--muted);
   font-size:11px;
   margin-top:5px;
-}
-
-.planning-note{
-  margin:20px 0 0;
-  padding:13px;
-  border-radius:12px;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
 }
 
 .button-row{
@@ -436,12 +421,14 @@ input[readonly]{
 }
 
 @media(max-width:900px){
+
   .summary-grid{
     grid-template-columns:repeat(2,1fr);
   }
 }
 
 @media(max-width:500px){
+
   .summary-grid{
     grid-template-columns:1fr;
   }
@@ -625,7 +612,7 @@ th{
 }
 
 /* =========================================================
-   REPORT
+   REPORT — SCREEN
    ========================================================= */
 
 .report{
@@ -708,20 +695,13 @@ html[data-theme="dark"] .report{
   margin-top:10px;
   color:#64748b;
   font-size:10px;
-  line-height:1.5;
+  line-height:1.45;
 }
 
 @media(max-width:600px){
+
   .report-grid{
     grid-template-columns:1fr;
-  }
-
-  .report-header{
-    flex-direction:column;
-  }
-
-  .report-header > div:last-child{
-    text-align:left !important;
   }
 }
 
@@ -742,46 +722,46 @@ footer{
 }
 
 /* =========================================================
-   TOAST
+   PRINT — IMPORTANT
    ========================================================= */
 
-.toast{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:9999;
-  max-width:360px;
-  padding:13px 16px;
-  border-radius:12px;
-  background:var(--text);
-  color:var(--surface);
-  box-shadow:var(--shadow);
-  font-size:12px;
-  opacity:0;
-  transform:translateY(10px);
-  pointer-events:none;
-  transition:.2s ease;
-}
+/*
+  The browser may still print its own:
+  - date
+  - URL
+  - page number
 
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
-}
+  Those are controlled by the browser's own print dialog.
+  In Chrome, disable "Headers and footers".
 
-/* =========================================================
-   PRINT
-   ========================================================= */
+  Everything belonging to the application is controlled below.
+*/
+
+@page{
+  size:A4 portrait;
+  margin:8mm;
+}
 
 @media print{
 
-  @page{
-    size:A4;
-    margin:12mm;
+  html,
+  body{
+    width:210mm;
+    min-height:297mm;
+    background:#fff!important;
+    color:#111827!important;
   }
 
   body{
-    background:#fff!important;
+    margin:0!important;
+    padding:0!important;
+    font-size:9px!important;
+    line-height:1.25!important;
   }
+
+  /*
+    Hide everything except the report.
+  */
 
   .topbar,
   .workspace-nav,
@@ -791,26 +771,158 @@ footer{
   #allocation,
   #analytics,
   #checklist,
-  .no-print,
   footer,
-  .toast{
+  .no-print{
     display:none!important;
   }
 
   .container{
-    max-width:none;
-    padding:0;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
   }
 
   #report{
     display:block!important;
-    border:0;
-    box-shadow:none;
-    padding:0;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:#fff!important;
+    color:#111827!important;
+
+    /*
+      Prevent the report from creating an
+      unnecessary page because of the card.
+    */
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
   }
 
-  .report{
-    border:0;
+  /*
+    Compact report header.
+  */
+
+  .report-header{
+    padding:0 0 7px!important;
+    margin:0!important;
+    border-bottom:1.5px solid #111827!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+
+  .report-header h2{
+    font-size:16px!important;
+    line-height:1.1!important;
+    margin:0!important;
+  }
+
+  .report-header p{
+    font-size:8px!important;
+    margin:2px 0 0!important;
+  }
+
+  /*
+    Compact every report section.
+  */
+
+  .report-section{
+    padding:7px 0!important;
+    margin:0!important;
+    border-bottom:1px solid #d9dee8!important;
+
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+
+  .report-section h3{
+    font-size:8px!important;
+    line-height:1.1!important;
+    margin:0 0 4px!important;
+    letter-spacing:.06em!important;
+  }
+
+  .report-grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    column-gap:18px!important;
+    row-gap:1px!important;
+  }
+
+  .report-line{
+    padding:2px 0!important;
+    font-size:8.5px!important;
+    line-height:1.2!important;
+
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+
+  .report-total{
+    margin-top:6px!important;
+    padding:6px 0 0!important;
+    border-top:1.5px solid #111827!important;
+    font-size:11px!important;
+    line-height:1.2!important;
+  }
+
+  .report-warning{
+    margin-top:7px!important;
+    padding:6px!important;
+    border-left:3px solid #64748b!important;
+    font-size:7.5px!important;
+    line-height:1.3!important;
+  }
+
+  .report-source{
+    margin-top:5px!important;
+    font-size:7px!important;
+    line-height:1.25!important;
+  }
+
+  /*
+    Keep the button hidden.
+  */
+
+  .report .button-row{
+    display:none!important;
+  }
+
+  /*
+    Avoid individual sections being split.
+  */
+
+  .report-section,
+  .report-header,
+  .report-grid,
+  .report-line,
+  .report-warning{
+    orphans:3;
+    widows:3;
+  }
+}
+
+/* =========================================================
+   MOBILE PRINT FALLBACK
+   ========================================================= */
+
+@media print and (max-width:700px){
+
+  @page{
+    size:A4 portrait;
+    margin:6mm;
+  }
+
+  html,
+  body{
+    width:210mm!important;
+  }
+
+  .report-grid{
+    grid-template-columns:repeat(2,1fr)!important;
   }
 }
 </style>
@@ -827,11 +939,16 @@ footer{
       href="https://joshuadelacruz.solutions/"
     >
 
-      <div class="logo">PH</div>
+      <div class="logo">
+        PH
+      </div>
 
       <div>
         Joshua Dela Cruz
-        <small>Property Workspace</small>
+
+        <small>
+          Property Workspace
+        </small>
       </div>
 
     </a>
@@ -872,7 +989,9 @@ footer{
 
     Real Estate /
 
-    <strong>Transaction Workspace</strong>
+    <strong>
+      Transaction Workspace
+    </strong>
 
   </div>
 
@@ -897,26 +1016,48 @@ footer{
 
   <nav class="workspace-nav">
 
-    <a href="#workspace">▦ Transaction</a>
-    <a href="#costs">◒ Costs</a>
-    <a href="#allocation">⇄ Allocation</a>
-    <a href="#analytics">◔ Analytics</a>
-    <a href="#checklist">✓ Checklist</a>
-    <a href="#report">▤ Report</a>
+    <a href="#workspace">
+      ▦ Transaction
+    </a>
+
+    <a href="#costs">
+      ◒ Costs
+    </a>
+
+    <a href="#allocation">
+      ⇄ Allocation
+    </a>
+
+    <a href="#analytics">
+      ◔ Analytics
+    </a>
+
+    <a href="#checklist">
+      ✓ Checklist
+    </a>
+
+    <a href="#report">
+      ▤ Report
+    </a>
 
   </nav>
 
-  <!-- =======================================================
+  <!-- =====================================================
        WORKSPACE
-       ======================================================= -->
+       ===================================================== -->
 
-  <section class="card" id="workspace">
+  <section
+    class="card"
+    id="workspace"
+  >
 
     <div class="card-title">
 
       <div>
 
-        <h2>Transaction Setup</h2>
+        <h2>
+          Transaction Setup
+        </h2>
 
         <p>
           Enter the information available from the property documents.
@@ -1082,7 +1223,10 @@ footer{
             Province
           </label>
 
-          <select id="province" disabled>
+          <select
+            id="province"
+            disabled
+          >
 
             <option value="">
               Loading provinces...
@@ -1098,7 +1242,10 @@ footer{
             City / Municipality
           </label>
 
-          <select id="cityMunicipality" disabled>
+          <select
+            id="cityMunicipality"
+            disabled
+          >
 
             <option value="">
               Select province first
@@ -1114,7 +1261,10 @@ footer{
             Barangay
           </label>
 
-          <select id="barangay" disabled>
+          <select
+            id="barangay"
+            disabled
+          >
 
             <option value="">
               Select city / municipality first
@@ -1190,17 +1340,21 @@ footer{
 
     </div>
 
-    <div class="planning-note">
-
+    <p
+      style="
+        color:var(--muted);
+        font-size:11px;
+        margin:17px 0 0;
+      "
+    >
       <strong>Planning note:</strong>
       The calculator uses illustrative rates for preliminary planning.
       Actual taxes, fees, tax bases and payment responsibilities may
-      depend on the transaction, property classification, applicable
-      law, BIR rules, LGU ordinances and the parties' agreement.
-      Verify final figures with the appropriate authorities and
+      depend on the transaction, property classification, applicable law,
+      BIR rules, LGU ordinances and the parties' agreement.
+      Verify the final figures with the appropriate authorities and
       qualified professionals.
-
-    </div>
+    </p>
 
     <div class="button-row">
 
@@ -1226,9 +1380,9 @@ footer{
 
   <br>
 
-  <!-- =======================================================
+  <!-- =====================================================
        SUMMARY
-       ======================================================= -->
+       ===================================================== -->
 
   <section class="card">
 
@@ -1315,11 +1469,14 @@ footer{
 
   <br>
 
-  <!-- =======================================================
+  <!-- =====================================================
        COSTS
-       ======================================================= -->
+       ===================================================== -->
 
-  <section class="card" id="costs">
+  <section
+    class="card"
+    id="costs"
+  >
 
     <div class="card-title">
 
@@ -1481,11 +1638,14 @@ footer{
 
   <br>
 
-  <!-- =======================================================
+  <!-- =====================================================
        ALLOCATION
-       ======================================================= -->
+       ===================================================== -->
 
-  <section class="card" id="allocation">
+  <section
+    class="card"
+    id="allocation"
+  >
 
     <div class="card-title">
 
@@ -1549,11 +1709,14 @@ footer{
 
   <br>
 
-  <!-- =======================================================
+  <!-- =====================================================
        ANALYTICS
-       ======================================================= -->
+       ===================================================== -->
 
-  <section class="card" id="analytics">
+  <section
+    class="card"
+    id="analytics"
+  >
 
     <div class="card-title">
 
@@ -1580,11 +1743,14 @@ footer{
 
   <br>
 
-  <!-- =======================================================
+  <!-- =====================================================
        CHECKLIST
-       ======================================================= -->
+       ===================================================== -->
 
-  <section class="card" id="checklist">
+  <section
+    class="card"
+    id="checklist"
+  >
 
     <div class="card-title">
 
@@ -1624,9 +1790,9 @@ footer{
 
   <br>
 
-  <!-- =======================================================
+  <!-- =====================================================
        REPORT
-       ======================================================= -->
+       ===================================================== -->
 
   <section
     class="card report"
@@ -1715,6 +1881,12 @@ footer{
           <span>Lot area</span>
           <strong id="rLotArea">
             0 sqm
+          </strong>
+        </div>
+
+        <div class="report-line">
+          <span>Transaction ID</span>
+          <strong id="transactionId">
           </strong>
         </div>
 
@@ -1932,7 +2104,7 @@ footer{
 
     </div>
 
-    <!-- CHECKLIST -->
+    <!-- PREPARATION STATUS -->
 
     <div class="report-section">
 
@@ -1954,17 +2126,6 @@ footer{
 
         </div>
 
-        <div class="report-line">
-
-          <span>
-            Transaction ID
-          </span>
-
-          <strong id="transactionId">
-          </strong>
-
-        </div>
-
       </div>
 
       <div class="report-warning">
@@ -1977,8 +2138,8 @@ footer{
         It is not a BIR assessment, official computation,
         legal opinion or substitute for professional advice.
         Actual taxes, fees, valuation bases, payment allocations
-        and documentary requirements should be verified with
-        the BIR, applicable LGU, Registry of Deeds and qualified
+        and documentary requirements should be verified with the
+        BIR, applicable LGU, Registry of Deeds and qualified
         professionals.
 
       </div>
@@ -1986,14 +2147,17 @@ footer{
       <div class="report-source">
 
         Geographic reference data provided through PSGC Cloud.
-        PSGC Cloud describes its service as a structured Philippine
-        Standard Geographic Code reference API. Independently verify
-        critical geographic information before relying on it for
-        a legal, tax, banking or property transaction.
+        PSGC Cloud describes its service as a structured
+        Philippine Standard Geographic Code reference API.
+        Independently verify critical geographic information
+        before relying on it for a legal, tax, banking or
+        property transaction.
 
       </div>
 
     </div>
+
+    <!-- PRINT BUTTON -->
 
     <div
       class="button-row no-print"
@@ -2026,39 +2190,15 @@ footer{
 
 </footer>
 
-<div
-  id="toast"
-  class="toast"
-  role="status"
-  aria-live="polite"
-></div>
-
 <script>
-"use strict";
 
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
-   VERSION 4.1
-   =========================================================
-
-   IMPORTANT PSGC FIX
-
-   PSGC Cloud documented endpoints:
-
-   v2:
-   https://psgc.cloud/api/v2/provinces
-   https://psgc.cloud/api/v2/provinces/{code}/cities-municipalities
-   https://psgc.cloud/api/v2/cities-municipalities/{code}/barangays
-
-   This version uses v2 consistently.
+   VERSION 4
    ========================================================= */
 
-const PSGC_BASE = "https://psgc.cloud/api/v2";
-
-const STORAGE_KEY = "ph-property-workspace-v4";
-const THEME_KEY = "ph-property-theme";
-
-const $ = id => document.getElementById(id);
+const PSGC_BASE =
+  "https://psgc.cloud/api";
 
 /* =========================================================
    STATE
@@ -2091,52 +2231,31 @@ const state = {
     "BIR ONETT / eCAR requirements reviewed",
     "LGU transfer requirements reviewed",
     "Registry of Deeds requirements reviewed"
-  ],
-
-  checklistState:[],
-
-  transactionId:"",
-
-  location:{
-    provinces:[],
-    cities:[],
-    barangays:[]
-  }
+  ]
 
 };
 
 /* =========================================================
-   ELEMENTS
+   ELEMENT HELPER
    ========================================================= */
 
-const provinceSelect = $("province");
-const citySelect = $("cityMunicipality");
-const barangaySelect = $("barangay");
-const zipInput = $("zipCode");
-const locationStatus = $("locationStatus");
+const $ =
+  id => document.getElementById(id);
 
-/* =========================================================
-   TOAST
-   ========================================================= */
+const provinceSelect =
+  $("province");
 
-let toastTimer = null;
+const citySelect =
+  $("cityMunicipality");
 
-function showToast(message){
+const barangaySelect =
+  $("barangay");
 
-  const toast = $("toast");
+const zipInput =
+  $("zipCode");
 
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer = setTimeout(() => {
-
-    toast.classList.remove("show");
-
-  },3000);
-
-}
+const locationStatus =
+  $("locationStatus");
 
 /* =========================================================
    FORMATTING
@@ -2144,35 +2263,42 @@ function showToast(message){
 
 function peso(value){
 
-  const number = Number(value) || 0;
+  const number =
+    Number(value) || 0;
 
-  return number.toLocaleString("en-PH",{
-    style:"currency",
-    currency:"PHP",
-    minimumFractionDigits:0,
-    maximumFractionDigits:0
-  });
+  return number.toLocaleString(
+    "en-PH",
+    {
+      style:"currency",
+      currency:"PHP",
+      minimumFractionDigits:0,
+      maximumFractionDigits:0
+    }
+  );
 
 }
 
 function numberValue(id){
 
-  const value = parseFloat($(id).value);
-
-  return Number.isFinite(value) && value >= 0
-    ? value
-    : 0;
+  return Number(
+    $(id).value
+  ) || 0;
 
 }
 
 function selectedText(select){
 
-  if(!select || !select.value){
+  if(
+    !select ||
+    !select.value
+  ){
     return "—";
   }
 
   const option =
-    select.options[select.selectedIndex];
+    select.options[
+      select.selectedIndex
+    ];
 
   return option
     ? option.textContent
@@ -2180,47 +2306,52 @@ function selectedText(select){
 
 }
 
-function setStatus(message,type=""){
+function setStatus(
+  message,
+  type=""
+){
 
-  locationStatus.textContent = message;
+  locationStatus.textContent =
+    message;
 
   locationStatus.className =
     "location-status" +
-    (type ? " " + type : "");
+    (
+      type
+        ? " " + type
+        : ""
+    );
 
 }
 
 /* =========================================================
-   API HELPERS
+   API
    ========================================================= */
 
 async function fetchJSON(url){
 
-  const response = await fetch(url,{
-    method:"GET",
-    headers:{
-      "Accept":"application/json"
-    },
-    cache:"no-store"
-  });
+  const response =
+    await fetch(
+      url,
+      {
+        headers:{
+          "Accept":
+            "application/json"
+        }
+      }
+    );
 
   if(!response.ok){
 
     throw new Error(
-      "HTTP " + response.status +
-      " returned from " + url
+      "Location service returned HTTP " +
+      response.status
     );
 
   }
 
-  const data = await response.json();
-
-  /*
-    PSGC v2 collection endpoints return arrays.
-
-    We also support common wrapped responses just in case
-    the API changes its response envelope.
-  */
+  const data =
+    await response.json();
 
   if(Array.isArray(data)){
     return data;
@@ -2244,41 +2375,49 @@ async function fetchJSON(url){
 
 function resetSelect(
   select,
-  placeholder,
-  disabled=true
+  placeholder
 ){
 
   select.innerHTML = "";
 
   const option =
-    document.createElement("option");
+    document.createElement(
+      "option"
+    );
 
   option.value = "";
-  option.textContent = placeholder;
 
-  select.appendChild(option);
+  option.textContent =
+    placeholder;
 
-  select.disabled = disabled;
+  select.appendChild(
+    option
+  );
+
+  select.disabled =
+    true;
 
 }
 
-function populateLocationSelect(
+function populateSelect(
   select,
   items,
-  placeholder,
-  type=""
+  placeholder
 ){
 
   resetSelect(
     select,
-    placeholder,
-    items.length === 0
+    placeholder
   );
 
-  for(const item of items){
+  for(
+    const item of items
+  ){
 
     const option =
-      document.createElement("option");
+      document.createElement(
+        "option"
+      );
 
     option.value =
       item.code ||
@@ -2286,40 +2425,19 @@ function populateLocationSelect(
       item.name ||
       "";
 
-    let label =
+    option.textContent =
       item.name ||
+      item.label ||
       "Unnamed location";
 
-    /*
-      Cities and municipalities from PSGC v2 expose type.
-    */
+    if(item.type){
 
-    if(
-      type === "city-municipality" &&
-      item.type
-    ){
-
-      const normalizedType =
-        String(item.type)
-          .toLowerCase();
-
-      if(
-        normalizedType.includes("city")
-      ){
-
-        label += " (City)";
-
-      }else if(
-        normalizedType.includes("mun")
-      ){
-
-        label += " (Municipality)";
-
-      }
+      option.textContent +=
+        " (" +
+        item.type +
+        ")";
 
     }
-
-    option.textContent = label;
 
     option.dataset.name =
       item.name || "";
@@ -2329,7 +2447,9 @@ function populateLocationSelect(
       item.zip ||
       "";
 
-    select.appendChild(option);
+    select.appendChild(
+      option
+    );
 
   }
 
@@ -2339,116 +2459,76 @@ function populateLocationSelect(
 }
 
 /* =========================================================
-   LOAD PROVINCES
+   PROVINCES
    ========================================================= */
 
 async function loadProvinces(){
 
   resetSelect(
     provinceSelect,
-    "Loading provinces...",
-    true
+    "Loading provinces..."
   );
 
   resetSelect(
     citySelect,
-    "Select province first",
-    true
+    "Select province first"
   );
 
   resetSelect(
     barangaySelect,
-    "Select city / municipality first",
-    true
+    "Select city / municipality first"
   );
 
   zipInput.value = "";
 
   setStatus(
-    "Loading Philippine location data...",
-    "loading"
+    "Loading Philippine location data..."
   );
 
   try{
 
     const provinces =
       await fetchJSON(
-        PSGC_BASE + "/provinces"
+        PSGC_BASE +
+        "/provinces"
       );
 
     provinces.sort(
       (a,b) =>
-        String(a.name || "")
+        String(a.name)
           .localeCompare(
-            String(b.name || "")
+            String(b.name)
           )
     );
 
-    state.location.provinces =
-      provinces;
-
-    populateLocationSelect(
+    populateSelect(
       provinceSelect,
       provinces,
       "Select province"
     );
 
-    if(!provinces.length){
+    if(provinces.length){
 
-      throw new Error(
-        "PSGC returned zero provinces."
+      setStatus(
+        "Philippine location data ready.",
+        "success"
       );
 
-    }
+    }else{
 
-    setStatus(
-      "Philippine location data ready.",
-      "success"
-    );
-
-    /*
-      If a saved workspace exists, restore its province
-      after the API has loaded.
-    */
-
-    const saved =
-      getSavedWorkspace();
-
-    if(saved?.location?.provinceCode){
-
-      const exists =
-        provinces.some(
-          item =>
-            String(item.code) ===
-            String(saved.location.provinceCode)
-        );
-
-      if(exists){
-
-        provinceSelect.value =
-          saved.location.provinceCode;
-
-        await loadCities(
-          saved.location.provinceCode,
-          saved.location.cityCode,
-          saved.location.barangayCode
-        );
-
-      }
+      throw new Error(
+        "No provinces returned."
+      );
 
     }
 
   }catch(error){
 
-    console.error(
-      "PSGC province loading failed:",
-      error
-    );
+    console.error(error);
 
     resetSelect(
       provinceSelect,
-      "Unable to load provinces",
-      true
+      "Unable to load provinces"
     );
 
     setStatus(
@@ -2461,25 +2541,21 @@ async function loadProvinces(){
 }
 
 /* =========================================================
-   LOAD CITIES / MUNICIPALITIES
+   CITIES
    ========================================================= */
 
 async function loadCities(
-  provinceCode,
-  restoreCityCode=null,
-  restoreBarangayCode=null
+  provinceCode
 ){
 
   resetSelect(
     citySelect,
-    "Loading cities / municipalities...",
-    true
+    "Loading cities / municipalities..."
   );
 
   resetSelect(
     barangaySelect,
-    "Select city / municipality first",
-    true
+    "Select city / municipality first"
   );
 
   zipInput.value = "";
@@ -2488,102 +2564,83 @@ async function loadCities(
 
     resetSelect(
       citySelect,
-      "Select province first",
-      true
+      "Select province first"
     );
 
     return;
-
   }
 
   try{
 
-    const cities =
-      await fetchJSON(
-        PSGC_BASE +
-        "/provinces/" +
-        encodeURIComponent(provinceCode) +
-        "/cities-municipalities"
-      );
+    let cities;
+
+    try{
+
+      cities =
+        await fetchJSON(
+          PSGC_BASE +
+          "/v1/provinces/" +
+          encodeURIComponent(
+            provinceCode
+          ) +
+          "/cities-municipalities"
+        );
+
+    }catch{
+
+      cities =
+        await fetchJSON(
+          PSGC_BASE +
+          "/v2/provinces/" +
+          encodeURIComponent(
+            provinceCode
+          ) +
+          "/cities-municipalities"
+        );
+
+    }
 
     cities.sort(
       (a,b) =>
-        String(a.name || "")
+        String(a.name)
           .localeCompare(
-            String(b.name || "")
+            String(b.name)
           )
     );
 
-    state.location.cities =
-      cities;
-
-    populateLocationSelect(
+    populateSelect(
       citySelect,
       cities,
-      "Select city / municipality",
-      "city-municipality"
+      "Select city / municipality"
     );
 
-    if(!cities.length){
+    if(cities.length){
+
+      setStatus(
+        "Select the city or municipality.",
+        "success"
+      );
+
+    }else{
 
       setStatus(
         "No cities or municipalities were returned for this province.",
         "error"
       );
 
-      return;
-
     }
-
-    setStatus(
-      "Select the city or municipality.",
-      "success"
-    );
-
-    /*
-      Restore previously selected locality.
-    */
-
-    if(restoreCityCode){
-
-      const exists =
-        cities.some(
-          item =>
-            String(item.code) ===
-            String(restoreCityCode)
-        );
-
-      if(exists){
-
-        citySelect.value =
-          restoreCityCode;
-
-        await loadBarangays(
-          restoreCityCode,
-          restoreBarangayCode
-        );
-
-      }
-
-    }
-
-    updateReportLocation();
 
   }catch(error){
 
-    console.error(
-      "PSGC city/municipality loading failed:",
-      error
-    );
+    console.error(error);
 
     resetSelect(
       citySelect,
-      "Unable to load cities / municipalities",
-      true
+      "Unable to load cities / municipalities"
     );
 
     setStatus(
-      "Unable to load cities / municipalities. Please try again.",
+      "Unable to load cities / municipalities. Please refresh and try again.",
       "error"
     );
 
@@ -2592,18 +2649,16 @@ async function loadCities(
 }
 
 /* =========================================================
-   LOAD BARANGAYS
+   BARANGAYS
    ========================================================= */
 
 async function loadBarangays(
-  cityCode,
-  restoreBarangayCode=null
+  cityCode
 ){
 
   resetSelect(
     barangaySelect,
-    "Loading barangays...",
-    true
+    "Loading barangays..."
   );
 
   zipInput.value = "";
@@ -2612,76 +2667,61 @@ async function loadBarangays(
 
     resetSelect(
       barangaySelect,
-      "Select city / municipality first",
-      true
+      "Select city / municipality first"
     );
 
     return;
-
   }
 
   try{
 
-    const barangays =
-      await fetchJSON(
-        PSGC_BASE +
-        "/cities-municipalities/" +
-        encodeURIComponent(cityCode) +
-        "/barangays"
-      );
+    let barangays;
+
+    try{
+
+      barangays =
+        await fetchJSON(
+          PSGC_BASE +
+          "/v1/cities-municipalities/" +
+          encodeURIComponent(
+            cityCode
+          ) +
+          "/barangays"
+        );
+
+    }catch{
+
+      barangays =
+        await fetchJSON(
+          PSGC_BASE +
+          "/v2/cities-municipalities/" +
+          encodeURIComponent(
+            cityCode
+          ) +
+          "/barangays"
+        );
+
+    }
 
     barangays.sort(
       (a,b) =>
-        String(a.name || "")
+        String(a.name)
           .localeCompare(
-            String(b.name || "")
+            String(b.name)
           )
     );
 
-    state.location.barangays =
-      barangays;
-
-    populateLocationSelect(
+    populateSelect(
       barangaySelect,
       barangays,
       "Select barangay"
     );
 
-    /*
-      ZIP code belongs to the city / municipality
-      record in PSGC Cloud v2.
-    */
+    await loadCityZip(
+      cityCode
+    );
 
-    const selectedCity =
-      citySelect.options[
-        citySelect.selectedIndex
-      ];
-
-    const cityZip =
-      selectedCity?.dataset.zip || "";
-
-    zipInput.value =
-      cityZip;
-
-    if(restoreBarangayCode){
-
-      const exists =
-        barangays.some(
-          item =>
-            String(item.code) ===
-            String(restoreBarangayCode)
-        );
-
-      if(exists){
-
-        barangaySelect.value =
-          restoreBarangayCode;
-
-      }
-
-    }
-
-    if(cityZip){
+    if(zipInput.value){
 
       setStatus(
         "Location loaded. ZIP Code automatically populated.",
@@ -2697,38 +2737,105 @@ async function loadBarangays(
 
     }
 
-    updateReportLocation();
-
   }catch(error){
 
-    console.error(
-      "PSGC barangay loading failed:",
-      error
-    );
+    console.error(error);
 
     resetSelect(
       barangaySelect,
-      "Unable to load barangays",
-      true
+      "Unable to load barangays"
     );
-
-    /*
-      Even if barangays fail, still try to preserve
-      the city-level ZIP.
-    */
-
-    const selectedCity =
-      citySelect.options[
-        citySelect.selectedIndex
-      ];
-
-    zipInput.value =
-      selectedCity?.dataset.zip || "";
 
     setStatus(
-      "City loaded, but barangay data could not be loaded. Please try again.",
+      "Unable to load barangays. Please refresh and try again.",
       "error"
     );
+
+  }
+
+}
+
+/* =========================================================
+   ZIP
+   ========================================================= */
+
+async function loadCityZip(
+  cityCode
+){
+
+  if(!cityCode){
+
+    zipInput.value = "";
+
+    return;
+  }
+
+  const selectedCity =
+    citySelect.options[
+      citySelect.selectedIndex
+    ];
+
+  const existingZip =
+    selectedCity?.dataset.zip ||
+    "";
+
+  if(existingZip){
+
+    zipInput.value =
+      existingZip;
+
+    return;
+  }
+
+  try{
+
+    let locality;
+
+    try{
+
+      locality =
+        await fetchJSON(
+          PSGC_BASE +
+          "/v1/cities-municipalities/" +
+          encodeURIComponent(
+            cityCode
+          )
+        );
+
+    }catch{
+
+      locality =
+        await fetchJSON(
+          PSGC_BASE +
+          "/v2/cities-municipalities/" +
+          encodeURIComponent(
+            cityCode
+          )
+        );
+
+    }
+
+    const item =
+      Array.isArray(locality)
+        ? locality[0]
+        : locality;
+
+    const zip =
+      item?.zip_code ||
+      item?.zip ||
+      "";
+
+    zipInput.value =
+      zip || "";
+
+  }catch(error){
+
+    console.warn(
+      "ZIP lookup unavailable:",
+      error
+    );
+
+    zipInput.value = "";
 
   }
 
@@ -2742,16 +2849,13 @@ provinceSelect.addEventListener(
   "change",
   async () => {
 
-    const provinceCode =
-      provinceSelect.value;
+    zipInput.value = "";
 
     await loadCities(
-      provinceCode
+      provinceSelect.value
     );
 
     updateReportLocation();
-
-    saveWorkspace();
 
   }
 );
@@ -2760,16 +2864,13 @@ citySelect.addEventListener(
   "change",
   async () => {
 
-    const cityCode =
-      citySelect.value;
+    zipInput.value = "";
 
     await loadBarangays(
-      cityCode
+      citySelect.value
     );
 
     updateReportLocation();
-
-    saveWorkspace();
 
   }
 );
@@ -2780,28 +2881,47 @@ barangaySelect.addEventListener(
 
     updateReportLocation();
 
-    saveWorkspace();
+    const selectedCity =
+      citySelect.options[
+        citySelect.selectedIndex
+      ];
+
+    if(selectedCity?.dataset.zip){
+
+      zipInput.value =
+        selectedCity.dataset.zip;
+
+      updateReportLocation();
+
+    }
 
   }
 );
 
 /* =========================================================
-   LOCATION REPORT
+   REPORT LOCATION
    ========================================================= */
 
 function updateReportLocation(){
 
   $("rProvince").textContent =
-    selectedText(provinceSelect);
+    selectedText(
+      provinceSelect
+    );
 
   $("rCity").textContent =
-    selectedText(citySelect);
+    selectedText(
+      citySelect
+    );
 
   $("rBarangay").textContent =
-    selectedText(barangaySelect);
+    selectedText(
+      barangaySelect
+    );
 
   $("rZip").textContent =
-    zipInput.value || "—";
+    zipInput.value ||
+    "—";
 
 }
 
@@ -2812,24 +2932,24 @@ function updateReportLocation(){
 function calculate(){
 
   const selling =
-    numberValue("sellingPrice");
+    numberValue(
+      "sellingPrice"
+    );
 
   const fair =
-    numberValue("fairMarketValue");
+    numberValue(
+      "fairMarketValue"
+    );
 
   const zonal =
-    numberValue("zonalValue");
+    numberValue(
+      "zonalValue"
+    );
 
   const commissionRate =
-    numberValue("commissionRate");
-
-  /*
-    Illustrative tax base.
-
-    For this planning tool we use the highest supplied value.
-
-    This is NOT an official BIR computation.
-  */
+    numberValue(
+      "commissionRate"
+    );
 
   const taxBase =
     Math.max(
@@ -2837,10 +2957,6 @@ function calculate(){
       fair,
       zonal
     );
-
-  /*
-    Illustrative planning rates.
-  */
 
   const cgt =
     taxBase * 0.06;
@@ -2856,22 +2972,35 @@ function calculate(){
 
   const commission =
     selling *
-    (commissionRate / 100);
+    (
+      commissionRate / 100
+    );
 
   state.costs = {
+
     cgt,
     dst,
     transfer,
     registration,
     commission
+
   };
+
+  const total =
+    cgt +
+    dst +
+    transfer +
+    registration +
+    commission;
 
   let sellerExpenses = 0;
   let buyerExpenses = 0;
 
   for(
     const [key,value]
-    of Object.entries(state.costs)
+    of Object.entries(
+      state.costs
+    )
   ){
 
     const payer =
@@ -2879,11 +3008,15 @@ function calculate(){
 
     if(payer === "Seller"){
 
-      sellerExpenses += value;
+      sellerExpenses +=
+        value;
 
-    }else if(payer === "Buyer"){
+    }else if(
+      payer === "Buyer"
+    ){
 
-      buyerExpenses += value;
+      buyerExpenses +=
+        value;
 
     }else{
 
@@ -2897,17 +3030,9 @@ function calculate(){
 
   }
 
-  const totalCosts =
-    sellerExpenses +
-    buyerExpenses;
-
   const sellerNet =
     selling -
     sellerExpenses;
-
-  /*
-    Summary.
-  */
 
   $("metricProperty").textContent =
     peso(selling);
@@ -2923,10 +3048,6 @@ function calculate(){
 
   $("metricNet").textContent =
     peso(sellerNet);
-
-  /*
-    Cost cards.
-  */
 
   $("cgtAmount").textContent =
     peso(cgt);
@@ -2944,13 +3065,14 @@ function calculate(){
     peso(commission);
 
   $("totalCosts").textContent =
-    peso(totalCosts);
+    peso(total);
 
   updateAllocationTable();
 
   updateChart();
 
   updateReport({
+
     selling,
     fair,
     zonal,
@@ -2958,14 +3080,13 @@ function calculate(){
     sellerExpenses,
     buyerExpenses,
     sellerNet
-  });
 
-  saveWorkspace();
+  });
 
 }
 
 /* =========================================================
-   ALLOCATION TABLE
+   ALLOCATION
    ========================================================= */
 
 function updateAllocationTable(){
@@ -2996,29 +3117,43 @@ function updateAllocationTable(){
 
   for(
     const key
-    of Object.keys(state.costs)
+    of Object.keys(
+      state.costs
+    )
   ){
 
     const row =
-      document.createElement("tr");
+      document.createElement(
+        "tr"
+      );
 
     const name =
-      document.createElement("td");
+      document.createElement(
+        "td"
+      );
 
     name.textContent =
       labels[key];
 
     const amount =
-      document.createElement("td");
+      document.createElement(
+        "td"
+      );
 
     amount.textContent =
-      peso(state.costs[key]);
+      peso(
+        state.costs[key]
+      );
 
     const payerCell =
-      document.createElement("td");
+      document.createElement(
+        "td"
+      );
 
     const select =
-      document.createElement("select");
+      document.createElement(
+        "select"
+      );
 
     select.className =
       "payer-select";
@@ -3027,24 +3162,36 @@ function updateAllocationTable(){
       "Seller",
       "Buyer",
       "Split 50/50"
-    ].forEach(optionValue => {
+    ].forEach(
+      optionValue => {
 
-      const option =
-        document.createElement("option");
+        const option =
+          document.createElement(
+            "option"
+          );
 
-      option.value =
-        optionValue;
+        option.value =
+          optionValue;
 
-      option.textContent =
-        optionValue;
+        option.textContent =
+          optionValue;
 
-      option.selected =
-        state.allocation[key] ===
-        optionValue;
+        if(
+          state.allocation[key] ===
+          optionValue
+        ){
 
-      select.appendChild(option);
+          option.selected =
+            true;
 
-    });
+        }
+
+        select.appendChild(
+          option
+        );
+
+      }
+    );
 
     select.addEventListener(
       "change",
@@ -3058,13 +3205,25 @@ function updateAllocationTable(){
       }
     );
 
-    payerCell.appendChild(select);
+    payerCell.appendChild(
+      select
+    );
 
-    row.appendChild(name);
-    row.appendChild(amount);
-    row.appendChild(payerCell);
+    row.appendChild(
+      name
+    );
 
-    body.appendChild(row);
+    row.appendChild(
+      amount
+    );
+
+    row.appendChild(
+      payerCell
+    );
+
+    body.appendChild(
+      row
+    );
 
   }
 
@@ -3112,7 +3271,9 @@ function updateChart(){
 
   const max =
     Math.max(
-      ...items.map(item => item[1]),
+      ...items.map(
+        item => item[1]
+      ),
       1
     );
 
@@ -3122,13 +3283,17 @@ function updateChart(){
   ){
 
     const wrap =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     wrap.className =
       "bar-wrap";
 
     const amount =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     amount.className =
       "bar-value";
@@ -3137,7 +3302,9 @@ function updateChart(){
       peso(value);
 
     const bar =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     bar.className =
       "bar";
@@ -3147,14 +3314,19 @@ function updateChart(){
         ? 3
         : Math.max(
             8,
-            (value / max) * 190
+            (
+              value /
+              max
+            ) * 190
           );
 
     bar.style.height =
       height + "px";
 
     const labelElement =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     labelElement.className =
       "bar-label";
@@ -3162,11 +3334,21 @@ function updateChart(){
     labelElement.textContent =
       label;
 
-    wrap.appendChild(amount);
-    wrap.appendChild(bar);
-    wrap.appendChild(labelElement);
+    wrap.appendChild(
+      amount
+    );
 
-    chart.appendChild(wrap);
+    wrap.appendChild(
+      bar
+    );
+
+    wrap.appendChild(
+      labelElement
+    );
+
+    chart.appendChild(
+      wrap
+    );
 
   }
 
@@ -3195,53 +3377,70 @@ function updateReport(data){
 
   $("rAcquisition").textContent =
     peso(
-      numberValue("acquisitionPrice")
+      numberValue(
+        "acquisitionPrice"
+      )
     );
 
   $("rTaxBase").textContent =
     peso(data.taxBase);
 
   $("rSellerExpenses").textContent =
-    peso(data.sellerExpenses);
+    peso(
+      data.sellerExpenses
+    );
 
   $("rBuyerExpenses").textContent =
-    peso(data.buyerExpenses);
+    peso(
+      data.buyerExpenses
+    );
 
   $("rCommission").textContent =
-    peso(state.costs.commission);
+    peso(
+      state.costs.commission
+    );
 
   $("rSellerNet").textContent =
-    peso(data.sellerNet);
+    peso(
+      data.sellerNet
+    );
 
   $("rCGT").textContent =
-    peso(state.costs.cgt);
+    peso(
+      state.costs.cgt
+    );
 
   $("rDST").textContent =
-    peso(state.costs.dst);
+    peso(
+      state.costs.dst
+    );
 
   $("rTransfer").textContent =
-    peso(state.costs.transfer);
+    peso(
+      state.costs.transfer
+    );
 
   $("rRegistration").textContent =
-    peso(state.costs.registration);
+    peso(
+      state.costs.registration
+    );
 
   $("rCommission2").textContent =
-    peso(state.costs.commission);
-
-  const lotArea =
-    numberValue("lotArea");
+    peso(
+      state.costs.commission
+    );
 
   $("rLotArea").textContent =
-    lotArea.toLocaleString(
-      "en-PH",
-      {
-        maximumFractionDigits:2
-      }
-    ) + " sqm";
+    numberValue(
+      "lotArea"
+    ).toLocaleString(
+      "en-PH"
+    ) +
+    " sqm";
 
   updateReportLocation();
 
-  updateChecklist();
+  updateChecklistReport();
 
 }
 
@@ -3260,38 +3459,35 @@ function renderChecklist(){
     (item,index) => {
 
       const wrapper =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       wrapper.className =
         "check-item";
 
       const checkbox =
-        document.createElement("input");
+        document.createElement(
+          "input"
+        );
 
       checkbox.type =
         "checkbox";
 
       checkbox.id =
-        "check-" + index;
-
-      checkbox.checked =
-        Boolean(
-          state.checklistState[index]
-        );
+        "check-" +
+        index;
 
       const label =
-        document.createElement("label");
+        document.createElement(
+          "label"
+        );
 
       label.htmlFor =
         checkbox.id;
 
       label.textContent =
         item;
-
-      wrapper.classList.toggle(
-        "done",
-        checkbox.checked
-      );
 
       checkbox.addEventListener(
         "change",
@@ -3302,12 +3498,7 @@ function renderChecklist(){
             checkbox.checked
           );
 
-          state.checklistState[index] =
-            checkbox.checked;
-
           updateChecklist();
-
-          saveWorkspace();
 
         }
       );
@@ -3331,10 +3522,6 @@ function renderChecklist(){
 
 }
 
-/* =========================================================
-   CHECKLIST UPDATE
-   ========================================================= */
-
 function updateChecklist(){
 
   const checkboxes =
@@ -3356,7 +3543,10 @@ function updateChecklist(){
   const percent =
     total
       ? Math.round(
-          (completed / total) * 100
+          (
+            completed /
+            total
+          ) * 100
         )
       : 0;
 
@@ -3371,56 +3561,55 @@ function updateChecklist(){
 
 }
 
+function updateChecklistReport(){
+
+  $("rChecklist").textContent =
+    $("checkPercent").textContent;
+
+}
+
 /* =========================================================
    TRANSACTION ID
    ========================================================= */
 
-function createTransactionId(){
+function generateTransactionId(){
 
-  const date =
+  const now =
     new Date();
 
-  const y =
-    date.getFullYear();
+  const year =
+    now.getFullYear();
 
-  const m =
+  const month =
     String(
-      date.getMonth() + 1
-    ).padStart(2,"0");
+      now.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
 
-  const d =
+  const day =
     String(
-      date.getDate()
-    ).padStart(2,"0");
+      now.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
 
   const random =
     Math.floor(
       10000000 +
-      Math.random() * 90000000
+      Math.random() *
+      90000000
     );
 
-  return (
-    "PTW-" +
-    y +
-    m +
-    d +
-    "-" +
-    random
-  );
-
-}
-
-function generateTransactionId(){
-
-  if(!state.transactionId){
-
-    state.transactionId =
-      createTransactionId();
-
-  }
-
   $("transactionId").textContent =
-    state.transactionId;
+    "PTW-" +
+    year +
+    month +
+    day +
+    "-" +
+    random;
 
 }
 
@@ -3446,237 +3635,10 @@ function updateReportDate(){
 }
 
 /* =========================================================
-   LOCAL STORAGE
-   ========================================================= */
-
-function getSavedWorkspace(){
-
-  try{
-
-    const raw =
-      localStorage.getItem(
-        STORAGE_KEY
-      );
-
-    if(!raw){
-      return null;
-    }
-
-    return JSON.parse(raw);
-
-  }catch(error){
-
-    console.warn(
-      "Unable to read saved workspace:",
-      error
-    );
-
-    return null;
-
-  }
-
-}
-
-function collectWorkspace(){
-
-  return {
-
-    transactionType:
-      $("transactionType").value,
-
-    propertyType:
-      $("propertyType").value,
-
-    sellingPrice:
-      $("sellingPrice").value,
-
-    fairMarketValue:
-      $("fairMarketValue").value,
-
-    zonalValue:
-      $("zonalValue").value,
-
-    acquisitionPrice:
-      $("acquisitionPrice").value,
-
-    lotArea:
-      $("lotArea").value,
-
-    commissionRate:
-      $("commissionRate").value,
-
-    location:{
-
-      provinceCode:
-        provinceSelect.value,
-
-      cityCode:
-        citySelect.value,
-
-      barangayCode:
-        barangaySelect.value,
-
-      zip:
-        zipInput.value
-
-    },
-
-    allocation:
-      {
-        ...state.allocation
-      },
-
-    checklistState:
-      [
-        ...state.checklistState
-      ],
-
-    transactionId:
-      state.transactionId
-
-  };
-
-}
-
-function saveWorkspace(){
-
-  try{
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(
-        collectWorkspace()
-      )
-    );
-
-  }catch(error){
-
-    console.warn(
-      "Unable to save workspace:",
-      error
-    );
-
-  }
-
-}
-
-function restoreBasicWorkspace(){
-
-  const saved =
-    getSavedWorkspace();
-
-  if(!saved){
-    return false;
-  }
-
-  if(saved.transactionType){
-
-    $("transactionType").value =
-      saved.transactionType;
-
-  }
-
-  if(saved.propertyType){
-
-    $("propertyType").value =
-      saved.propertyType;
-
-  }
-
-  [
-    "sellingPrice",
-    "fairMarketValue",
-    "zonalValue",
-    "acquisitionPrice",
-    "lotArea",
-    "commissionRate"
-  ].forEach(id => {
-
-    if(
-      Object.prototype.hasOwnProperty.call(
-        saved,
-        id
-      )
-    ){
-
-      $(id).value =
-        saved[id] ?? "";
-
-    }
-
-  });
-
-  if(saved.allocation){
-
-    state.allocation = {
-
-      cgt:
-        saved.allocation.cgt ||
-        "Seller",
-
-      dst:
-        saved.allocation.dst ||
-        "Buyer",
-
-      transfer:
-        saved.allocation.transfer ||
-        "Buyer",
-
-      registration:
-        saved.allocation.registration ||
-        "Buyer",
-
-      commission:
-        saved.allocation.commission ||
-        "Seller"
-
-    };
-
-  }
-
-  if(
-    Array.isArray(
-      saved.checklistState
-    )
-  ){
-
-    state.checklistState =
-      saved.checklistState;
-
-  }
-
-  if(saved.transactionId){
-
-    state.transactionId =
-      saved.transactionId;
-
-  }
-
-  if(saved.location?.zip){
-
-    zipInput.value =
-      saved.location.zip;
-
-  }
-
-  return true;
-
-}
-
-/* =========================================================
    RESET
    ========================================================= */
 
-async function resetWorkspace(){
-
-  const confirmed =
-    window.confirm(
-      "Reset the entire property transaction workspace?"
-    );
-
-  if(!confirmed){
-    return;
-  }
+function resetWorkspace(){
 
   [
     "sellingPrice",
@@ -3685,11 +3647,13 @@ async function resetWorkspace(){
     "acquisitionPrice",
     "lotArea",
     "commissionRate"
-  ].forEach(id => {
+  ].forEach(
+    id => {
 
-    $(id).value = "";
+      $(id).value = "";
 
-  });
+    }
+  );
 
   $("transactionType").value =
     "Sale of property";
@@ -3697,23 +3661,19 @@ async function resetWorkspace(){
   $("propertyType").value =
     "House & Lot";
 
-  provinceSelect.value =
-    "";
+  provinceSelect.value = "";
 
   resetSelect(
     citySelect,
-    "Select province first",
-    true
+    "Select province first"
   );
 
   resetSelect(
     barangaySelect,
-    "Select city / municipality first",
-    true
+    "Select city / municipality first"
   );
 
-  zipInput.value =
-    "";
+  zipInput.value = "";
 
   state.allocation = {
 
@@ -3735,63 +3695,37 @@ async function resetWorkspace(){
 
   };
 
-  state.checklistState =
-    state.checklist.map(
-      () => false
+  document
+    .querySelectorAll(
+      "#checklistContainer input[type=checkbox]"
+    )
+    .forEach(
+      checkbox => {
+
+        checkbox.checked =
+          false;
+
+        checkbox
+          .closest(
+            ".check-item"
+          )
+          ?.classList.remove(
+            "done"
+          );
+
+      }
     );
-
-  state.transactionId =
-    createTransactionId();
-
-  try{
-
-    localStorage.removeItem(
-      STORAGE_KEY
-    );
-
-  }catch(error){
-
-    console.warn(error);
-
-  }
-
-  renderChecklist();
-
-  generateTransactionId();
-
-  calculate();
-
-  updateReportLocation();
 
   setStatus(
     "Workspace reset. All transaction values are ₱0.",
     "success"
   );
 
-  showToast(
-    "Workspace reset successfully."
-  );
+  calculate();
 
-  /*
-    Restore the province list after reset,
-    but do not restore a saved location.
-  */
+  updateReportLocation();
 
-  if(
-    state.location.provinces.length
-  ){
-
-    populateLocationSelect(
-      provinceSelect,
-      state.location.provinces,
-      "Select province"
-    );
-
-  }else{
-
-    await loadProvinces();
-
-  }
+  generateTransactionId();
 
 }
 
@@ -3805,16 +3739,14 @@ $("updateBtn").addEventListener(
 
     calculate();
 
-    saveWorkspace();
-
-    showToast(
-      "Workspace updated and saved."
-    );
-
-    $("costs").scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    document
+      .getElementById(
+        "costs"
+      )
+      .scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
 
   }
 );
@@ -3824,9 +3756,18 @@ $("resetBtn").addEventListener(
   resetWorkspace
 );
 
+/* =========================================================
+   PRINT
+   ========================================================= */
+
 $("printBtn").addEventListener(
   "click",
   () => {
+
+    /*
+      Make sure the report has the latest
+      values before opening print preview.
+    */
 
     calculate();
 
@@ -3838,7 +3779,7 @@ $("printBtn").addEventListener(
 );
 
 /* =========================================================
-   AUTO CALCULATE
+   AUTO CALCULATION
    ========================================================= */
 
 [
@@ -3848,38 +3789,46 @@ $("printBtn").addEventListener(
   "acquisitionPrice",
   "lotArea",
   "commissionRate"
-].forEach(id => {
+].forEach(
+  id => {
 
-  $(id).addEventListener(
-    "input",
-    () => {
+    $(id).addEventListener(
+      "input",
+      calculate
+    );
 
-      calculate();
-
-    }
-  );
-
-});
+  }
+);
 
 [
   "transactionType",
   "propertyType"
-].forEach(id => {
+].forEach(
+  id => {
 
-  $(id).addEventListener(
-    "change",
-    () => {
+    $(id).addEventListener(
+      "change",
+      calculate
+    );
 
-      calculate();
-
-    }
-  );
-
-});
+  }
+);
 
 /* =========================================================
    DARK MODE
    ========================================================= */
+
+const savedTheme =
+  localStorage.getItem(
+    "ph-property-theme"
+  );
+
+if(savedTheme){
+
+  document.documentElement.dataset.theme =
+    savedTheme;
+
+}
 
 function updateThemeButton(){
 
@@ -3888,62 +3837,9 @@ function updateThemeButton(){
     "dark";
 
   $("themeBtn").textContent =
-    dark ? "☾" : "☀";
-
-  $("themeBtn").setAttribute(
-    "aria-label",
     dark
-      ? "Switch to light mode"
-      : "Switch to dark mode"
-  );
-
-}
-
-function initializeTheme(){
-
-  let savedTheme = null;
-
-  try{
-
-    savedTheme =
-      localStorage.getItem(
-        THEME_KEY
-      );
-
-  }catch(error){
-
-    console.warn(error);
-
-  }
-
-  if(
-    savedTheme === "dark" ||
-    savedTheme === "light"
-  ){
-
-    document.documentElement.dataset.theme =
-      savedTheme;
-
-  }else{
-
-    /*
-      Follow system preference initially.
-    */
-
-    const prefersDark =
-      window.matchMedia &&
-      window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-
-    document.documentElement.dataset.theme =
-      prefersDark
-        ? "dark"
-        : "light";
-
-  }
-
-  updateThemeButton();
+      ? "☾"
+      : "☀";
 
 }
 
@@ -3962,73 +3858,33 @@ $("themeBtn").addEventListener(
     document.documentElement.dataset.theme =
       next;
 
-    try{
-
-      localStorage.setItem(
-        THEME_KEY,
-        next
-      );
-
-    }catch(error){
-
-      console.warn(error);
-
-    }
+    localStorage.setItem(
+      "ph-property-theme",
+      next
+    );
 
     updateThemeButton();
 
   }
 );
 
+updateThemeButton();
+
 /* =========================================================
    INITIALIZATION
    ========================================================= */
 
-async function initialize(){
+renderChecklist();
 
-  initializeTheme();
+updateReportDate();
 
-  updateReportDate();
+generateTransactionId();
 
-  restoreBasicWorkspace();
+calculate();
 
-  generateTransactionId();
+updateReportLocation();
 
-  renderChecklist();
-
-  calculate();
-
-  updateReportLocation();
-
-  const restored =
-    getSavedWorkspace();
-
-  if(restored){
-
-    setStatus(
-      "Saved workspace restored locally.",
-      "success"
-    );
-
-  }
-
-  /*
-    Load PSGC location hierarchy.
-
-    The corrected API is:
-
-    /api/v2/provinces
-    /api/v2/provinces/{code}/cities-municipalities
-    /api/v2/cities-municipalities/{code}/barangays
-  */
-
-  await loadProvinces();
-
-  calculate();
-
-}
-
-initialize();
+loadProvinces();
 
 </script>
 
