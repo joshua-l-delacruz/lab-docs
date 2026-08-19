@@ -46,14 +46,7 @@ html{
 
 body{
   margin:0;
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:var(--bg);
   color:var(--text);
   line-height:1.5;
@@ -174,7 +167,7 @@ a:hover{
 }
 
 /* =========================================================
-   LAYOUT
+   MAIN LAYOUT
    ========================================================= */
 
 .container{
@@ -213,9 +206,7 @@ a:hover{
   height:7px;
   border-radius:50%;
   background:var(--success);
-  box-shadow:
-    0 0 0 5px
-    color-mix(in srgb,var(--success) 12%,transparent);
+  box-shadow:0 0 0 5px color-mix(in srgb,var(--success) 12%,transparent);
 }
 
 h1{
@@ -267,7 +258,6 @@ h1{
 }
 
 @media(max-width:900px){
-
   .grid-2,
   .grid-3{
     grid-template-columns:1fr;
@@ -314,8 +304,7 @@ h1{
   border-radius:999px;
   font-size:11px;
   font-weight:800;
-  background:
-    color-mix(in srgb,var(--success) 12%,transparent);
+  background:color-mix(in srgb,var(--success) 12%,transparent);
   color:var(--success);
 }
 
@@ -334,7 +323,6 @@ h1{
 }
 
 @media(max-width:700px){
-
   .form-grid,
   .form-grid.three{
     grid-template-columns:1fr;
@@ -372,9 +360,7 @@ select{
 input:focus,
 select:focus{
   border-color:var(--accent);
-  box-shadow:
-    0 0 0 3px
-    color-mix(in srgb,var(--accent) 12%,transparent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent);
 }
 
 input[readonly]{
@@ -421,14 +407,12 @@ input[readonly]{
 }
 
 @media(max-width:900px){
-
   .summary-grid{
     grid-template-columns:repeat(2,1fr);
   }
 }
 
 @media(max-width:500px){
-
   .summary-grid{
     grid-template-columns:1fr;
   }
@@ -523,7 +507,7 @@ th{
 }
 
 /* =========================================================
-   GRAPH
+   CHART
    ========================================================= */
 
 .chart{
@@ -612,7 +596,7 @@ th{
 }
 
 /* =========================================================
-   REPORT — SCREEN
+   REPORT — WEB
    ========================================================= */
 
 .report{
@@ -691,17 +675,26 @@ html[data-theme="dark"] .report{
   line-height:1.55;
 }
 
-.report-source{
-  margin-top:10px;
+.report-disclaimer{
+  margin-top:15px;
+  padding-top:12px;
+  border-top:1px solid #d9dee8;
   color:#64748b;
   font-size:10px;
-  line-height:1.45;
+  line-height:1.5;
 }
 
 @media(max-width:600px){
-
   .report-grid{
     grid-template-columns:1fr;
+  }
+
+  .report-header{
+    flex-direction:column;
+  }
+
+  .report-header > div:last-child{
+    text-align:left!important;
   }
 }
 
@@ -722,207 +715,273 @@ footer{
 }
 
 /* =========================================================
-   PRINT — IMPORTANT
+   PRINT
    ========================================================= */
 
 /*
-  The browser may still print its own:
-  - date
-  - URL
-  - page number
+  IMPORTANT:
 
-  Those are controlled by the browser's own print dialog.
-  In Chrome, disable "Headers and footers".
+  The print layout intentionally hides EVERYTHING except #report.
 
-  Everything belonging to the application is controlled below.
+  We do not rely on the browser's current scroll position,
+  navigation structure, or screen layout.
+
+  The report becomes the entire printed document.
 */
 
 @page{
-  size:A4 portrait;
-  margin:8mm;
+  size:A4;
+  margin:14mm 15mm 14mm 15mm;
 }
 
 @media print{
 
   html,
   body{
-    width:210mm;
-    min-height:297mm;
+    width:100%;
+    min-width:0;
+    margin:0!important;
+    padding:0!important;
     background:#fff!important;
     color:#111827!important;
   }
 
   body{
-    margin:0!important;
-    padding:0!important;
-    font-size:9px!important;
-    line-height:1.25!important;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif!important;
   }
 
   /*
-    Hide everything except the report.
+    Hide the complete application.
   */
 
-  .topbar,
-  .workspace-nav,
-  .hero,
-  #workspace,
-  #costs,
-  #allocation,
-  #analytics,
-  #checklist,
-  footer,
-  .no-print{
+  body > *{
     display:none!important;
   }
 
-  .container{
-    width:100%!important;
-    max-width:none!important;
-    margin:0!important;
-    padding:0!important;
-  }
+  /*
+    Restore ONLY the main container.
+  */
 
-  #report{
+  body > main.container{
     display:block!important;
     width:100%!important;
     max-width:none!important;
     margin:0!important;
     padding:0!important;
-    border:0!important;
-    border-radius:0!important;
-    box-shadow:none!important;
-    background:#fff!important;
-    color:#111827!important;
-
-    /*
-      Prevent the report from creating an
-      unnecessary page because of the card.
-    */
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
   }
 
   /*
-    Compact report header.
+    Everything inside main is hidden by default.
   */
 
-  .report-header{
-    padding:0 0 7px!important;
-    margin:0!important;
-    border-bottom:1.5px solid #111827!important;
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-
-  .report-header h2{
-    font-size:16px!important;
-    line-height:1.1!important;
-    margin:0!important;
-  }
-
-  .report-header p{
-    font-size:8px!important;
-    margin:2px 0 0!important;
-  }
-
-  /*
-    Compact every report section.
-  */
-
-  .report-section{
-    padding:7px 0!important;
-    margin:0!important;
-    border-bottom:1px solid #d9dee8!important;
-
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-
-  .report-section h3{
-    font-size:8px!important;
-    line-height:1.1!important;
-    margin:0 0 4px!important;
-    letter-spacing:.06em!important;
-  }
-
-  .report-grid{
-    grid-template-columns:repeat(2,1fr)!important;
-    column-gap:18px!important;
-    row-gap:1px!important;
-  }
-
-  .report-line{
-    padding:2px 0!important;
-    font-size:8.5px!important;
-    line-height:1.2!important;
-
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-
-  .report-total{
-    margin-top:6px!important;
-    padding:6px 0 0!important;
-    border-top:1.5px solid #111827!important;
-    font-size:11px!important;
-    line-height:1.2!important;
-  }
-
-  .report-warning{
-    margin-top:7px!important;
-    padding:6px!important;
-    border-left:3px solid #64748b!important;
-    font-size:7.5px!important;
-    line-height:1.3!important;
-  }
-
-  .report-source{
-    margin-top:5px!important;
-    font-size:7px!important;
-    line-height:1.25!important;
-  }
-
-  /*
-    Keep the button hidden.
-  */
-
-  .report .button-row{
+  main.container > *{
     display:none!important;
   }
 
   /*
-    Avoid individual sections being split.
+    Restore ONLY the report.
   */
 
-  .report-section,
-  .report-header,
-  .report-grid,
-  .report-line,
-  .report-warning{
+  main.container > #report{
+    display:block!important;
+    position:relative!important;
+    width:100%!important;
+    max-width:none!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+
+    background:#fff!important;
+    color:#111827!important;
+
+    overflow:visible!important;
+  }
+
+  /*
+    Print button must never appear.
+  */
+
+  #report .no-print{
+    display:none!important;
+  }
+
+  /*
+    Clean report typography.
+  */
+
+  #report,
+  #report *{
+    color:#111827!important;
+  }
+
+  #report .report-header{
+    display:flex!important;
+    padding:0 0 7mm 0!important;
+    margin:0!important;
+    border-bottom:1.5px solid #111827!important;
+  }
+
+  #report .report-header h2{
+    font-size:19pt!important;
+    line-height:1.2!important;
+    margin:0!important;
+  }
+
+  #report .report-header p{
+    font-size:9pt!important;
+    color:#555!important;
+    margin:2mm 0 0!important;
+  }
+
+  #report .report-header > div:last-child{
+    text-align:right!important;
+  }
+
+  #report .report-section{
+    display:block!important;
+    padding:5mm 0!important;
+    margin:0!important;
+    border-bottom:1px solid #d5d5d5!important;
+
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  #report .report-section:last-of-type{
+    border-bottom:0!important;
+  }
+
+  #report .report-section h3{
+    margin:0 0 2.5mm!important;
+    font-size:8.5pt!important;
+    line-height:1.2!important;
+    letter-spacing:.08em!important;
+    font-weight:800!important;
+  }
+
+  #report .report-grid{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    column-gap:12mm!important;
+    row-gap:1mm!important;
+  }
+
+  #report .report-line{
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:baseline!important;
+    gap:8mm!important;
+
+    padding:1.2mm 0!important;
+
+    font-size:9.5pt!important;
+    line-height:1.35!important;
+  }
+
+  #report .report-line span{
+    color:#555!important;
+  }
+
+  #report .report-line strong{
+    font-weight:700!important;
+    text-align:right!important;
+    white-space:nowrap!important;
+  }
+
+  #report .report-total{
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:baseline!important;
+
+    margin-top:4mm!important;
+    padding:4mm 0 0!important;
+
+    border-top:1.5px solid #111827!important;
+
+    font-size:12pt!important;
+    line-height:1.3!important;
+    font-weight:900!important;
+  }
+
+  #report .report-warning{
+    display:block!important;
+
+    margin-top:4mm!important;
+    padding:3.5mm!important;
+
+    background:#f7f7f7!important;
+    border-left:3px solid #555!important;
+
+    font-size:8pt!important;
+    line-height:1.45!important;
+
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  #report .report-disclaimer{
+    display:block!important;
+
+    margin-top:3mm!important;
+    padding-top:3mm!important;
+
+    border-top:1px solid #ddd!important;
+
+    color:#666!important;
+    font-size:7.5pt!important;
+    line-height:1.4!important;
+  }
+
+  /*
+    Prevent individual report sections from being split.
+  */
+
+  #report .report-section{
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  /*
+    Avoid unnecessary browser spacing.
+  */
+
+  h1,h2,h3,p{
     orphans:3;
     widows:3;
   }
 }
 
 /* =========================================================
-   MOBILE PRINT FALLBACK
+   MOBILE
    ========================================================= */
 
-@media print and (max-width:700px){
+@media(max-width:600px){
 
-  @page{
-    size:A4 portrait;
-    margin:6mm;
+  .topbar-inner{
+    padding:11px 15px;
   }
 
-  html,
-  body{
-    width:210mm!important;
+  .container{
+    padding:20px 15px 50px;
   }
 
-  .report-grid{
-    grid-template-columns:repeat(2,1fr)!important;
+  .brand{
+    font-size:14px;
+  }
+
+  .secondary-btn{
+    padding:8px 10px;
+  }
+
+  .report-header{
+    flex-direction:column;
   }
 }
 </style>
@@ -930,27 +989,23 @@ footer{
 
 <body>
 
-<header class="topbar">
+<!-- =======================================================
+     HEADER
+     ======================================================= -->
 
+<header class="topbar">
   <div class="topbar-inner">
 
     <a
       class="brand"
       href="https://joshuadelacruz.solutions/"
     >
-
-      <div class="logo">
-        PH
-      </div>
+      <div class="logo">PH</div>
 
       <div>
         Joshua Dela Cruz
-
-        <small>
-          Property Workspace
-        </small>
+        <small>Property Workspace</small>
       </div>
-
     </a>
 
     <div class="top-actions">
@@ -974,13 +1029,17 @@ footer{
     </div>
 
   </div>
-
 </header>
+
+
+<!-- =======================================================
+     MAIN
+     ======================================================= -->
 
 <main class="container">
 
+  <!-- BREADCRUMB -->
   <div class="breadcrumb">
-
     <a href="https://joshuadelacruz.solutions/">
       ← Joshua Dela Cruz
     </a>
@@ -992,9 +1051,10 @@ footer{
     <strong>
       Transaction Workspace
     </strong>
-
   </div>
 
+
+  <!-- HERO -->
   <section class="hero">
 
     <div class="kicker">
@@ -1008,12 +1068,14 @@ footer{
 
     <p>
       Build a preliminary Philippine property transaction estimate,
-      allocate expenses between buyer and seller, track documents and
-      produce a clean client-ready report.
+      allocate expenses between buyer and seller, track documents
+      and produce a clean client-ready report.
     </p>
 
   </section>
 
+
+  <!-- NAV -->
   <nav class="workspace-nav">
 
     <a href="#workspace">
@@ -1042,6 +1104,7 @@ footer{
 
   </nav>
 
+
   <!-- =====================================================
        WORKSPACE
        ===================================================== -->
@@ -1054,7 +1117,6 @@ footer{
     <div class="card-title">
 
       <div>
-
         <h2>
           Transaction Setup
         </h2>
@@ -1062,7 +1124,6 @@ footer{
         <p>
           Enter the information available from the property documents.
         </p>
-
       </div>
 
       <span class="badge">
@@ -1070,6 +1131,7 @@ footer{
       </span>
 
     </div>
+
 
     <div class="form-grid">
 
@@ -1096,6 +1158,7 @@ footer{
         </select>
 
       </div>
+
 
       <div class="field">
 
@@ -1125,6 +1188,7 @@ footer{
 
       </div>
 
+
       <div class="field">
 
         <label for="sellingPrice">
@@ -1140,6 +1204,7 @@ footer{
         >
 
       </div>
+
 
       <div class="field">
 
@@ -1157,6 +1222,7 @@ footer{
 
       </div>
 
+
       <div class="field">
 
         <label for="zonalValue">
@@ -1172,6 +1238,7 @@ footer{
         >
 
       </div>
+
 
       <div class="field">
 
@@ -1190,6 +1257,9 @@ footer{
       </div>
 
     </div>
+
+
+    <!-- LOCATION -->
 
     <div
       style="
@@ -1215,6 +1285,7 @@ footer{
 
       </div>
 
+
       <div class="form-grid three">
 
         <div class="field">
@@ -1236,6 +1307,7 @@ footer{
 
         </div>
 
+
         <div class="field">
 
           <label for="cityMunicipality">
@@ -1255,6 +1327,7 @@ footer{
 
         </div>
 
+
         <div class="field">
 
           <label for="barangay">
@@ -1273,6 +1346,7 @@ footer{
           </select>
 
         </div>
+
 
         <div class="field">
 
@@ -1295,6 +1369,7 @@ footer{
 
       </div>
 
+
       <div
         id="locationStatus"
         class="location-status"
@@ -1302,6 +1377,7 @@ footer{
       ></div>
 
     </div>
+
 
     <div class="form-grid">
 
@@ -1320,6 +1396,7 @@ footer{
         >
 
       </div>
+
 
       <div class="field">
 
@@ -1340,21 +1417,31 @@ footer{
 
     </div>
 
-    <p
+
+    <div
       style="
+        margin-top:18px;
+        padding:12px 14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--surface2);
         color:var(--muted);
         font-size:11px;
-        margin:17px 0 0;
+        line-height:1.5;
       "
     >
-      <strong>Planning note:</strong>
+      <strong style="color:var(--text);">
+        Planning note:
+      </strong>
+
       The calculator uses illustrative rates for preliminary planning.
       Actual taxes, fees, tax bases and payment responsibilities may
-      depend on the transaction, property classification, applicable law,
-      BIR rules, LGU ordinances and the parties' agreement.
-      Verify the final figures with the appropriate authorities and
+      depend on the transaction, property classification, applicable
+      law, BIR rules, LGU ordinances and the parties' agreement.
+      Verify final figures with the appropriate authorities and
       qualified professionals.
-    </p>
+    </div>
+
 
     <div class="button-row">
 
@@ -1378,7 +1465,9 @@ footer{
 
   </section>
 
+
   <br>
+
 
   <!-- =====================================================
        SUMMARY
@@ -1403,6 +1492,7 @@ footer{
 
       </div>
 
+
       <div class="metric">
 
         <div class="metric-label">
@@ -1417,6 +1507,7 @@ footer{
         </div>
 
       </div>
+
 
       <div class="metric">
 
@@ -1433,6 +1524,7 @@ footer{
 
       </div>
 
+
       <div class="metric">
 
         <div class="metric-label">
@@ -1447,6 +1539,7 @@ footer{
         </div>
 
       </div>
+
 
       <div class="metric">
 
@@ -1467,7 +1560,9 @@ footer{
 
   </section>
 
+
   <br>
+
 
   <!-- =====================================================
        COSTS
@@ -1494,6 +1589,7 @@ footer{
 
     </div>
 
+
     <div class="cost-list">
 
       <div class="cost-row">
@@ -1519,6 +1615,7 @@ footer{
 
       </div>
 
+
       <div class="cost-row">
 
         <div>
@@ -1541,6 +1638,7 @@ footer{
         </div>
 
       </div>
+
 
       <div class="cost-row">
 
@@ -1565,6 +1663,7 @@ footer{
 
       </div>
 
+
       <div class="cost-row">
 
         <div>
@@ -1588,6 +1687,7 @@ footer{
 
       </div>
 
+
       <div class="cost-row">
 
         <div>
@@ -1610,6 +1710,7 @@ footer{
         </div>
 
       </div>
+
 
       <div
         class="cost-row"
@@ -1636,7 +1737,9 @@ footer{
 
   </section>
 
+
   <br>
+
 
   <!-- =====================================================
        ALLOCATION
@@ -1663,6 +1766,7 @@ footer{
 
     </div>
 
+
     <div class="table-wrap">
 
       <table>
@@ -1670,19 +1774,9 @@ footer{
         <thead>
 
           <tr>
-
-            <th>
-              Expense
-            </th>
-
-            <th>
-              Amount
-            </th>
-
-            <th>
-              Payer
-            </th>
-
+            <th>Expense</th>
+            <th>Amount</th>
+            <th>Payer</th>
           </tr>
 
         </thead>
@@ -1692,6 +1786,7 @@ footer{
       </table>
 
     </div>
+
 
     <p
       style="
@@ -1707,7 +1802,9 @@ footer{
 
   </section>
 
+
   <br>
+
 
   <!-- =====================================================
        ANALYTICS
@@ -1741,7 +1838,9 @@ footer{
 
   </section>
 
+
   <br>
+
 
   <!-- =====================================================
        CHECKLIST
@@ -1772,6 +1871,7 @@ footer{
 
     </div>
 
+
     <div class="progress">
 
       <div
@@ -1781,6 +1881,7 @@ footer{
 
     </div>
 
+
     <div
       class="checklist"
       id="checklistContainer"
@@ -1788,16 +1889,20 @@ footer{
 
   </section>
 
+
   <br>
 
+
   <!-- =====================================================
-       REPORT
+       CLEAN REPORT
        ===================================================== -->
 
   <section
     class="card report"
     id="report"
   >
+
+    <!-- REPORT HEADER -->
 
     <div class="report-header">
 
@@ -1813,9 +1918,12 @@ footer{
 
       </div>
 
+
       <div style="text-align:right">
 
-        <strong id="reportDate"></strong>
+        <strong id="reportDate">
+          —
+        </strong>
 
         <p>
           Planning document
@@ -1825,6 +1933,7 @@ footer{
 
     </div>
 
+
     <!-- PROPERTY DETAILS -->
 
     <div class="report-section">
@@ -1833,66 +1942,116 @@ footer{
         Property Details
       </h3>
 
+
       <div class="report-grid">
 
         <div class="report-line">
-          <span>Transaction</span>
+
+          <span>
+            Transaction
+          </span>
+
           <strong id="rTransaction">
             Sale of property
           </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>Property type</span>
+
+          <span>
+            Property type
+          </span>
+
           <strong id="rPropertyType">
             House & Lot
           </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>Province</span>
+
+          <span>
+            Province
+          </span>
+
           <strong id="rProvince">
             —
           </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>City / Municipality</span>
+
+          <span>
+            City / Municipality
+          </span>
+
           <strong id="rCity">
             —
           </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>Barangay</span>
+
+          <span>
+            Barangay
+          </span>
+
           <strong id="rBarangay">
             —
           </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>ZIP Code</span>
+
+          <span>
+            ZIP Code
+          </span>
+
           <strong id="rZip">
             —
           </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>Lot area</span>
+
+          <span>
+            Lot area
+          </span>
+
           <strong id="rLotArea">
             0 sqm
           </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>Transaction ID</span>
+
+          <span>
+            Transaction ID
+          </span>
+
           <strong id="transactionId">
+            —
           </strong>
+
         </div>
 
       </div>
 
     </div>
+
 
     <!-- VALUATION -->
 
@@ -1901,6 +2060,7 @@ footer{
       <h3>
         Valuation
       </h3>
+
 
       <div class="report-grid">
 
@@ -1916,6 +2076,7 @@ footer{
 
         </div>
 
+
         <div class="report-line">
 
           <span>
@@ -1927,6 +2088,7 @@ footer{
           </strong>
 
         </div>
+
 
         <div class="report-line">
 
@@ -1940,6 +2102,7 @@ footer{
 
         </div>
 
+
         <div class="report-line">
 
           <span>
@@ -1951,6 +2114,7 @@ footer{
           </strong>
 
         </div>
+
 
         <div class="report-line">
 
@@ -1968,6 +2132,7 @@ footer{
 
     </div>
 
+
     <!-- FINANCIAL SUMMARY -->
 
     <div class="report-section">
@@ -1975,6 +2140,7 @@ footer{
       <h3>
         Financial Summary
       </h3>
+
 
       <div class="report-grid">
 
@@ -1990,6 +2156,7 @@ footer{
 
         </div>
 
+
         <div class="report-line">
 
           <span>
@@ -2001,6 +2168,7 @@ footer{
           </strong>
 
         </div>
+
 
         <div class="report-line">
 
@@ -2016,6 +2184,7 @@ footer{
 
       </div>
 
+
       <div class="report-total">
 
         <span>
@@ -2030,6 +2199,7 @@ footer{
 
     </div>
 
+
     <!-- COST BREAKDOWN -->
 
     <div class="report-section">
@@ -2037,6 +2207,7 @@ footer{
       <h3>
         Estimated Cost Breakdown
       </h3>
+
 
       <div class="report-grid">
 
@@ -2052,6 +2223,7 @@ footer{
 
         </div>
 
+
         <div class="report-line">
 
           <span>
@@ -2063,6 +2235,7 @@ footer{
           </strong>
 
         </div>
+
 
         <div class="report-line">
 
@@ -2076,6 +2249,7 @@ footer{
 
         </div>
 
+
         <div class="report-line">
 
           <span>
@@ -2087,6 +2261,7 @@ footer{
           </strong>
 
         </div>
+
 
         <div class="report-line">
 
@@ -2104,6 +2279,7 @@ footer{
 
     </div>
 
+
     <!-- PREPARATION STATUS -->
 
     <div class="report-section">
@@ -2111,6 +2287,7 @@ footer{
       <h3>
         Preparation Status
       </h3>
+
 
       <div class="report-grid">
 
@@ -2128,6 +2305,7 @@ footer{
 
       </div>
 
+
       <div class="report-warning">
 
         <strong>
@@ -2144,18 +2322,19 @@ footer{
 
       </div>
 
-      <div class="report-source">
+
+      <div class="report-disclaimer">
 
         Geographic reference data provided through PSGC Cloud.
-        PSGC Cloud describes its service as a structured
-        Philippine Standard Geographic Code reference API.
-        Independently verify critical geographic information
-        before relying on it for a legal, tax, banking or
-        property transaction.
+        PSGC Cloud describes its service as a structured Philippine
+        Standard Geographic Code reference API. Independently verify
+        critical geographic information before relying on it for a
+        legal, tax, banking or property transaction.
 
       </div>
 
     </div>
+
 
     <!-- PRINT BUTTON -->
 
@@ -2166,7 +2345,7 @@ footer{
 
       <button
         class="primary-btn"
-        id="printBtn"
+        id="printReportBtn"
         type="button"
       >
         Print / Save as PDF →
@@ -2177,6 +2356,11 @@ footer{
   </section>
 
 </main>
+
+
+<!-- =======================================================
+     FOOTER
+     ======================================================= -->
 
 <footer>
 
@@ -2190,15 +2374,15 @@ footer{
 
 </footer>
 
-<script>
 
+<script>
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
    VERSION 4
    ========================================================= */
 
-const PSGC_BASE =
-  "https://psgc.cloud/api";
+const PSGC_BASE = "https://psgc.cloud/api";
+
 
 /* =========================================================
    STATE
@@ -2235,36 +2419,17 @@ const state = {
 
 };
 
-/* =========================================================
-   ELEMENT HELPER
-   ========================================================= */
-
-const $ =
-  id => document.getElementById(id);
-
-const provinceSelect =
-  $("province");
-
-const citySelect =
-  $("cityMunicipality");
-
-const barangaySelect =
-  $("barangay");
-
-const zipInput =
-  $("zipCode");
-
-const locationStatus =
-  $("locationStatus");
 
 /* =========================================================
-   FORMATTING
+   HELPERS
    ========================================================= */
+
+const $ = id => document.getElementById(id);
+
 
 function peso(value){
 
-  const number =
-    Number(value) || 0;
+  const number = Number(value) || 0;
 
   return number.toLocaleString(
     "en-PH",
@@ -2278,27 +2443,24 @@ function peso(value){
 
 }
 
+
 function numberValue(id){
 
-  return Number(
-    $(id).value
-  ) || 0;
+  return Number($(id).value) || 0;
 
 }
 
+
 function selectedText(select){
 
-  if(
-    !select ||
-    !select.value
-  ){
+  if(!select || !select.value){
+
     return "—";
+
   }
 
   const option =
-    select.options[
-      select.selectedIndex
-    ];
+    select.options[select.selectedIndex];
 
   return option
     ? option.textContent
@@ -2306,10 +2468,11 @@ function selectedText(select){
 
 }
 
-function setStatus(
-  message,
-  type=""
-){
+
+function setStatus(message,type=""){
+
+  const locationStatus =
+    $("locationStatus");
 
   locationStatus.textContent =
     message;
@@ -2324,6 +2487,24 @@ function setStatus(
 
 }
 
+
+/* =========================================================
+   LOCATION ELEMENTS
+   ========================================================= */
+
+const provinceSelect =
+  $("province");
+
+const citySelect =
+  $("cityMunicipality");
+
+const barangaySelect =
+  $("barangay");
+
+const zipInput =
+  $("zipCode");
+
+
 /* =========================================================
    API
    ========================================================= */
@@ -2335,11 +2516,11 @@ async function fetchJSON(url){
       url,
       {
         headers:{
-          "Accept":
-            "application/json"
+          "Accept":"application/json"
         }
       }
     );
+
 
   if(!response.ok){
 
@@ -2350,24 +2531,36 @@ async function fetchJSON(url){
 
   }
 
+
   const data =
     await response.json();
 
+
   if(Array.isArray(data)){
+
     return data;
+
   }
+
 
   if(Array.isArray(data.data)){
+
     return data.data;
+
   }
 
+
   if(Array.isArray(data.results)){
+
     return data.results;
+
   }
+
 
   return [];
 
 }
+
 
 /* =========================================================
    SELECT HELPERS
@@ -2381,23 +2574,19 @@ function resetSelect(
   select.innerHTML = "";
 
   const option =
-    document.createElement(
-      "option"
-    );
+    document.createElement("option");
 
   option.value = "";
 
   option.textContent =
     placeholder;
 
-  select.appendChild(
-    option
-  );
+  select.appendChild(option);
 
-  select.disabled =
-    true;
+  select.disabled = true;
 
 }
+
 
 function populateSelect(
   select,
@@ -2410,14 +2599,12 @@ function populateSelect(
     placeholder
   );
 
-  for(
-    const item of items
-  ){
+
+  for(const item of items){
 
     const option =
-      document.createElement(
-        "option"
-      );
+      document.createElement("option");
+
 
     option.value =
       item.code ||
@@ -2425,10 +2612,12 @@ function populateSelect(
       item.name ||
       "";
 
+
     option.textContent =
       item.name ||
       item.label ||
       "Unnamed location";
+
 
     if(item.type){
 
@@ -2439,24 +2628,27 @@ function populateSelect(
 
     }
 
+
     option.dataset.name =
       item.name || "";
+
 
     option.dataset.zip =
       item.zip_code ||
       item.zip ||
       "";
 
-    select.appendChild(
-      option
-    );
+
+    select.appendChild(option);
 
   }
+
 
   select.disabled =
     items.length === 0;
 
 }
+
 
 /* =========================================================
    PROVINCES
@@ -2485,13 +2677,29 @@ async function loadProvinces(){
     "Loading Philippine location data..."
   );
 
+
   try{
 
-    const provinces =
-      await fetchJSON(
-        PSGC_BASE +
-        "/provinces"
-      );
+    let provinces = [];
+
+    try{
+
+      provinces =
+        await fetchJSON(
+          PSGC_BASE +
+          "/v1/provinces"
+        );
+
+    }catch{
+
+      provinces =
+        await fetchJSON(
+          PSGC_BASE +
+          "/provinces"
+        );
+
+    }
+
 
     provinces.sort(
       (a,b) =>
@@ -2501,20 +2709,8 @@ async function loadProvinces(){
           )
     );
 
-    populateSelect(
-      provinceSelect,
-      provinces,
-      "Select province"
-    );
 
-    if(provinces.length){
-
-      setStatus(
-        "Philippine location data ready.",
-        "success"
-      );
-
-    }else{
+    if(!provinces.length){
 
       throw new Error(
         "No provinces returned."
@@ -2522,14 +2718,30 @@ async function loadProvinces(){
 
     }
 
+
+    populateSelect(
+      provinceSelect,
+      provinces,
+      "Select province"
+    );
+
+
+    setStatus(
+      "Philippine location data ready.",
+      "success"
+    );
+
+
   }catch(error){
 
     console.error(error);
+
 
     resetSelect(
       provinceSelect,
       "Unable to load provinces"
     );
+
 
     setStatus(
       "Unable to load Philippine location data. Please refresh and try again.",
@@ -2539,6 +2751,7 @@ async function loadProvinces(){
   }
 
 }
+
 
 /* =========================================================
    CITIES
@@ -2560,6 +2773,7 @@ async function loadCities(
 
   zipInput.value = "";
 
+
   if(!provinceCode){
 
     resetSelect(
@@ -2568,11 +2782,14 @@ async function loadCities(
     );
 
     return;
+
   }
+
 
   try{
 
     let cities;
+
 
     try{
 
@@ -2600,6 +2817,7 @@ async function loadCities(
 
     }
 
+
     cities.sort(
       (a,b) =>
         String(a.name)
@@ -2608,11 +2826,13 @@ async function loadCities(
           )
     );
 
+
     populateSelect(
       citySelect,
       cities,
       "Select city / municipality"
     );
+
 
     if(cities.length){
 
@@ -2630,14 +2850,17 @@ async function loadCities(
 
     }
 
+
   }catch(error){
 
     console.error(error);
+
 
     resetSelect(
       citySelect,
       "Unable to load cities / municipalities"
     );
+
 
     setStatus(
       "Unable to load cities / municipalities. Please refresh and try again.",
@@ -2647,6 +2870,7 @@ async function loadCities(
   }
 
 }
+
 
 /* =========================================================
    BARANGAYS
@@ -2663,6 +2887,7 @@ async function loadBarangays(
 
   zipInput.value = "";
 
+
   if(!cityCode){
 
     resetSelect(
@@ -2671,11 +2896,14 @@ async function loadBarangays(
     );
 
     return;
+
   }
+
 
   try{
 
     let barangays;
+
 
     try{
 
@@ -2703,6 +2931,7 @@ async function loadBarangays(
 
     }
 
+
     barangays.sort(
       (a,b) =>
         String(a.name)
@@ -2711,17 +2940,30 @@ async function loadBarangays(
           )
     );
 
+
     populateSelect(
       barangaySelect,
       barangays,
       "Select barangay"
     );
 
-    await loadCityZip(
-      cityCode
-    );
 
-    if(zipInput.value){
+    const selectedCity =
+      citySelect.options[
+        citySelect.selectedIndex
+      ];
+
+
+    const cityZip =
+      selectedCity?.dataset.zip ||
+      "";
+
+
+    if(cityZip){
+
+      zipInput.value =
+        cityZip;
+
 
       setStatus(
         "Location loaded. ZIP Code automatically populated.",
@@ -2730,21 +2972,40 @@ async function loadBarangays(
 
     }else{
 
-      setStatus(
-        "Location loaded. ZIP Code is not available in the reference data for this locality.",
-        "success"
+      await loadCityZip(
+        cityCode
       );
 
+
+      if(zipInput.value){
+
+        setStatus(
+          "Location loaded. ZIP Code automatically populated.",
+          "success"
+        );
+
+      }else{
+
+        setStatus(
+          "Location loaded. ZIP Code is not available in the reference data for this locality.",
+          "success"
+        );
+
+      }
+
     }
+
 
   }catch(error){
 
     console.error(error);
 
+
     resetSelect(
       barangaySelect,
       "Unable to load barangays"
     );
+
 
     setStatus(
       "Unable to load barangays. Please refresh and try again.",
@@ -2755,8 +3016,9 @@ async function loadBarangays(
 
 }
 
+
 /* =========================================================
-   ZIP
+   CITY ZIP
    ========================================================= */
 
 async function loadCityZip(
@@ -2768,16 +3030,20 @@ async function loadCityZip(
     zipInput.value = "";
 
     return;
+
   }
+
 
   const selectedCity =
     citySelect.options[
       citySelect.selectedIndex
     ];
 
+
   const existingZip =
     selectedCity?.dataset.zip ||
     "";
+
 
   if(existingZip){
 
@@ -2785,11 +3051,14 @@ async function loadCityZip(
       existingZip;
 
     return;
+
   }
+
 
   try{
 
     let locality;
+
 
     try{
 
@@ -2815,18 +3084,22 @@ async function loadCityZip(
 
     }
 
+
     const item =
       Array.isArray(locality)
         ? locality[0]
         : locality;
+
 
     const zip =
       item?.zip_code ||
       item?.zip ||
       "";
 
+
     zipInput.value =
       zip || "";
+
 
   }catch(error){
 
@@ -2840,6 +3113,7 @@ async function loadCityZip(
   }
 
 }
+
 
 /* =========================================================
    LOCATION EVENTS
@@ -2860,6 +3134,7 @@ provinceSelect.addEventListener(
   }
 );
 
+
 citySelect.addEventListener(
   "change",
   async () => {
@@ -2875,28 +3150,32 @@ citySelect.addEventListener(
   }
 );
 
+
 barangaySelect.addEventListener(
   "change",
   () => {
 
     updateReportLocation();
 
+
     const selectedCity =
       citySelect.options[
         citySelect.selectedIndex
       ];
+
 
     if(selectedCity?.dataset.zip){
 
       zipInput.value =
         selectedCity.dataset.zip;
 
-      updateReportLocation();
-
     }
+
+    updateReportLocation();
 
   }
 );
+
 
 /* =========================================================
    REPORT LOCATION
@@ -2909,21 +3188,24 @@ function updateReportLocation(){
       provinceSelect
     );
 
+
   $("rCity").textContent =
     selectedText(
       citySelect
     );
+
 
   $("rBarangay").textContent =
     selectedText(
       barangaySelect
     );
 
+
   $("rZip").textContent =
-    zipInput.value ||
-    "—";
+    zipInput.value || "—";
 
 }
+
 
 /* =========================================================
    CALCULATION
@@ -2936,20 +3218,31 @@ function calculate(){
       "sellingPrice"
     );
 
+
   const fair =
     numberValue(
       "fairMarketValue"
     );
+
 
   const zonal =
     numberValue(
       "zonalValue"
     );
 
+
   const commissionRate =
     numberValue(
       "commissionRate"
     );
+
+
+  /*
+    Illustrative tax base:
+    highest of selling price,
+    fair market value and
+    BIR zonal value.
+  */
 
   const taxBase =
     Math.max(
@@ -2958,17 +3251,22 @@ function calculate(){
       zonal
     );
 
+
   const cgt =
     taxBase * 0.06;
+
 
   const dst =
     taxBase * 0.015;
 
+
   const transfer =
     taxBase * 0.005;
 
+
   const registration =
     taxBase * 0.0025;
+
 
   const commission =
     selling *
@@ -2976,15 +3274,15 @@ function calculate(){
       commissionRate / 100
     );
 
-  state.costs = {
 
+  state.costs = {
     cgt,
     dst,
     transfer,
     registration,
     commission
-
   };
+
 
   const total =
     cgt +
@@ -2993,8 +3291,11 @@ function calculate(){
     registration +
     commission;
 
+
   let sellerExpenses = 0;
+
   let buyerExpenses = 0;
+
 
   for(
     const [key,value]
@@ -3005,6 +3306,7 @@ function calculate(){
 
     const payer =
       state.allocation[key];
+
 
     if(payer === "Seller"){
 
@@ -3030,46 +3332,64 @@ function calculate(){
 
   }
 
+
   const sellerNet =
     selling -
     sellerExpenses;
 
+
+  /*
+    WEB SUMMARY
+  */
+
   $("metricProperty").textContent =
     peso(selling);
+
 
   $("metricTax").textContent =
     peso(taxBase);
 
+
   $("metricSeller").textContent =
     peso(sellerExpenses);
+
 
   $("metricBuyer").textContent =
     peso(buyerExpenses);
 
+
   $("metricNet").textContent =
     peso(sellerNet);
+
 
   $("cgtAmount").textContent =
     peso(cgt);
 
+
   $("dstAmount").textContent =
     peso(dst);
+
 
   $("transferAmount").textContent =
     peso(transfer);
 
+
   $("registrationAmount").textContent =
     peso(registration);
+
 
   $("commissionAmount").textContent =
     peso(commission);
 
+
   $("totalCosts").textContent =
     peso(total);
+
 
   updateAllocationTable();
 
   updateChart();
+
 
   updateReport({
 
@@ -3085,8 +3405,9 @@ function calculate(){
 
 }
 
+
 /* =========================================================
-   ALLOCATION
+   ALLOCATION TABLE
    ========================================================= */
 
 function updateAllocationTable(){
@@ -3094,7 +3415,9 @@ function updateAllocationTable(){
   const body =
     $("allocationBody");
 
+
   body.innerHTML = "";
+
 
   const labels = {
 
@@ -3115,6 +3438,7 @@ function updateAllocationTable(){
 
   };
 
+
   for(
     const key
     of Object.keys(
@@ -3127,6 +3451,7 @@ function updateAllocationTable(){
         "tr"
       );
 
+
     const name =
       document.createElement(
         "td"
@@ -3134,6 +3459,7 @@ function updateAllocationTable(){
 
     name.textContent =
       labels[key];
+
 
     const amount =
       document.createElement(
@@ -3145,18 +3471,22 @@ function updateAllocationTable(){
         state.costs[key]
       );
 
+
     const payerCell =
       document.createElement(
         "td"
       );
+
 
     const select =
       document.createElement(
         "select"
       );
 
+
     select.className =
       "payer-select";
+
 
     [
       "Seller",
@@ -3170,11 +3500,14 @@ function updateAllocationTable(){
             "option"
           );
 
+
         option.value =
           optionValue;
 
+
         option.textContent =
           optionValue;
+
 
         if(
           state.allocation[key] ===
@@ -3186,12 +3519,14 @@ function updateAllocationTable(){
 
         }
 
+
         select.appendChild(
           option
         );
 
       }
     );
+
 
     select.addEventListener(
       "change",
@@ -3205,9 +3540,11 @@ function updateAllocationTable(){
       }
     );
 
+
     payerCell.appendChild(
       select
     );
+
 
     row.appendChild(
       name
@@ -3221,6 +3558,7 @@ function updateAllocationTable(){
       payerCell
     );
 
+
     body.appendChild(
       row
     );
@@ -3228,6 +3566,7 @@ function updateAllocationTable(){
   }
 
 }
+
 
 /* =========================================================
    CHART
@@ -3238,7 +3577,9 @@ function updateChart(){
   const chart =
     $("chart");
 
+
   chart.innerHTML = "";
+
 
   const items = [
 
@@ -3269,6 +3610,7 @@ function updateChart(){
 
   ];
 
+
   const max =
     Math.max(
       ...items.map(
@@ -3276,6 +3618,7 @@ function updateChart(){
       ),
       1
     );
+
 
   for(
     const [label,value]
@@ -3290,6 +3633,7 @@ function updateChart(){
     wrap.className =
       "bar-wrap";
 
+
     const amount =
       document.createElement(
         "div"
@@ -3301,6 +3645,7 @@ function updateChart(){
     amount.textContent =
       peso(value);
 
+
     const bar =
       document.createElement(
         "div"
@@ -3309,19 +3654,19 @@ function updateChart(){
     bar.className =
       "bar";
 
+
     const height =
       value === 0
         ? 3
         : Math.max(
             8,
-            (
-              value /
-              max
-            ) * 190
+            (value / max) * 190
           );
+
 
     bar.style.height =
       height + "px";
+
 
     const labelElement =
       document.createElement(
@@ -3333,6 +3678,7 @@ function updateChart(){
 
     labelElement.textContent =
       label;
+
 
     wrap.appendChild(
       amount
@@ -3346,6 +3692,7 @@ function updateChart(){
       labelElement
     );
 
+
     chart.appendChild(
       wrap
     );
@@ -3353,6 +3700,7 @@ function updateChart(){
   }
 
 }
+
 
 /* =========================================================
    REPORT
@@ -3363,17 +3711,28 @@ function updateReport(data){
   $("rTransaction").textContent =
     $("transactionType").value;
 
+
   $("rPropertyType").textContent =
     $("propertyType").value;
 
+
   $("rSelling").textContent =
-    peso(data.selling);
+    peso(
+      data.selling
+    );
+
 
   $("rFair").textContent =
-    peso(data.fair);
+    peso(
+      data.fair
+    );
+
 
   $("rZonal").textContent =
-    peso(data.zonal);
+    peso(
+      data.zonal
+    );
+
 
   $("rAcquisition").textContent =
     peso(
@@ -3382,67 +3741,86 @@ function updateReport(data){
       )
     );
 
+
   $("rTaxBase").textContent =
-    peso(data.taxBase);
+    peso(
+      data.taxBase
+    );
+
 
   $("rSellerExpenses").textContent =
     peso(
       data.sellerExpenses
     );
 
+
   $("rBuyerExpenses").textContent =
     peso(
       data.buyerExpenses
     );
+
 
   $("rCommission").textContent =
     peso(
       state.costs.commission
     );
 
+
   $("rSellerNet").textContent =
     peso(
       data.sellerNet
     );
+
 
   $("rCGT").textContent =
     peso(
       state.costs.cgt
     );
 
+
   $("rDST").textContent =
     peso(
       state.costs.dst
     );
+
 
   $("rTransfer").textContent =
     peso(
       state.costs.transfer
     );
 
+
   $("rRegistration").textContent =
     peso(
       state.costs.registration
     );
+
 
   $("rCommission2").textContent =
     peso(
       state.costs.commission
     );
 
-  $("rLotArea").textContent =
+
+  const lotArea =
     numberValue(
       "lotArea"
-    ).toLocaleString(
+    );
+
+
+  $("rLotArea").textContent =
+    lotArea.toLocaleString(
       "en-PH"
     ) +
     " sqm";
+
 
   updateReportLocation();
 
   updateChecklistReport();
 
 }
+
 
 /* =========================================================
    CHECKLIST
@@ -3453,41 +3831,54 @@ function renderChecklist(){
   const container =
     $("checklistContainer");
 
+
   container.innerHTML = "";
 
+
   state.checklist.forEach(
-    (item,index) => {
+    (
+      item,
+      index
+    ) => {
 
       const wrapper =
         document.createElement(
           "div"
         );
 
+
       wrapper.className =
         "check-item";
+
 
       const checkbox =
         document.createElement(
           "input"
         );
 
+
       checkbox.type =
         "checkbox";
+
 
       checkbox.id =
         "check-" +
         index;
+
 
       const label =
         document.createElement(
           "label"
         );
 
+
       label.htmlFor =
         checkbox.id;
 
+
       label.textContent =
         item;
+
 
       checkbox.addEventListener(
         "change",
@@ -3498,18 +3889,22 @@ function renderChecklist(){
             checkbox.checked
           );
 
+
           updateChecklist();
 
         }
       );
 
+
       wrapper.appendChild(
         checkbox
       );
 
+
       wrapper.appendChild(
         label
       );
+
 
       container.appendChild(
         wrapper
@@ -3518,9 +3913,15 @@ function renderChecklist(){
     }
   );
 
+
   updateChecklist();
 
 }
+
+
+/* =========================================================
+   CHECKLIST UPDATE
+   ========================================================= */
 
 function updateChecklist(){
 
@@ -3528,6 +3929,7 @@ function updateChecklist(){
     document.querySelectorAll(
       "#checklistContainer input[type=checkbox]"
     );
+
 
   const completed =
     [
@@ -3537,8 +3939,10 @@ function updateChecklist(){
         checkbox.checked
     ).length;
 
+
   const total =
     checkboxes.length;
+
 
   const percent =
     total
@@ -3550,16 +3954,20 @@ function updateChecklist(){
         )
       : 0;
 
+
   $("checkPercent").textContent =
     percent + "%";
 
+
   $("checkProgress").style.width =
     percent + "%";
+
 
   $("rChecklist").textContent =
     percent + "%";
 
 }
+
 
 function updateChecklistReport(){
 
@@ -3568,71 +3976,6 @@ function updateChecklistReport(){
 
 }
 
-/* =========================================================
-   TRANSACTION ID
-   ========================================================= */
-
-function generateTransactionId(){
-
-  const now =
-    new Date();
-
-  const year =
-    now.getFullYear();
-
-  const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
-
-  const day =
-    String(
-      now.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
-
-  const random =
-    Math.floor(
-      10000000 +
-      Math.random() *
-      90000000
-    );
-
-  $("transactionId").textContent =
-    "PTW-" +
-    year +
-    month +
-    day +
-    "-" +
-    random;
-
-}
-
-/* =========================================================
-   REPORT DATE
-   ========================================================= */
-
-function updateReportDate(){
-
-  const now =
-    new Date();
-
-  $("reportDate").textContent =
-    now.toLocaleDateString(
-      "en-PH",
-      {
-        year:"numeric",
-        month:"long",
-        day:"numeric"
-      }
-    );
-
-}
 
 /* =========================================================
    RESET
@@ -3655,25 +3998,32 @@ function resetWorkspace(){
     }
   );
 
+
   $("transactionType").value =
     "Sale of property";
+
 
   $("propertyType").value =
     "House & Lot";
 
+
   provinceSelect.value = "";
+
 
   resetSelect(
     citySelect,
     "Select province first"
   );
 
+
   resetSelect(
     barangaySelect,
     "Select city / municipality first"
   );
 
+
   zipInput.value = "";
+
 
   state.allocation = {
 
@@ -3685,6 +4035,7 @@ function resetWorkspace(){
 
   };
 
+
   state.costs = {
 
     cgt:0,
@@ -3695,6 +4046,7 @@ function resetWorkspace(){
 
   };
 
+
   document
     .querySelectorAll(
       "#checklistContainer input[type=checkbox]"
@@ -3704,6 +4056,7 @@ function resetWorkspace(){
 
         checkbox.checked =
           false;
+
 
         checkbox
           .closest(
@@ -3716,18 +4069,19 @@ function resetWorkspace(){
       }
     );
 
+
   setStatus(
     "Workspace reset. All transaction values are ₱0.",
     "success"
   );
 
+
   calculate();
 
   updateReportLocation();
 
-  generateTransactionId();
-
 }
+
 
 /* =========================================================
    BUTTONS
@@ -3739,47 +4093,61 @@ $("updateBtn").addEventListener(
 
     calculate();
 
-    document
-      .getElementById(
-        "costs"
-      )
-      .scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
+
+    $("costs").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
 
   }
 );
+
 
 $("resetBtn").addEventListener(
   "click",
   resetWorkspace
 );
 
+
 /* =========================================================
    PRINT
    ========================================================= */
 
-$("printBtn").addEventListener(
+/*
+  IMPORTANT:
+
+  We intentionally do NOT manipulate the page into a
+  temporary "print mode".
+
+  The @media print rules above turn the report into the
+  entire printed document.
+
+  Calling window.print() therefore prints ONLY #report.
+*/
+
+$("printReportBtn").addEventListener(
   "click",
   () => {
 
     /*
-      Make sure the report has the latest
-      values before opening print preview.
+      Ensure report values are completely current
+      before opening the print dialog.
     */
 
     calculate();
 
-    updateReportDate();
+    updateReportLocation();
+
+    updateChecklistReport();
 
     window.print();
 
   }
 );
 
+
 /* =========================================================
-   AUTO CALCULATION
+   AUTO CALCULATE
    ========================================================= */
 
 [
@@ -3800,6 +4168,7 @@ $("printBtn").addEventListener(
   }
 );
 
+
 [
   "transactionType",
   "propertyType"
@@ -3814,6 +4183,7 @@ $("printBtn").addEventListener(
   }
 );
 
+
 /* =========================================================
    DARK MODE
    ========================================================= */
@@ -3823,6 +4193,7 @@ const savedTheme =
     "ph-property-theme"
   );
 
+
 if(savedTheme){
 
   document.documentElement.dataset.theme =
@@ -3830,11 +4201,13 @@ if(savedTheme){
 
 }
 
+
 function updateThemeButton(){
 
   const dark =
     document.documentElement.dataset.theme ===
     "dark";
+
 
   $("themeBtn").textContent =
     dark
@@ -3843,6 +4216,7 @@ function updateThemeButton(){
 
 }
 
+
 $("themeBtn").addEventListener(
   "click",
   () => {
@@ -3850,35 +4224,117 @@ $("themeBtn").addEventListener(
     const current =
       document.documentElement.dataset.theme;
 
+
     const next =
       current === "dark"
         ? "light"
         : "dark";
 
+
     document.documentElement.dataset.theme =
       next;
+
 
     localStorage.setItem(
       "ph-property-theme",
       next
     );
 
+
     updateThemeButton();
 
   }
 );
 
+
 updateThemeButton();
+
+
+/* =========================================================
+   REPORT DATE
+   ========================================================= */
+
+function updateReportDate(){
+
+  const now =
+    new Date();
+
+
+  $("reportDate").textContent =
+    now.toLocaleDateString(
+      "en-PH",
+      {
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+      }
+    );
+
+}
+
+
+updateReportDate();
+
+
+/* =========================================================
+   TRANSACTION ID
+   ========================================================= */
+
+function generateTransactionId(){
+
+  const now =
+    new Date();
+
+
+  const year =
+    now.getFullYear();
+
+
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const random =
+    Math.floor(
+      10000000 +
+      Math.random() *
+      90000000
+    );
+
+
+  $("transactionId").textContent =
+    "PTW-" +
+    year +
+    month +
+    day +
+    "-" +
+    random;
+
+}
+
+
+generateTransactionId();
+
 
 /* =========================================================
    INITIALIZATION
    ========================================================= */
 
 renderChecklist();
-
-updateReportDate();
-
-generateTransactionId();
 
 calculate();
 
