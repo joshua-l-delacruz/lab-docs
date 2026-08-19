@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Philippine Property Transaction Workspace for preliminary property sale, tax, expense allocation and transaction planning.">
+<meta name="theme-color" content="#2563eb">
+
 <title>PH Property Transaction Workspace · Joshua Dela Cruz</title>
 
 <style>
@@ -17,6 +20,7 @@
   --accent2:#1d4ed8;
   --success:#059669;
   --danger:#dc2626;
+  --warning:#d97706;
   --shadow:0 10px 35px rgba(15,23,42,.07);
   --radius:18px;
 }
@@ -32,6 +36,7 @@ html[data-theme="dark"]{
   --accent2:#3b82f6;
   --success:#34d399;
   --danger:#f87171;
+  --warning:#f59e0b;
   --shadow:0 10px 35px rgba(0,0,0,.25);
 }
 
@@ -45,7 +50,14 @@ html{
 
 body{
   margin:0;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   background:var(--bg);
   color:var(--text);
   line-height:1.5;
@@ -71,6 +83,12 @@ input{
     box-shadow .18s ease;
 }
 
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none!important;
+}
+
 a{
   color:inherit;
   text-decoration:none;
@@ -80,7 +98,9 @@ a:hover{
   color:var(--accent);
 }
 
-/* ---------------- HEADER ---------------- */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 .topbar{
   position:sticky;
@@ -117,6 +137,7 @@ a:hover{
   background:var(--text);
   color:var(--surface);
   font-weight:900;
+  flex-shrink:0;
 }
 
 .brand small{
@@ -131,6 +152,10 @@ a:hover{
   align-items:center;
   gap:9px;
 }
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
 .icon-btn,
 .secondary-btn{
@@ -163,7 +188,26 @@ a:hover{
   transform:translateY(-1px);
 }
 
-/* ---------------- LAYOUT ---------------- */
+.danger-btn{
+  border:1px solid color-mix(
+    in srgb,
+    var(--danger) 30%,
+    var(--border)
+  );
+  background:var(--surface);
+  color:var(--danger);
+  border-radius:11px;
+  padding:9px 13px;
+  cursor:pointer;
+}
+
+.danger-btn:hover{
+  border-color:var(--danger);
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
 
 .container{
   max-width:1280px;
@@ -201,7 +245,9 @@ a:hover{
   height:7px;
   border-radius:50%;
   background:var(--success);
-  box-shadow:0 0 0 5px color-mix(in srgb,var(--success) 12%,transparent);
+  box-shadow:
+    0 0 0 5px
+    color-mix(in srgb,var(--success) 12%,transparent);
 }
 
 h1{
@@ -259,7 +305,9 @@ h1{
   }
 }
 
-/* ---------------- CARDS ---------------- */
+/* =========================================================
+   CARDS
+   ========================================================= */
 
 .card{
   background:var(--surface);
@@ -297,11 +345,15 @@ h1{
   border-radius:999px;
   font-size:11px;
   font-weight:800;
-  background:color-mix(in srgb,var(--success) 12%,transparent);
+  background:
+    color-mix(in srgb,var(--success) 12%,transparent);
   color:var(--success);
+  white-space:nowrap;
 }
 
-/* ---------------- FORMS ---------------- */
+/* =========================================================
+   FORMS
+   ========================================================= */
 
 .form-grid{
   display:grid;
@@ -351,12 +403,22 @@ select{
 input:focus,
 select:focus{
   border-color:var(--accent);
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent);
+  box-shadow:
+    0 0 0 3px
+    color-mix(in srgb,var(--accent) 12%,transparent);
 }
 
 input[readonly]{
   opacity:.85;
   cursor:not-allowed;
+}
+
+input.input-error,
+select.input-error{
+  border-color:var(--danger);
+  box-shadow:
+    0 0 0 3px
+    color-mix(in srgb,var(--danger) 10%,transparent);
 }
 
 .location-status{
@@ -374,6 +436,10 @@ input[readonly]{
   color:var(--success);
 }
 
+.location-status.loading{
+  color:var(--accent);
+}
+
 .location-help{
   color:var(--muted);
   font-size:11px;
@@ -387,7 +453,9 @@ input[readonly]{
   margin-top:17px;
 }
 
-/* ---------------- SUMMARY ---------------- */
+/* =========================================================
+   SUMMARY
+   ========================================================= */
 
 .summary-grid{
   display:grid;
@@ -425,9 +493,12 @@ input[readonly]{
   font-size:21px;
   font-weight:850;
   letter-spacing:-.03em;
+  overflow-wrap:anywhere;
 }
 
-/* ---------------- COSTS ---------------- */
+/* =========================================================
+   COSTS
+   ========================================================= */
 
 .cost-list{
   display:flex;
@@ -457,9 +528,12 @@ input[readonly]{
 
 .cost-amount{
   font-weight:850;
+  text-align:right;
 }
 
-/* ---------------- ALLOCATION ---------------- */
+/* =========================================================
+   ALLOCATION
+   ========================================================= */
 
 .table-wrap{
   overflow-x:auto;
@@ -491,7 +565,9 @@ th{
   padding:7px 9px;
 }
 
-/* ---------------- GRAPH ---------------- */
+/* =========================================================
+   GRAPH
+   ========================================================= */
 
 .chart{
   height:260px;
@@ -500,6 +576,7 @@ th{
   gap:16px;
   padding:20px 10px 0;
   border-bottom:1px solid var(--border);
+  overflow-x:auto;
 }
 
 .bar-wrap{
@@ -510,7 +587,7 @@ th{
   justify-content:flex-end;
   align-items:center;
   gap:7px;
-  min-width:55px;
+  min-width:70px;
 }
 
 .bar{
@@ -530,9 +607,12 @@ th{
 .bar-value{
   font-size:10px;
   font-weight:800;
+  text-align:center;
 }
 
-/* ---------------- CHECKLIST ---------------- */
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
 
 .progress{
   height:9px;
@@ -571,12 +651,19 @@ th{
   accent-color:var(--accent);
 }
 
+.check-item label{
+  cursor:pointer;
+  color:var(--text);
+}
+
 .check-item.done label{
   text-decoration:line-through;
   opacity:.55;
 }
 
-/* ---------------- REPORT ---------------- */
+/* =========================================================
+   REPORT
+   ========================================================= */
 
 .report{
   background:#fff;
@@ -635,9 +722,15 @@ html[data-theme="dark"] .report{
   font-size:13px;
 }
 
+.report-line strong{
+  text-align:right;
+  overflow-wrap:anywhere;
+}
+
 .report-total{
   display:flex;
   justify-content:space-between;
+  gap:15px;
   margin-top:15px;
   padding:15px 0 0;
   border-top:2px solid #111827;
@@ -654,13 +747,66 @@ html[data-theme="dark"] .report{
   line-height:1.55;
 }
 
+.report-meta{
+  font-size:10px;
+  color:#64748b;
+  margin-top:6px;
+}
+
 @media(max-width:600px){
   .report-grid{
     grid-template-columns:1fr;
   }
+
+  .report-header{
+    flex-direction:column;
+  }
+
+  .report-header > div:last-child{
+    text-align:left!important;
+  }
+
+  .report-total{
+    font-size:15px;
+  }
 }
 
-/* ---------------- FOOTER ---------------- */
+/* =========================================================
+   NOTICES
+   ========================================================= */
+
+.info-box{
+  margin-top:18px;
+  padding:13px 14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--surface2);
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.55;
+}
+
+.info-box strong{
+  color:var(--text);
+}
+
+.autosave-status{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:9px;
+}
+
+.autosave-status.saved{
+  color:var(--success);
+}
+
+.autosave-status.error{
+  color:var(--danger);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 footer{
   max-width:1280px;
@@ -674,9 +820,17 @@ footer{
   flex-wrap:wrap;
 }
 
-/* ---------------- PRINT ---------------- */
+/* =========================================================
+   PRINT
+   ========================================================= */
 
 @media print{
+
+  @page{
+    size:A4;
+    margin:14mm;
+  }
+
   body{
     background:#fff!important;
   }
@@ -703,10 +857,68 @@ footer{
     display:block!important;
     border:0;
     box-shadow:none;
+    padding:0;
   }
 
   .report{
     border:0;
+  }
+
+  .report-section{
+    break-inside:avoid;
+  }
+
+  .report-header{
+    break-after:avoid;
+  }
+
+  .report-warning{
+    break-inside:avoid;
+  }
+}
+
+/* =========================================================
+   SMALL SCREENS
+   ========================================================= */
+
+@media(max-width:600px){
+
+  .topbar-inner{
+    padding:11px 14px;
+  }
+
+  .container{
+    padding:20px 14px 50px;
+  }
+
+  .brand small{
+    display:none;
+  }
+
+  .secondary-btn{
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  .icon-btn{
+    padding:8px 11px;
+  }
+
+  .card{
+    padding:16px;
+  }
+
+  .cost-row{
+    grid-template-columns:1fr;
+  }
+
+  .cost-amount{
+    text-align:left;
+  }
+
+  th,
+  td{
+    white-space:nowrap;
   }
 }
 </style>
@@ -717,8 +929,13 @@ footer{
 <header class="topbar">
   <div class="topbar-inner">
 
-    <a class="brand" href="https://joshuadelacruz.solutions/">
+    <a
+      class="brand"
+      href="https://joshuadelacruz.solutions/"
+      aria-label="Joshua Dela Cruz portfolio"
+    >
       <div class="logo">PH</div>
+
       <div>
         Joshua Dela Cruz
         <small>Property Workspace</small>
@@ -726,6 +943,7 @@ footer{
     </a>
 
     <div class="top-actions">
+
       <a
         class="secondary-btn"
         href="https://joshuadelacruz.solutions/"
@@ -738,124 +956,243 @@ footer{
         id="themeBtn"
         type="button"
         aria-label="Toggle dark mode"
+        title="Toggle dark mode"
       >
         ☀
       </button>
+
     </div>
 
   </div>
 </header>
 
+
 <main class="container">
 
   <div class="breadcrumb">
-    <a href="https://joshuadelacruz.solutions/">← Joshua Dela Cruz</a>
-    &nbsp;/&nbsp; Real Estate /
+    <a href="https://joshuadelacruz.solutions/">
+      ← Joshua Dela Cruz
+    </a>
+
+    &nbsp;/&nbsp;
+
+    Real Estate /
+
     <strong>Transaction Workspace</strong>
   </div>
 
-  <section class="hero">
-    <div class="kicker">VERSION 4 · PHILIPPINE LOCATION</div>
 
-    <h1>Prepare the transaction.<br>Know who pays what.</h1>
+  <section class="hero">
+
+    <div class="kicker">
+      VERSION 4 · PHILIPPINE LOCATION
+    </div>
+
+    <h1>
+      Prepare the transaction.<br>
+      Know who pays what.
+    </h1>
 
     <p>
       Build a preliminary Philippine property transaction estimate,
       allocate expenses between buyer and seller, track documents and
       produce a clean client-ready report.
     </p>
+
   </section>
 
-  <nav class="workspace-nav">
-    <a href="#workspace">▦ Transaction</a>
-    <a href="#costs">◒ Costs</a>
-    <a href="#allocation">⇄ Allocation</a>
-    <a href="#analytics">◔ Analytics</a>
-    <a href="#checklist">✓ Checklist</a>
-    <a href="#report">▤ Report</a>
+
+  <nav
+    class="workspace-nav"
+    aria-label="Workspace navigation"
+  >
+
+    <a href="#workspace">
+      ▦ Transaction
+    </a>
+
+    <a href="#costs">
+      ◒ Costs
+    </a>
+
+    <a href="#allocation">
+      ⇄ Allocation
+    </a>
+
+    <a href="#analytics">
+      ◔ Analytics
+    </a>
+
+    <a href="#checklist">
+      ✓ Checklist
+    </a>
+
+    <a href="#report">
+      ▤ Report
+    </a>
+
   </nav>
 
-  <!-- ================= WORKSPACE ================= -->
 
-  <section class="card" id="workspace">
+  <!-- =====================================================
+       WORKSPACE
+       ===================================================== -->
+
+  <section
+    class="card"
+    id="workspace"
+  >
 
     <div class="card-title">
+
       <div>
-        <h2>Transaction Setup</h2>
-        <p>Enter the information available from the property documents.</p>
+
+        <h2>
+          Transaction Setup
+        </h2>
+
+        <p>
+          Enter the information available from the property documents.
+        </p>
+
       </div>
 
-      <span class="badge">LIVE</span>
+      <span class="badge">
+        LIVE
+      </span>
+
     </div>
+
 
     <div class="form-grid">
 
       <div class="field">
-        <label for="transactionType">Transaction</label>
+
+        <label for="transactionType">
+          Transaction
+        </label>
 
         <select id="transactionType">
-          <option value="Sale of property">Sale of property</option>
-          <option value="Purchase planning">Purchase planning</option>
-          <option value="Broker listing estimate">Broker listing estimate</option>
+
+          <option value="Sale of property">
+            Sale of property
+          </option>
+
+          <option value="Purchase planning">
+            Purchase planning
+          </option>
+
+          <option value="Broker listing estimate">
+            Broker listing estimate
+          </option>
+
         </select>
+
       </div>
 
+
       <div class="field">
-        <label for="propertyType">Property type</label>
+
+        <label for="propertyType">
+          Property type
+        </label>
 
         <select id="propertyType">
-          <option value="House & Lot">House & Lot</option>
-          <option value="Vacant Land">Vacant Land</option>
-          <option value="Condominium">Condominium</option>
-          <option value="Commercial Property">Commercial Property</option>
+
+          <option value="House & Lot">
+            House & Lot
+          </option>
+
+          <option value="Vacant Land">
+            Vacant Land
+          </option>
+
+          <option value="Condominium">
+            Condominium
+          </option>
+
+          <option value="Commercial Property">
+            Commercial Property
+          </option>
+
         </select>
+
       </div>
 
+
       <div class="field">
-        <label for="sellingPrice">Gross selling price (₱)</label>
+
+        <label for="sellingPrice">
+          Gross selling price (₱)
+        </label>
+
         <input
           id="sellingPrice"
           type="number"
           min="0"
           step="1000"
+          inputmode="decimal"
           placeholder="0"
         >
+
       </div>
 
+
       <div class="field">
-        <label for="fairMarketValue">Fair market value (₱)</label>
+
+        <label for="fairMarketValue">
+          Fair market value (₱)
+        </label>
+
         <input
           id="fairMarketValue"
           type="number"
           min="0"
           step="1000"
+          inputmode="decimal"
           placeholder="0"
         >
+
       </div>
 
+
       <div class="field">
-        <label for="zonalValue">BIR zonal value (₱)</label>
+
+        <label for="zonalValue">
+          BIR zonal value (₱)
+        </label>
+
         <input
           id="zonalValue"
           type="number"
           min="0"
           step="1000"
+          inputmode="decimal"
           placeholder="0"
         >
+
       </div>
 
+
       <div class="field">
-        <label for="acquisitionPrice">Acquisition price (₱)</label>
+
+        <label for="acquisitionPrice">
+          Acquisition price (₱)
+        </label>
+
         <input
           id="acquisitionPrice"
           type="number"
           min="0"
           step="1000"
+          inputmode="decimal"
           placeholder="0"
         >
+
       </div>
 
     </div>
+
 
     <div
       style="
@@ -866,51 +1203,86 @@ footer{
     >
 
       <div class="card-title">
+
         <div>
-          <h2>Property Location / LGU</h2>
-          <p>Philippine Standard Geographic Code hierarchy</p>
+
+          <h2>
+            Property Location / LGU
+          </h2>
+
+          <p>
+            Philippine Standard Geographic Code hierarchy
+          </p>
+
         </div>
+
       </div>
+
 
       <div class="form-grid three">
 
         <div class="field">
+
           <label for="province">
             Province
           </label>
 
-          <select id="province" disabled>
+          <select
+            id="province"
+            disabled
+          >
+
             <option value="">
               Loading provinces...
             </option>
+
           </select>
+
         </div>
 
+
         <div class="field">
+
           <label for="cityMunicipality">
             City / Municipality
           </label>
 
-          <select id="cityMunicipality" disabled>
+          <select
+            id="cityMunicipality"
+            disabled
+          >
+
             <option value="">
               Select province first
             </option>
+
           </select>
+
         </div>
 
+
         <div class="field">
+
           <label for="barangay">
             Barangay
           </label>
 
-          <select id="barangay" disabled>
+          <select
+            id="barangay"
+            disabled
+          >
+
             <option value="">
               Select city / municipality first
             </option>
+
           </select>
+
         </div>
 
+
         <div class="field">
+
           <label for="zipCode">
             ZIP Code
           </label>
@@ -923,11 +1295,14 @@ footer{
           >
 
           <div class="location-help">
-            Automatically populated from the selected locality.
+            Automatically populated when available from the
+            locality reference data.
           </div>
+
         </div>
 
       </div>
+
 
       <div
         id="locationStatus"
@@ -937,9 +1312,11 @@ footer{
 
     </div>
 
+
     <div class="form-grid">
 
       <div class="field">
+
         <label for="lotArea">
           Lot area (sqm)
         </label>
@@ -949,11 +1326,15 @@ footer{
           type="number"
           min="0"
           step="0.01"
+          inputmode="decimal"
           placeholder="0"
         >
+
       </div>
 
+
       <div class="field">
+
         <label for="commissionRate">
           Broker commission rate (%)
         </label>
@@ -964,11 +1345,28 @@ footer{
           min="0"
           max="100"
           step="0.1"
+          inputmode="decimal"
           placeholder="2"
+          value="2"
         >
+
       </div>
 
     </div>
+
+
+    <div class="info-box">
+
+      <strong>Planning note:</strong>
+      The calculator uses illustrative rates for preliminary planning.
+      Actual taxes, fees, tax bases and payment responsibilities may
+      depend on the transaction, property classification, applicable
+      law, BIR rules, LGU ordinances and the parties' agreement.
+      Verify the final figures with the appropriate authorities and
+      qualified professionals.
+
+    </div>
+
 
     <div class="button-row">
 
@@ -980,6 +1378,7 @@ footer{
         Update workspace →
       </button>
 
+
       <button
         class="secondary-btn"
         id="resetBtn"
@@ -990,134 +1389,264 @@ footer{
 
     </div>
 
+
+    <div
+      id="autosaveStatus"
+      class="autosave-status"
+      aria-live="polite"
+    >
+      Workspace ready.
+    </div>
+
   </section>
+
 
   <br>
 
-  <!-- ================= SUMMARY ================= -->
+
+  <!-- =====================================================
+       SUMMARY
+       ===================================================== -->
 
   <section class="card">
 
     <div class="summary-grid">
 
       <div class="metric">
-        <div class="metric-label">Property Value</div>
-        <div class="metric-value" id="metricProperty">₱0</div>
+
+        <div class="metric-label">
+          Property Value
+        </div>
+
+        <div
+          class="metric-value"
+          id="metricProperty"
+        >
+          ₱0
+        </div>
+
       </div>
 
-      <div class="metric">
-        <div class="metric-label">Tax Base</div>
-        <div class="metric-value" id="metricTax">₱0</div>
-      </div>
 
       <div class="metric">
-        <div class="metric-label">Seller Expenses</div>
-        <div class="metric-value" id="metricSeller">₱0</div>
+
+        <div class="metric-label">
+          Tax Base
+        </div>
+
+        <div
+          class="metric-value"
+          id="metricTax"
+        >
+          ₱0
+        </div>
+
       </div>
 
-      <div class="metric">
-        <div class="metric-label">Buyer Expenses</div>
-        <div class="metric-value" id="metricBuyer">₱0</div>
-      </div>
 
       <div class="metric">
-        <div class="metric-label">Seller Net</div>
-        <div class="metric-value" id="metricNet">₱0</div>
+
+        <div class="metric-label">
+          Seller Expenses
+        </div>
+
+        <div
+          class="metric-value"
+          id="metricSeller"
+        >
+          ₱0
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Buyer Expenses
+        </div>
+
+        <div
+          class="metric-value"
+          id="metricBuyer"
+        >
+          ₱0
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Seller Net
+        </div>
+
+        <div
+          class="metric-value"
+          id="metricNet"
+        >
+          ₱0
+        </div>
+
       </div>
 
     </div>
 
   </section>
 
+
   <br>
 
-  <!-- ================= COSTS ================= -->
 
-  <section class="card" id="costs">
+  <!-- =====================================================
+       COSTS
+       ===================================================== -->
+
+  <section
+    class="card"
+    id="costs"
+  >
 
     <div class="card-title">
+
       <div>
-        <h2>Transaction Costs</h2>
-        <p>Illustrative rates for planning.</p>
+
+        <h2>
+          Transaction Costs
+        </h2>
+
+        <p>
+          Illustrative rates for planning.
+        </p>
+
       </div>
+
     </div>
+
 
     <div class="cost-list">
 
       <div class="cost-row">
+
         <div>
+
           <div class="cost-name">
             Capital Gains Tax · 6%
           </div>
+
           <div class="cost-note">
-            Illustrative seller-side CGT for qualifying capital-asset sale.
+            Illustrative seller-side CGT for a qualifying
+            capital-asset sale.
           </div>
+
         </div>
 
-        <div class="cost-amount" id="cgtAmount">
+        <div
+          class="cost-amount"
+          id="cgtAmount"
+        >
           ₱0
         </div>
+
       </div>
 
+
       <div class="cost-row">
+
         <div>
+
           <div class="cost-name">
             Documentary Stamp Tax · 1.5%
           </div>
+
           <div class="cost-note">
             Illustrative planning rate.
           </div>
+
         </div>
 
-        <div class="cost-amount" id="dstAmount">
+        <div
+          class="cost-amount"
+          id="dstAmount"
+        >
           ₱0
         </div>
+
       </div>
 
+
       <div class="cost-row">
+
         <div>
+
           <div class="cost-name">
             Transfer Tax · 0.5%
           </div>
+
           <div class="cost-note">
-            Actual LGU rate must be verified.
+            Illustrative placeholder. Actual LGU rate must be verified.
           </div>
+
         </div>
 
-        <div class="cost-amount" id="transferAmount">
+        <div
+          class="cost-amount"
+          id="transferAmount"
+        >
           ₱0
         </div>
+
       </div>
 
+
       <div class="cost-row">
+
         <div>
+
           <div class="cost-name">
             Registration / other · 0.25%
           </div>
+
           <div class="cost-note">
-            Planning placeholder.
+            Illustrative planning placeholder.
           </div>
+
         </div>
 
-        <div class="cost-amount" id="registrationAmount">
+        <div
+          class="cost-amount"
+          id="registrationAmount"
+        >
           ₱0
         </div>
+
       </div>
 
+
       <div class="cost-row">
+
         <div>
+
           <div class="cost-name">
             Broker Commission
           </div>
+
           <div class="cost-note">
             Based on the commission rate entered above.
           </div>
+
         </div>
 
-        <div class="cost-amount" id="commissionAmount">
+        <div
+          class="cost-amount"
+          id="commissionAmount"
+        >
           ₱0
         </div>
+
       </div>
+
 
       <div
         class="cost-row"
@@ -1126,6 +1655,7 @@ footer{
           background:var(--surface2);
         "
       >
+
         <div class="cost-name">
           Total Estimated Costs
         </div>
@@ -1136,35 +1666,65 @@ footer{
         >
           ₱0
         </div>
+
       </div>
 
     </div>
 
   </section>
 
+
   <br>
 
-  <!-- ================= ALLOCATION ================= -->
 
-  <section class="card" id="allocation">
+  <!-- =====================================================
+       ALLOCATION
+       ===================================================== -->
+
+  <section
+    class="card"
+    id="allocation"
+  >
 
     <div class="card-title">
+
       <div>
-        <h2>Who Pays What?</h2>
-        <p>Change the payer for each planning item.</p>
+
+        <h2>
+          Who Pays What?
+        </h2>
+
+        <p>
+          Change the payer for each planning item.
+        </p>
+
       </div>
+
     </div>
+
 
     <div class="table-wrap">
 
       <table>
 
         <thead>
+
           <tr>
-            <th>Expense</th>
-            <th>Amount</th>
-            <th>Payer</th>
+
+            <th>
+              Expense
+            </th>
+
+            <th>
+              Amount
+            </th>
+
+            <th>
+              Payer
+            </th>
+
           </tr>
+
         </thead>
 
         <tbody id="allocationBody"></tbody>
@@ -1172,6 +1732,7 @@ footer{
       </table>
 
     </div>
+
 
     <p
       style="
@@ -1187,34 +1748,69 @@ footer{
 
   </section>
 
+
   <br>
 
-  <!-- ================= ANALYTICS ================= -->
 
-  <section class="card" id="analytics">
+  <!-- =====================================================
+       ANALYTICS
+       ===================================================== -->
+
+  <section
+    class="card"
+    id="analytics"
+  >
 
     <div class="card-title">
+
       <div>
-        <h2>Cost Visualization</h2>
-        <p>Relative size of each transaction component.</p>
+
+        <h2>
+          Cost Visualization
+        </h2>
+
+        <p>
+          Relative size of each transaction component.
+        </p>
+
       </div>
+
     </div>
 
-    <div class="chart" id="chart"></div>
+
+    <div
+      class="chart"
+      id="chart"
+      aria-label="Transaction cost chart"
+    ></div>
 
   </section>
 
+
   <br>
 
-  <!-- ================= CHECKLIST ================= -->
 
-  <section class="card" id="checklist">
+  <!-- =====================================================
+       CHECKLIST
+       ===================================================== -->
+
+  <section
+    class="card"
+    id="checklist"
+  >
 
     <div class="card-title">
 
       <div>
-        <h2>Transaction Checklist</h2>
-        <p>Track preparation before the client meeting.</p>
+
+        <h2>
+          Transaction Checklist
+        </h2>
+
+        <p>
+          Track preparation before the client meeting.
+        </p>
+
       </div>
 
       <strong id="checkPercent">
@@ -1223,12 +1819,16 @@ footer{
 
     </div>
 
+
     <div class="progress">
+
       <div
         class="progress-fill"
         id="checkProgress"
       ></div>
+
     </div>
+
 
     <div
       class="checklist"
@@ -1237,9 +1837,13 @@ footer{
 
   </section>
 
+
   <br>
 
-  <!-- ================= REPORT ================= -->
+
+  <!-- =====================================================
+       REPORT
+       ===================================================== -->
 
   <section
     class="card report"
@@ -1249,193 +1853,442 @@ footer{
     <div class="report-header">
 
       <div>
-        <h2>PRELIMINARY TRANSACTION REPORT</h2>
+
+        <h2>
+          PRELIMINARY TRANSACTION REPORT
+        </h2>
 
         <p>
           Philippine Property Transaction Estimate
         </p>
+
       </div>
 
+
       <div style="text-align:right">
+
         <strong id="reportDate"></strong>
 
         <p>
           Planning document
         </p>
-      </div>
-
-    </div>
-
-    <div class="report-section">
-
-      <h3>Property Details</h3>
-
-      <div class="report-grid">
-
-        <div class="report-line">
-          <span>Transaction</span>
-          <strong id="rTransaction">Sale of property</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Property type</span>
-          <strong id="rPropertyType">House & Lot</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Province</span>
-          <strong id="rProvince">—</strong>
-        </div>
-
-        <div class="report-line">
-          <span>City / Municipality</span>
-          <strong id="rCity">—</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Barangay</span>
-          <strong id="rBarangay">—</strong>
-        </div>
-
-        <div class="report-line">
-          <span>ZIP Code</span>
-          <strong id="rZip">—</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Lot area</span>
-          <strong id="rLotArea">0 sqm</strong>
-        </div>
 
       </div>
 
     </div>
 
+
+    <!-- PROPERTY DETAILS -->
+
     <div class="report-section">
 
-      <h3>Valuation</h3>
+      <h3>
+        Property Details
+      </h3>
+
 
       <div class="report-grid">
 
         <div class="report-line">
-          <span>Gross selling price</span>
-          <strong id="rSelling">₱0</strong>
+
+          <span>
+            Transaction
+          </span>
+
+          <strong id="rTransaction">
+            Sale of property
+          </strong>
+
         </div>
 
-        <div class="report-line">
-          <span>Fair market value</span>
-          <strong id="rFair">₱0</strong>
-        </div>
 
         <div class="report-line">
-          <span>BIR zonal value</span>
-          <strong id="rZonal">₱0</strong>
+
+          <span>
+            Property type
+          </span>
+
+          <strong id="rPropertyType">
+            House & Lot
+          </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>Illustrative tax base</span>
-          <strong id="rTaxBase">₱0</strong>
+
+          <span>
+            Province
+          </span>
+
+          <strong id="rProvince">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            City / Municipality
+          </span>
+
+          <strong id="rCity">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Barangay
+          </span>
+
+          <strong id="rBarangay">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            ZIP Code
+          </span>
+
+          <strong id="rZip">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Lot area
+          </span>
+
+          <strong id="rLotArea">
+            0 sqm
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Transaction ID
+          </span>
+
+          <strong id="transactionId">
+            —
+          </strong>
+
         </div>
 
       </div>
 
     </div>
 
+
+    <!-- VALUATION -->
+
     <div class="report-section">
 
-      <h3>Financial Summary</h3>
+      <h3>
+        Valuation
+      </h3>
+
 
       <div class="report-grid">
 
         <div class="report-line">
-          <span>Seller expenses</span>
-          <strong id="rSellerExpenses">₱0</strong>
+
+          <span>
+            Gross selling price
+          </span>
+
+          <strong id="rSelling">
+            ₱0
+          </strong>
+
         </div>
 
-        <div class="report-line">
-          <span>Buyer expenses</span>
-          <strong id="rBuyerExpenses">₱0</strong>
-        </div>
 
         <div class="report-line">
-          <span>Broker commission</span>
-          <strong id="rCommission">₱0</strong>
+
+          <span>
+            Fair market value
+          </span>
+
+          <strong id="rFair">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            BIR zonal value
+          </span>
+
+          <strong id="rZonal">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Acquisition price
+          </span>
+
+          <strong id="rAcquisition">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Illustrative tax base
+          </span>
+
+          <strong id="rTaxBase">
+            ₱0
+          </strong>
+
         </div>
 
       </div>
+
+    </div>
+
+
+    <!-- FINANCIAL SUMMARY -->
+
+    <div class="report-section">
+
+      <h3>
+        Financial Summary
+      </h3>
+
+
+      <div class="report-grid">
+
+        <div class="report-line">
+
+          <span>
+            Seller expenses
+          </span>
+
+          <strong id="rSellerExpenses">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Buyer expenses
+          </span>
+
+          <strong id="rBuyerExpenses">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Broker commission
+          </span>
+
+          <strong id="rCommission">
+            ₱0
+          </strong>
+
+        </div>
+
+      </div>
+
 
       <div class="report-total">
-        <span>SELLER NET PROCEEDS</span>
-        <span id="rSellerNet">₱0</span>
-      </div>
 
-    </div>
+        <span>
+          SELLER NET PROCEEDS
+        </span>
 
-    <div class="report-section">
-
-      <h3>Estimated Cost Breakdown</h3>
-
-      <div class="report-grid">
-
-        <div class="report-line">
-          <span>Capital Gains Tax</span>
-          <strong id="rCGT">₱0</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Documentary Stamp Tax</span>
-          <strong id="rDST">₱0</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Transfer Tax</span>
-          <strong id="rTransfer">₱0</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Registration / other</span>
-          <strong id="rRegistration">₱0</strong>
-        </div>
-
-        <div class="report-line">
-          <span>Broker Commission</span>
-          <strong id="rCommission2">₱0</strong>
-        </div>
+        <span id="rSellerNet">
+          ₱0
+        </span>
 
       </div>
 
     </div>
 
+
+    <!-- COST BREAKDOWN -->
+
     <div class="report-section">
 
-      <h3>Preparation Status</h3>
+      <h3>
+        Estimated Cost Breakdown
+      </h3>
+
 
       <div class="report-grid">
 
         <div class="report-line">
-          <span>Checklist completion</span>
-          <strong id="rChecklist">0%</strong>
+
+          <span>
+            Capital Gains Tax
+          </span>
+
+          <strong id="rCGT">
+            ₱0
+          </strong>
+
         </div>
 
+
         <div class="report-line">
-          <span>Transaction ID</span>
-          <strong id="transactionId"></strong>
+
+          <span>
+            Documentary Stamp Tax
+          </span>
+
+          <strong id="rDST">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Transfer Tax
+          </span>
+
+          <strong id="rTransfer">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Registration / other
+          </span>
+
+          <strong id="rRegistration">
+            ₱0
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Broker Commission
+          </span>
+
+          <strong id="rCommission2">
+            ₱0
+          </strong>
+
         </div>
 
       </div>
+
+    </div>
+
+
+    <!-- PREPARATION -->
+
+    <div class="report-section">
+
+      <h3>
+        Preparation Status
+      </h3>
+
+
+      <div class="report-grid">
+
+        <div class="report-line">
+
+          <span>
+            Checklist completion
+          </span>
+
+          <strong id="rChecklist">
+            0%
+          </strong>
+
+        </div>
+
+
+        <div class="report-line">
+
+          <span>
+            Transaction ID
+          </span>
+
+          <strong id="rTransactionId">
+            —
+          </strong>
+
+        </div>
+
+      </div>
+
 
       <div class="report-warning">
-        <strong>Important:</strong>
+
+        <strong>
+          Important:
+        </strong>
+
         This is a preliminary planning estimate only.
         It is not a BIR assessment, official computation,
         legal opinion or substitute for professional advice.
+
         Actual taxes, fees, valuation bases, payment allocations
         and documentary requirements should be verified with
         the BIR, applicable LGU, Registry of Deeds and qualified
         professionals.
+
+        <div class="report-meta">
+          Geographic reference data provided through PSGC Cloud.
+          The service describes its dataset as community-provided
+          and recommends independent verification for critical
+          geographic information.
+        </div>
+
       </div>
 
     </div>
+
 
     <div
       class="button-row no-print"
@@ -1444,8 +2297,8 @@ footer{
 
       <button
         class="primary-btn"
+        id="printBtn"
         type="button"
-        onclick="window.print()"
       >
         Print / Save as PDF →
       </button>
@@ -1456,29 +2309,52 @@ footer{
 
 </main>
 
+
 <footer>
 
   <div>
     © 2026 Joshua Dela Cruz · PH Property Transaction Workspace
   </div>
 
-  <a href="https://joshuadelacruz.solutions/">
+  <a
+    href="https://joshuadelacruz.solutions/"
+  >
     ← Back to main portfolio
   </a>
 
 </footer>
 
+
 <script>
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
-   VERSION 4
+   VERSION 4 — CORRECTED / PRODUCTION-READY FRONTEND
    ========================================================= */
 
-const PSGC_BASE = "https://psgc.cloud/api";
 
-/* ---------------- STATE ---------------- */
+/* =========================================================
+   CONFIGURATION
+   ========================================================= */
+
+const PSGC_BASE =
+  "https://psgc.cloud/api/v1";
+
+const STORAGE_KEY =
+  "ph-property-workspace-v4";
+
+const THEME_KEY =
+  "ph-property-theme";
+
+const DEFAULT_COMMISSION_RATE =
+  2;
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
 
 const state = {
+
   costs: {
     cgt: 0,
     dst: 0,
@@ -1504,150 +2380,426 @@ const state = {
     "BIR ONETT / eCAR requirements reviewed",
     "LGU transfer requirements reviewed",
     "Registry of Deeds requirements reviewed"
-  ]
+  ],
+
+  checklistChecked: [],
+
+  transactionId: "",
+
+  initialized: false
 };
 
-/* ---------------- ELEMENTS ---------------- */
 
-const $ = id => document.getElementById(id);
+/* =========================================================
+   ELEMENT HELPERS
+   ========================================================= */
 
-const provinceSelect = $("province");
-const citySelect = $("cityMunicipality");
-const barangaySelect = $("barangay");
-const zipInput = $("zipCode");
-const locationStatus = $("locationStatus");
+const $ = id =>
+  document.getElementById(id);
 
-/* ---------------- HELPERS ---------------- */
 
-function peso(value){
-  const number = Number(value) || 0;
+const provinceSelect =
+  $("province");
 
-  return number.toLocaleString("en-PH", {
-    style:"currency",
-    currency:"PHP",
-    minimumFractionDigits:0,
-    maximumFractionDigits:0
-  });
+const citySelect =
+  $("cityMunicipality");
+
+const barangaySelect =
+  $("barangay");
+
+const zipInput =
+  $("zipCode");
+
+const locationStatus =
+  $("locationStatus");
+
+const autosaveStatus =
+  $("autosaveStatus");
+
+
+/* =========================================================
+   NUMBER / CURRENCY HELPERS
+   ========================================================= */
+
+function safeNumber(value){
+
+  const number =
+    Number.parseFloat(value);
+
+  if(!Number.isFinite(number)){
+    return 0;
+  }
+
+  return Math.max(0,number);
 }
+
 
 function numberValue(id){
-  return Number($(id).value) || 0;
+
+  const element =
+    $(id);
+
+  if(!element){
+    return 0;
+  }
+
+  return safeNumber(
+    element.value
+  );
 }
 
+
+function peso(value){
+
+  const number =
+    safeNumber(value);
+
+  return number.toLocaleString(
+    "en-PH",
+    {
+      style:"currency",
+      currency:"PHP",
+      minimumFractionDigits:0,
+      maximumFractionDigits:0
+    }
+  );
+}
+
+
+function pesoDecimal(value){
+
+  const number =
+    safeNumber(value);
+
+  return number.toLocaleString(
+    "en-PH",
+    {
+      style:"currency",
+      currency:"PHP",
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  );
+}
+
+
+/* =========================================================
+   SELECT HELPERS
+   ========================================================= */
+
 function selectedText(select){
-  if(!select || !select.value){
+
+  if(
+    !select ||
+    !select.value
+  ){
     return "—";
   }
 
-  const option = select.options[select.selectedIndex];
+  const option =
+    select.options[
+      select.selectedIndex
+    ];
 
-  return option ? option.textContent : "—";
+  return option
+    ? option.textContent
+    : "—";
 }
 
-function setStatus(message,type=""){
-  locationStatus.textContent = message;
-  locationStatus.className =
-    "location-status" +
-    (type ? " " + type : "");
-}
 
-/* ---------------- API ---------------- */
+function setSelectValue(
+  select,
+  value
+){
 
-async function fetchJSON(url){
-
-  const response = await fetch(url,{
-    headers:{
-      "Accept":"application/json"
-    }
-  });
-
-  if(!response.ok){
-    throw new Error(
-      "Location service returned HTTP " +
-      response.status
-    );
+  if(
+    !select ||
+    !value
+  ){
+    return false;
   }
 
-  const data = await response.json();
+  const option =
+    [...select.options].find(
+      item =>
+        item.value === value
+    );
 
-  /*
-    PSGC Cloud may return either:
-    - direct arrays
-    - paginated objects
+  if(!option){
+    return false;
+  }
 
-    Normalize both.
-  */
+  select.value =
+    value;
+
+  return true;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+function setStatus(
+  message,
+  type = ""
+){
+
+  locationStatus.textContent =
+    message;
+
+  locationStatus.className =
+    "location-status" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+}
+
+
+function setAutosaveStatus(
+  message,
+  type = ""
+){
+
+  autosaveStatus.textContent =
+    message;
+
+  autosaveStatus.className =
+    "autosave-status" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+}
+
+
+/* =========================================================
+   PSGC API
+   ========================================================= */
+
+async function fetchJSON(
+  url,
+  options = {}
+){
+
+  const controller =
+    new AbortController();
+
+  const timeout =
+    setTimeout(
+      () => controller.abort(),
+      15000
+    );
+
+  try{
+
+    const response =
+      await fetch(
+        url,
+        {
+          ...options,
+          headers:{
+            "Accept":
+              "application/json",
+            ...(options.headers || {})
+          },
+          signal:
+            controller.signal
+        }
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        "Location service returned HTTP " +
+        response.status
+      );
+    }
+
+    const data =
+      await response.json();
+
+    return normalizeCollection(
+      data
+    );
+
+  }catch(error){
+
+    if(
+      error.name ===
+      "AbortError"
+    ){
+
+      throw new Error(
+        "Location service request timed out."
+      );
+    }
+
+    throw error;
+
+  }finally{
+
+    clearTimeout(timeout);
+
+  }
+}
+
+
+function normalizeCollection(
+  data
+){
 
   if(Array.isArray(data)){
     return data;
   }
 
-  if(Array.isArray(data.data)){
+  if(
+    data &&
+    Array.isArray(data.data)
+  ){
     return data.data;
   }
 
-  if(Array.isArray(data.results)){
+  if(
+    data &&
+    Array.isArray(data.results)
+  ){
     return data.results;
+  }
+
+  if(
+    data &&
+    Array.isArray(data.items)
+  ){
+    return data.items;
+  }
+
+  if(
+    data &&
+    typeof data === "object" &&
+    data.code
+  ){
+    return [data];
   }
 
   return [];
 }
 
-/* ---------------- SELECT HELPERS ---------------- */
 
-function resetSelect(select,placeholder){
+/* =========================================================
+   PSGC SELECT HELPERS
+   ========================================================= */
 
-  select.innerHTML = "";
+function resetSelect(
+  select,
+  placeholder
+){
 
-  const option = document.createElement("option");
+  if(!select){
+    return;
+  }
 
-  option.value = "";
-  option.textContent = placeholder;
+  select.innerHTML =
+    "";
 
-  select.appendChild(option);
+  const option =
+    document.createElement(
+      "option"
+    );
 
-  select.disabled = true;
+  option.value =
+    "";
+
+  option.textContent =
+    placeholder;
+
+  select.appendChild(
+    option
+  );
+
+  select.disabled =
+    true;
 }
 
-function populateSelect(select,items,placeholder){
 
-  resetSelect(select,placeholder);
+function populateSelect(
+  select,
+  items,
+  placeholder
+){
+
+  resetSelect(
+    select,
+    placeholder
+  );
+
+  const fragment =
+    document.createDocumentFragment();
 
   for(const item of items){
 
-    const option = document.createElement("option");
-
-    option.value = item.code || item.id || item.name || "";
-
-    option.textContent =
-      item.name ||
-      item.label ||
-      "Unnamed location";
-
-    if(item.type){
-      option.textContent +=
-        " (" + item.type + ")";
+    if(!item){
+      continue;
     }
 
-    /*
-      Preserve useful API data on the option.
-    */
+    const option =
+      document.createElement(
+        "option"
+      );
+
+    option.value =
+      String(
+        item.code ??
+        item.id ??
+        ""
+      );
+
+    option.textContent =
+      String(
+        item.name ??
+        item.label ??
+        "Unnamed location"
+      );
 
     option.dataset.name =
-      item.name || "";
+      String(
+        item.name ??
+        ""
+      );
 
     option.dataset.zip =
-      item.zip_code ||
-      item.zip ||
-      "";
+      String(
+        item.zip_code ??
+        item.zip ??
+        ""
+      );
 
-    select.appendChild(option);
+    option.dataset.type =
+      String(
+        item.type ??
+        ""
+      );
+
+    fragment.appendChild(
+      option
+    );
   }
 
-  select.disabled = items.length === 0;
+  select.appendChild(
+    fragment
+  );
+
+  select.disabled =
+    select.options.length <= 1;
 }
 
-/* ---------------- LOAD PROVINCES ---------------- */
+
+/* =========================================================
+   LOAD PROVINCES
+   ========================================================= */
 
 async function loadProvinces(){
 
@@ -1666,27 +2818,28 @@ async function loadProvinces(){
     "Select city / municipality first"
   );
 
-  zipInput.value = "";
+  zipInput.value =
+    "";
 
   setStatus(
-    "Loading Philippine location data..."
+    "Loading Philippine location data...",
+    "loading"
   );
 
   try{
 
     const provinces =
       await fetchJSON(
-        PSGC_BASE + "/provinces"
+        PSGC_BASE +
+        "/provinces"
       );
 
-    /*
-      Sort alphabetically.
-    */
-
-    provinces.sort((a,b) =>
-      String(a.name).localeCompare(
-        String(b.name)
-      )
+    provinces.sort(
+      (a,b) =>
+        String(a.name)
+          .localeCompare(
+            String(b.name)
+          )
     );
 
     populateSelect(
@@ -1695,7 +2848,9 @@ async function loadProvinces(){
       "Select province"
     );
 
-    if(provinces.length){
+    if(
+      provinces.length > 0
+    ){
 
       setStatus(
         "Philippine location data ready.",
@@ -1705,13 +2860,18 @@ async function loadProvinces(){
     }else{
 
       throw new Error(
-        "No provinces returned."
+        "No provinces were returned."
       );
     }
 
+    return true;
+
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Province loading error:",
+      error
+    );
 
     resetSelect(
       provinceSelect,
@@ -1722,12 +2882,19 @@ async function loadProvinces(){
       "Unable to load Philippine location data. Please refresh and try again.",
       "error"
     );
+
+    return false;
   }
 }
 
-/* ---------------- LOAD CITIES ---------------- */
 
-async function loadCities(provinceCode){
+/* =========================================================
+   LOAD CITIES / MUNICIPALITIES
+   ========================================================= */
+
+async function loadCities(
+  provinceCode
+){
 
   resetSelect(
     citySelect,
@@ -1739,7 +2906,8 @@ async function loadCities(provinceCode){
     "Select city / municipality first"
   );
 
-  zipInput.value = "";
+  zipInput.value =
+    "";
 
   if(!provinceCode){
 
@@ -1748,44 +2916,32 @@ async function loadCities(provinceCode){
       "Select province first"
     );
 
-    return;
+    return false;
   }
+
+  setStatus(
+    "Loading cities and municipalities...",
+    "loading"
+  );
 
   try{
 
-    /*
-      Nested PSGC endpoint.
-    */
-
-    let cities;
-
-    try{
-
-      cities = await fetchJSON(
+    const cities =
+      await fetchJSON(
         PSGC_BASE +
-        "/v1/provinces/" +
-        encodeURIComponent(provinceCode) +
+        "/provinces/" +
+        encodeURIComponent(
+          provinceCode
+        ) +
         "/cities-municipalities"
       );
 
-    }catch{
-
-      /*
-        Fallback to v2 endpoint.
-      */
-
-      cities = await fetchJSON(
-        PSGC_BASE +
-        "/v2/provinces/" +
-        encodeURIComponent(provinceCode) +
-        "/cities-municipalities"
-      );
-    }
-
-    cities.sort((a,b) =>
-      String(a.name).localeCompare(
-        String(b.name)
-      )
+    cities.sort(
+      (a,b) =>
+        String(a.name)
+          .localeCompare(
+            String(b.name)
+          )
     );
 
     populateSelect(
@@ -1794,24 +2950,32 @@ async function loadCities(provinceCode){
       "Select city / municipality"
     );
 
-    if(cities.length){
+    if(
+      cities.length > 0
+    ){
 
       setStatus(
-        "Select the city or municipality.",
+        "Cities and municipalities loaded.",
         "success"
       );
 
-    }else{
+      return true;
 
-      setStatus(
-        "No cities or municipalities were returned for this province.",
-        "error"
-      );
     }
+
+    setStatus(
+      "No cities or municipalities were returned for this province.",
+      "error"
+    );
+
+    return false;
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "City loading error:",
+      error
+    );
 
     resetSelect(
       citySelect,
@@ -1819,22 +2983,30 @@ async function loadCities(provinceCode){
     );
 
     setStatus(
-      "Unable to load cities / municipalities. Please refresh and try again.",
+      "Unable to load cities / municipalities. Please try again.",
       "error"
     );
+
+    return false;
   }
 }
 
-/* ---------------- LOAD BARANGAYS ---------------- */
 
-async function loadBarangays(cityCode){
+/* =========================================================
+   LOAD BARANGAYS
+   ========================================================= */
+
+async function loadBarangays(
+  cityCode
+){
 
   resetSelect(
     barangaySelect,
     "Loading barangays..."
   );
 
-  zipInput.value = "";
+  zipInput.value =
+    "";
 
   if(!cityCode){
 
@@ -1843,36 +3015,32 @@ async function loadBarangays(cityCode){
       "Select city / municipality first"
     );
 
-    return;
+    return false;
   }
+
+  setStatus(
+    "Loading barangays...",
+    "loading"
+  );
 
   try{
 
-    let barangays;
-
-    try{
-
-      barangays = await fetchJSON(
+    const barangays =
+      await fetchJSON(
         PSGC_BASE +
-        "/v1/cities-municipalities/" +
-        encodeURIComponent(cityCode) +
+        "/cities-municipalities/" +
+        encodeURIComponent(
+          cityCode
+        ) +
         "/barangays"
       );
 
-    }catch{
-
-      barangays = await fetchJSON(
-        PSGC_BASE +
-        "/v2/cities-municipalities/" +
-        encodeURIComponent(cityCode) +
-        "/barangays"
-      );
-    }
-
-    barangays.sort((a,b) =>
-      String(a.name).localeCompare(
-        String(b.name)
-      )
+    barangays.sort(
+      (a,b) =>
+        String(a.name)
+          .localeCompare(
+            String(b.name)
+          )
     );
 
     populateSelect(
@@ -1881,38 +3049,13 @@ async function loadBarangays(cityCode){
       "Select barangay"
     );
 
-    /*
-      Get ZIP from the selected city/municipality.
+    await loadCityZip(
+      cityCode
+    );
 
-      ZIP is generally locality-level postal data,
-      rather than a PSGC administrative attribute
-      of every barangay.
-    */
-
-    const selectedCity =
-      citySelect.options[
-        citySelect.selectedIndex
-      ];
-
-    const cityZip =
-      selectedCity?.dataset.zip || "";
-
-    if(cityZip){
-
-      zipInput.value = cityZip;
-
-      setStatus(
-        "Location loaded. ZIP Code automatically populated.",
-        "success"
-      );
-
-    }else{
-
-      /*
-        Attempt direct locality lookup.
-      */
-
-      await loadCityZip(cityCode);
+    if(
+      barangays.length > 0
+    ){
 
       if(zipInput.value){
 
@@ -1928,11 +3071,23 @@ async function loadBarangays(cityCode){
           "success"
         );
       }
+
+      return true;
     }
+
+    setStatus(
+      "No barangays were returned for this locality.",
+      "error"
+    );
+
+    return false;
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Barangay loading error:",
+      error
+    );
 
     resetSelect(
       barangaySelect,
@@ -1940,24 +3095,30 @@ async function loadBarangays(cityCode){
     );
 
     setStatus(
-      "Unable to load barangays. Please refresh and try again.",
+      "Unable to load barangays. Please try again.",
       "error"
     );
+
+    return false;
   }
 }
 
-/* ---------------- CITY ZIP ---------------- */
 
-async function loadCityZip(cityCode){
+/* =========================================================
+   CITY ZIP
+   ========================================================= */
+
+async function loadCityZip(
+  cityCode
+){
 
   if(!cityCode){
-    zipInput.value = "";
+
+    zipInput.value =
+      "";
+
     return;
   }
-
-  /*
-    First inspect selected option.
-  */
 
   const selectedCity =
     citySelect.options[
@@ -1965,38 +3126,35 @@ async function loadCityZip(cityCode){
     ];
 
   const existingZip =
-    selectedCity?.dataset.zip || "";
+    selectedCity?.dataset.zip ||
+    "";
 
   if(existingZip){
 
-    zipInput.value = existingZip;
+    zipInput.value =
+      existingZip;
+
     return;
   }
 
   /*
-    Direct city/municipality lookup.
+    The v1 city/municipality collection
+    includes zip_code when available.
+
+    If the nested response didn't include it,
+    perform a direct locality lookup.
   */
 
   try{
 
-    let locality;
-
-    try{
-
-      locality = await fetchJSON(
+    const locality =
+      await fetchJSON(
         PSGC_BASE +
-        "/v1/cities-municipalities/" +
-        encodeURIComponent(cityCode)
+        "/cities-municipalities/" +
+        encodeURIComponent(
+          cityCode
+        )
       );
-
-    }catch{
-
-      locality = await fetchJSON(
-        PSGC_BASE +
-        "/v2/cities-municipalities/" +
-        encodeURIComponent(cityCode)
-      );
-    }
 
     const item =
       Array.isArray(locality)
@@ -2008,7 +3166,8 @@ async function loadCityZip(cityCode){
       item?.zip ||
       "";
 
-    zipInput.value = zip || "";
+    zipInput.value =
+      String(zip || "");
 
   }catch(error){
 
@@ -2017,41 +3176,57 @@ async function loadCityZip(cityCode){
       error
     );
 
-    zipInput.value = "";
+    zipInput.value =
+      "";
   }
 }
 
-/* ---------------- EVENTS ---------------- */
+
+/* =========================================================
+   LOCATION EVENTS
+   ========================================================= */
 
 provinceSelect.addEventListener(
   "change",
   async () => {
 
-    zipInput.value = "";
+    zipInput.value =
+      "";
 
     const provinceCode =
       provinceSelect.value;
 
-    await loadCities(provinceCode);
+    await loadCities(
+      provinceCode
+    );
 
     updateReportLocation();
+
+    saveWorkspace();
   }
 );
+
 
 citySelect.addEventListener(
   "change",
   async () => {
 
-    zipInput.value = "";
+    zipInput.value =
+      "";
 
     const cityCode =
       citySelect.value;
 
-    await loadBarangays(cityCode);
+    await loadBarangays(
+      cityCode
+    );
 
     updateReportLocation();
+
+    saveWorkspace();
   }
 );
+
 
 barangaySelect.addEventListener(
   "change",
@@ -2059,61 +3234,96 @@ barangaySelect.addEventListener(
 
     updateReportLocation();
 
-    /*
-      Keep ZIP synchronized with city.
-      Barangay itself normally doesn't change
-      the postal code in this data model.
-    */
-
     const selectedCity =
       citySelect.options[
         citySelect.selectedIndex
       ];
 
-    if(selectedCity?.dataset.zip){
+    if(
+      selectedCity?.dataset.zip
+    ){
 
       zipInput.value =
         selectedCity.dataset.zip;
     }
+
+    saveWorkspace();
   }
 );
 
-/* ---------------- LOCATION REPORT ---------------- */
+
+/* =========================================================
+   LOCATION REPORT
+   ========================================================= */
 
 function updateReportLocation(){
 
   $("rProvince").textContent =
-    selectedText(provinceSelect);
+    selectedText(
+      provinceSelect
+    );
 
   $("rCity").textContent =
-    selectedText(citySelect);
+    selectedText(
+      citySelect
+    );
 
   $("rBarangay").textContent =
-    selectedText(barangaySelect);
+    selectedText(
+      barangaySelect
+    );
 
   $("rZip").textContent =
-    zipInput.value || "—";
+    zipInput.value ||
+    "—";
 }
 
-/* ---------------- CALCULATION ---------------- */
+
+/* =========================================================
+   CALCULATION
+   ========================================================= */
 
 function calculate(){
 
   const selling =
-    numberValue("sellingPrice");
+    numberValue(
+      "sellingPrice"
+    );
 
   const fair =
-    numberValue("fairMarketValue");
+    numberValue(
+      "fairMarketValue"
+    );
 
   const zonal =
-    numberValue("zonalValue");
+    numberValue(
+      "zonalValue"
+    );
+
+  const acquisition =
+    numberValue(
+      "acquisitionPrice"
+    );
 
   const commissionRate =
-    numberValue("commissionRate");
+    Math.min(
+      100,
+      numberValue(
+        "commissionRate"
+      )
+    );
 
   /*
-    Illustrative tax base:
-    highest of selling price, FMV, zonal value.
+    Preliminary planning base.
+
+    For this workspace, the illustrative base is the
+    highest supplied value among:
+      - Gross selling price
+      - Fair market value
+      - BIR zonal value
+
+    This is intentionally labeled illustrative and
+    should not be represented as an official BIR assessment.
   */
 
   const taxBase =
@@ -2122,6 +3332,11 @@ function calculate(){
       fair,
       zonal
     );
+
+
+  /*
+    Illustrative planning rates.
+  */
 
   const cgt =
     taxBase * 0.06;
@@ -2137,7 +3352,10 @@ function calculate(){
 
   const commission =
     selling *
-    (commissionRate / 100);
+    (
+      commissionRate / 100
+    );
+
 
   state.costs = {
     cgt,
@@ -2147,6 +3365,7 @@ function calculate(){
     commission
   };
 
+
   const total =
     cgt +
     dst +
@@ -2154,151 +3373,242 @@ function calculate(){
     registration +
     commission;
 
-  let sellerExpenses = 0;
-  let buyerExpenses = 0;
 
-  for(const [key,value] of Object.entries(
-    state.costs
-  )){
+  let sellerExpenses =
+    0;
+
+  let buyerExpenses =
+    0;
+
+
+  for(
+    const [key,value]
+    of Object.entries(
+      state.costs
+    )
+  ){
 
     const payer =
       state.allocation[key];
 
-    if(payer === "Seller"){
 
-      sellerExpenses += value;
+    if(
+      payer === "Seller"
+    ){
 
-    }else if(payer === "Buyer"){
+      sellerExpenses +=
+        value;
 
-      buyerExpenses += value;
+    }else if(
+      payer === "Buyer"
+    ){
+
+      buyerExpenses +=
+        value;
 
     }else{
 
-      sellerExpenses += value / 2;
-      buyerExpenses += value / 2;
+      sellerExpenses +=
+        value / 2;
+
+      buyerExpenses +=
+        value / 2;
     }
   }
+
 
   const sellerNet =
     selling -
     sellerExpenses;
 
+
   $("metricProperty").textContent =
-    peso(selling);
+    peso(
+      selling
+    );
 
   $("metricTax").textContent =
-    peso(taxBase);
+    peso(
+      taxBase
+    );
 
   $("metricSeller").textContent =
-    peso(sellerExpenses);
+    peso(
+      sellerExpenses
+    );
 
   $("metricBuyer").textContent =
-    peso(buyerExpenses);
+    peso(
+      buyerExpenses
+    );
 
   $("metricNet").textContent =
-    peso(sellerNet);
+    peso(
+      sellerNet
+    );
+
 
   $("cgtAmount").textContent =
-    peso(cgt);
+    peso(
+      cgt
+    );
 
   $("dstAmount").textContent =
-    peso(dst);
+    peso(
+      dst
+    );
 
   $("transferAmount").textContent =
-    peso(transfer);
+    peso(
+      transfer
+    );
 
   $("registrationAmount").textContent =
-    peso(registration);
+    peso(
+      registration
+    );
 
   $("commissionAmount").textContent =
-    peso(commission);
+    peso(
+      commission
+    );
 
   $("totalCosts").textContent =
-    peso(total);
+    peso(
+      total
+    );
+
 
   updateAllocationTable();
 
   updateChart();
 
+
   updateReport({
     selling,
     fair,
     zonal,
+    acquisition,
     taxBase,
     sellerExpenses,
     buyerExpenses,
     sellerNet
   });
+
+
+  saveWorkspace(
+    false
+  );
 }
 
-/* ---------------- ALLOCATION TABLE ---------------- */
+
+/* =========================================================
+   ALLOCATION TABLE
+   ========================================================= */
 
 function updateAllocationTable(){
 
   const body =
     $("allocationBody");
 
-  body.innerHTML = "";
+  body.innerHTML =
+    "";
+
 
   const labels = {
-    cgt:"Capital Gains Tax",
-    dst:"Documentary Stamp Tax",
-    transfer:"Transfer Tax",
-    registration:"Registration / other",
-    commission:"Broker Commission"
+
+    cgt:
+      "Capital Gains Tax",
+
+    dst:
+      "Documentary Stamp Tax",
+
+    transfer:
+      "Transfer Tax",
+
+    registration:
+      "Registration / other",
+
+    commission:
+      "Broker Commission"
   };
 
-  for(const key of Object.keys(state.costs)){
+
+  for(
+    const key of Object.keys(
+      state.costs
+    )
+  ){
 
     const row =
-      document.createElement("tr");
+      document.createElement(
+        "tr"
+      );
+
 
     const name =
-      document.createElement("td");
+      document.createElement(
+        "td"
+      );
 
     name.textContent =
       labels[key];
 
+
     const amount =
-      document.createElement("td");
+      document.createElement(
+        "td"
+      );
 
     amount.textContent =
-      peso(state.costs[key]);
+      peso(
+        state.costs[key]
+      );
+
 
     const payerCell =
-      document.createElement("td");
+      document.createElement(
+        "td"
+      );
+
 
     const select =
-      document.createElement("select");
+      document.createElement(
+        "select"
+      );
 
     select.className =
       "payer-select";
+
 
     [
       "Seller",
       "Buyer",
       "Split 50/50"
-    ].forEach(optionValue => {
+    ].forEach(
+      optionValue => {
 
-      const option =
-        document.createElement("option");
+        const option =
+          document.createElement(
+            "option"
+          );
 
-      option.value =
-        optionValue;
+        option.value =
+          optionValue;
 
-      option.textContent =
-        optionValue;
+        option.textContent =
+          optionValue;
 
-      if(
-        state.allocation[key] ===
-        optionValue
-      ){
+        option.selected =
+          state.allocation[key] ===
+          optionValue;
 
-        option.selected = true;
+        select.appendChild(
+          option
+        );
       }
+    );
 
-      select.appendChild(option);
-    });
 
     select.addEventListener(
       "change",
@@ -2311,49 +3621,100 @@ function updateAllocationTable(){
       }
     );
 
-    payerCell.appendChild(select);
 
-    row.appendChild(name);
-    row.appendChild(amount);
-    row.appendChild(payerCell);
+    payerCell.appendChild(
+      select
+    );
 
-    body.appendChild(row);
+    row.appendChild(
+      name
+    );
+
+    row.appendChild(
+      amount
+    );
+
+    row.appendChild(
+      payerCell
+    );
+
+    body.appendChild(
+      row
+    );
   }
 }
 
-/* ---------------- CHART ---------------- */
+
+/* =========================================================
+   CHART
+   ========================================================= */
 
 function updateChart(){
 
   const chart =
     $("chart");
 
-  chart.innerHTML = "";
+  chart.innerHTML =
+    "";
+
 
   const items = [
-    ["CGT",state.costs.cgt],
-    ["DST",state.costs.dst],
-    ["Transfer",state.costs.transfer],
-    ["Other",state.costs.registration],
-    ["Commission",state.costs.commission]
+
+    [
+      "CGT",
+      state.costs.cgt
+    ],
+
+    [
+      "DST",
+      state.costs.dst
+    ],
+
+    [
+      "Transfer",
+      state.costs.transfer
+    ],
+
+    [
+      "Other",
+      state.costs.registration
+    ],
+
+    [
+      "Commission",
+      state.costs.commission
+    ]
+
   ];
+
 
   const max =
     Math.max(
-      ...items.map(item => item[1]),
+      ...items.map(
+        item => item[1]
+      ),
       1
     );
 
-  for(const [label,value] of items){
+
+  for(
+    const [label,value]
+    of items
+  ){
 
     const wrap =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     wrap.className =
       "bar-wrap";
 
+
     const amount =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     amount.className =
       "bar-value";
@@ -2361,11 +3722,15 @@ function updateChart(){
     amount.textContent =
       peso(value);
 
+
     const bar =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     bar.className =
       "bar";
+
 
     const height =
       value === 0
@@ -2375,11 +3740,15 @@ function updateChart(){
             (value / max) * 190
           );
 
+
     bar.style.height =
       height + "px";
 
+
     const labelElement =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     labelElement.className =
       "bar-label";
@@ -2387,107 +3756,225 @@ function updateChart(){
     labelElement.textContent =
       label;
 
-    wrap.appendChild(amount);
-    wrap.appendChild(bar);
-    wrap.appendChild(labelElement);
 
-    chart.appendChild(wrap);
+    wrap.appendChild(
+      amount
+    );
+
+    wrap.appendChild(
+      bar
+    );
+
+    wrap.appendChild(
+      labelElement
+    );
+
+    chart.appendChild(
+      wrap
+    );
   }
 }
 
-/* ---------------- REPORT ---------------- */
 
-function updateReport(data){
+/* =========================================================
+   REPORT
+   ========================================================= */
+
+function updateReport(
+  data
+){
 
   $("rTransaction").textContent =
-    $("transactionType").value;
+    $("transactionType").value ||
+    "—";
+
 
   $("rPropertyType").textContent =
-    $("propertyType").value;
+    $("propertyType").value ||
+    "—";
+
 
   $("rSelling").textContent =
-    peso(data.selling);
+    peso(
+      data.selling
+    );
+
 
   $("rFair").textContent =
-    peso(data.fair);
+    peso(
+      data.fair
+    );
+
 
   $("rZonal").textContent =
-    peso(data.zonal);
+    peso(
+      data.zonal
+    );
+
+
+  $("rAcquisition").textContent =
+    peso(
+      data.acquisition
+    );
+
 
   $("rTaxBase").textContent =
-    peso(data.taxBase);
+    peso(
+      data.taxBase
+    );
+
 
   $("rSellerExpenses").textContent =
-    peso(data.sellerExpenses);
+    peso(
+      data.sellerExpenses
+    );
+
 
   $("rBuyerExpenses").textContent =
-    peso(data.buyerExpenses);
+    peso(
+      data.buyerExpenses
+    );
+
 
   $("rCommission").textContent =
-    peso(state.costs.commission);
+    peso(
+      state.costs.commission
+    );
+
 
   $("rSellerNet").textContent =
-    peso(data.sellerNet);
+    peso(
+      data.sellerNet
+    );
+
 
   $("rCGT").textContent =
-    peso(state.costs.cgt);
+    peso(
+      state.costs.cgt
+    );
+
 
   $("rDST").textContent =
-    peso(state.costs.dst);
+    peso(
+      state.costs.dst
+    );
+
 
   $("rTransfer").textContent =
-    peso(state.costs.transfer);
+    peso(
+      state.costs.transfer
+    );
+
 
   $("rRegistration").textContent =
-    peso(state.costs.registration);
+    peso(
+      state.costs.registration
+    );
+
 
   $("rCommission2").textContent =
-    peso(state.costs.commission);
+    peso(
+      state.costs.commission
+    );
+
+
+  const lotArea =
+    numberValue(
+      "lotArea"
+    );
+
 
   $("rLotArea").textContent =
-    numberValue("lotArea").toLocaleString(
-      "en-PH"
-    ) + " sqm";
+    lotArea.toLocaleString(
+      "en-PH",
+      {
+        minimumFractionDigits:0,
+        maximumFractionDigits:2
+      }
+    ) +
+    " sqm";
+
+
+  $("transactionId").textContent =
+    state.transactionId ||
+    "—";
+
+
+  $("rTransactionId").textContent =
+    state.transactionId ||
+    "—";
+
 
   updateReportLocation();
 
-  updateChecklistReport();
+  updateChecklist();
 }
 
-/* ---------------- CHECKLIST ---------------- */
+
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
 
 function renderChecklist(){
 
   const container =
     $("checklistContainer");
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
+
 
   state.checklist.forEach(
     (item,index) => {
 
       const wrapper =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       wrapper.className =
         "check-item";
 
-      const checkbox =
-        document.createElement("input");
 
-      checkbox.type = "checkbox";
+      const checkbox =
+        document.createElement(
+          "input"
+        );
+
+      checkbox.type =
+        "checkbox";
 
       checkbox.id =
         "check-" + index;
 
+
+      checkbox.checked =
+        Boolean(
+          state.checklistChecked[index]
+        );
+
+
       const label =
-        document.createElement("label");
+        document.createElement(
+          "label"
+        );
 
       label.htmlFor =
         checkbox.id;
 
       label.textContent =
         item;
+
+
+      if(
+        checkbox.checked
+      ){
+
+        wrapper.classList.add(
+          "done"
+        );
+      }
+
 
       checkbox.addEventListener(
         "change",
@@ -2498,9 +3985,15 @@ function renderChecklist(){
             checkbox.checked
           );
 
+          state.checklistChecked[index] =
+            checkbox.checked;
+
           updateChecklist();
+
+          saveWorkspace();
         }
       );
+
 
       wrapper.appendChild(
         checkbox
@@ -2516,8 +4009,14 @@ function renderChecklist(){
     }
   );
 
+
   updateChecklist();
 }
+
+
+/* =========================================================
+   UPDATE CHECKLIST
+   ========================================================= */
 
 function updateChecklist(){
 
@@ -2526,104 +4025,543 @@ function updateChecklist(){
       "#checklistContainer input[type=checkbox]"
     );
 
+
   const completed =
     [...checkboxes].filter(
-      checkbox => checkbox.checked
+      checkbox =>
+        checkbox.checked
     ).length;
+
 
   const total =
     checkboxes.length;
 
+
   const percent =
     total
       ? Math.round(
-          (completed / total) * 100
+          (
+            completed /
+            total
+          ) * 100
         )
       : 0;
+
 
   $("checkPercent").textContent =
     percent + "%";
 
+
   $("checkProgress").style.width =
     percent + "%";
 
+
   $("rChecklist").textContent =
     percent + "%";
 }
 
-function updateChecklistReport(){
 
-  const percent =
-    $("checkPercent").textContent;
+/* =========================================================
+   TRANSACTION ID
+   ========================================================= */
 
-  $("rChecklist").textContent =
-    percent;
+function createTransactionId(){
+
+  const randomPart =
+    Math.floor(
+      10000000 +
+      Math.random() *
+      90000000
+    );
+
+
+  const datePart =
+    new Date()
+      .toISOString()
+      .slice(0,10)
+      .replaceAll(
+        "-",
+        ""
+      );
+
+
+  return (
+    "PTW-" +
+    datePart +
+    "-" +
+    randomPart
+  );
 }
 
-/* ---------------- RESET ---------------- */
 
-function resetWorkspace(){
+/* =========================================================
+   LOCAL STORAGE
+   ========================================================= */
+
+function collectWorkspace(){
+
+  const values = {
+
+    transactionType:
+      $("transactionType").value,
+
+    propertyType:
+      $("propertyType").value,
+
+    sellingPrice:
+      $("sellingPrice").value,
+
+    fairMarketValue:
+      $("fairMarketValue").value,
+
+    zonalValue:
+      $("zonalValue").value,
+
+    acquisitionPrice:
+      $("acquisitionPrice").value,
+
+    lotArea:
+      $("lotArea").value,
+
+    commissionRate:
+      $("commissionRate").value,
+
+    province:
+      provinceSelect.value,
+
+    city:
+      citySelect.value,
+
+    barangay:
+      barangaySelect.value,
+
+    zip:
+      zipInput.value,
+
+    allocation:
+      {
+        ...state.allocation
+      },
+
+    checklistChecked:
+      [
+        ...state.checklistChecked
+      ],
+
+    transactionId:
+      state.transactionId,
+
+    theme:
+      document.documentElement
+        .dataset
+        .theme ||
+      "light"
+  };
+
+
+  return values;
+}
+
+
+function saveWorkspace(
+  showStatus = true
+){
+
+  try{
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(
+        collectWorkspace()
+      )
+    );
+
+
+    if(showStatus){
+
+      setAutosaveStatus(
+        "Workspace saved locally.",
+        "saved"
+      );
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Unable to save workspace:",
+      error
+    );
+
+    if(showStatus){
+
+      setAutosaveStatus(
+        "Local save unavailable.",
+        "error"
+      );
+    }
+  }
+}
+
+
+/* =========================================================
+   RESTORE WORKSPACE
+   ========================================================= */
+
+function getSavedWorkspace(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
+    if(!raw){
+      return null;
+    }
+
+    const parsed =
+      JSON.parse(
+        raw
+      );
+
+    if(
+      !parsed ||
+      typeof parsed !==
+      "object"
+    ){
+
+      return null;
+    }
+
+    return parsed;
+
+  }catch(error){
+
+    console.warn(
+      "Saved workspace could not be read:",
+      error
+    );
+
+    return null;
+  }
+}
+
+
+/* =========================================================
+   RESTORE INPUTS
+   ========================================================= */
+
+function restoreBasicInputs(
+  saved
+){
+
+  if(!saved){
+    return;
+  }
+
+
+  const simpleFields = {
+
+    transactionType:
+      "transactionType",
+
+    propertyType:
+      "propertyType",
+
+    sellingPrice:
+      "sellingPrice",
+
+    fairMarketValue:
+      "fairMarketValue",
+
+    zonalValue:
+      "zonalValue",
+
+    acquisitionPrice:
+      "acquisitionPrice",
+
+    lotArea:
+      "lotArea",
+
+    commissionRate:
+      "commissionRate"
+  };
+
+
+  for(
+    const [
+      key,id
+    ]
+    of Object.entries(
+      simpleFields
+    )
+  ){
+
+    if(
+      saved[key] !==
+      undefined &&
+      $(id)
+    ){
+
+      $(id).value =
+        saved[key];
+    }
+  }
+
+
+  if(
+    !saved.commissionRate
+  ){
+
+    $("commissionRate").value =
+      DEFAULT_COMMISSION_RATE;
+  }
+
+
+  if(
+    saved.allocation &&
+    typeof saved.allocation ===
+      "object"
+  ){
+
+    state.allocation = {
+      ...state.allocation,
+      ...saved.allocation
+    };
+  }
+
+
+  if(
+    Array.isArray(
+      saved.checklistChecked
+    )
+  ){
+
+    state.checklistChecked =
+      saved.checklistChecked;
+  }
+
+
+  if(
+    saved.transactionId
+  ){
+
+    state.transactionId =
+      String(
+        saved.transactionId
+      );
+
+  }else{
+
+    state.transactionId =
+      createTransactionId();
+  }
+
+
+  if(
+    saved.theme ===
+    "dark" ||
+    saved.theme ===
+    "light"
+  ){
+
+    document.documentElement
+      .dataset
+      .theme =
+      saved.theme;
+  }
+}
+
+
+/* =========================================================
+   RESTORE LOCATION
+   ========================================================= */
+
+async function restoreLocation(
+  saved
+){
+
+  if(!saved){
+    return;
+  }
+
+
+  if(!saved.province){
+    return;
+  }
+
+
+  const provinceLoaded =
+    await loadProvinces();
+
+
+  if(!provinceLoaded){
+    return;
+  }
+
+
+  const provinceSelected =
+    setSelectValue(
+      provinceSelect,
+      saved.province
+    );
+
+
+  if(!provinceSelected){
+    return;
+  }
+
+
+  const citiesLoaded =
+    await loadCities(
+      saved.province
+    );
+
+
+  if(
+    !citiesLoaded ||
+    !saved.city
+  ){
+
+    return;
+  }
+
+
+  const citySelected =
+    setSelectValue(
+      citySelect,
+      saved.city
+    );
+
+
+  if(!citySelected){
+    return;
+  }
+
+
+  await loadBarangays(
+    saved.city
+  );
+
+
+  if(saved.barangay){
+
+    setSelectValue(
+      barangaySelect,
+      saved.barangay
+    );
+  }
+
 
   /*
-    Reset all numeric inputs.
+    Preserve saved ZIP if the API does not
+    provide one.
   */
+
+  if(
+    !zipInput.value &&
+    saved.zip
+  ){
+
+    zipInput.value =
+      saved.zip;
+  }
+
+
+  updateReportLocation();
+}
+
+
+/* =========================================================
+   RESET WORKSPACE
+   ========================================================= */
+
+async function resetWorkspace(){
+
+  const confirmed =
+    window.confirm(
+      "Reset the entire property transaction workspace?\n\n" +
+      "This will clear the transaction values, location, " +
+      "payer allocation, checklist and locally saved workspace."
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
 
   [
     "sellingPrice",
     "fairMarketValue",
     "zonalValue",
     "acquisitionPrice",
-    "lotArea",
-    "commissionRate"
-  ].forEach(id => {
-    $(id).value = "";
-  });
+    "lotArea"
+  ].forEach(
+    id => {
 
-  /*
-    Restore transaction defaults.
-  */
+      $(id).value =
+        "";
+    }
+  );
+
+
+  $("commissionRate").value =
+    DEFAULT_COMMISSION_RATE;
+
 
   $("transactionType").value =
     "Sale of property";
 
+
   $("propertyType").value =
     "House & Lot";
 
-  /*
-    Reset location.
-  */
 
-  provinceSelect.value = "";
+  resetSelect(
+    provinceSelect,
+    "Loading provinces..."
+  );
+
 
   resetSelect(
     citySelect,
     "Select province first"
   );
 
+
   resetSelect(
     barangaySelect,
     "Select city / municipality first"
   );
 
-  zipInput.value = "";
 
-  /*
-    Reset payer allocation.
-  */
+  zipInput.value =
+    "";
+
 
   state.allocation = {
-    cgt:"Seller",
-    dst:"Buyer",
-    transfer:"Buyer",
-    registration:"Buyer",
-    commission:"Seller"
+
+    cgt:
+      "Seller",
+
+    dst:
+      "Buyer",
+
+    transfer:
+      "Buyer",
+
+    registration:
+      "Buyer",
+
+    commission:
+      "Seller"
   };
 
-  /*
-    Reset costs.
-  */
 
   state.costs = {
+
     cgt:0,
     dst:0,
     transfer:0,
@@ -2631,138 +4569,406 @@ function resetWorkspace(){
     commission:0
   };
 
-  /*
-    Reset checklist.
-  */
 
-  document
-    .querySelectorAll(
-      "#checklistContainer input[type=checkbox]"
-    )
-    .forEach(checkbox => {
+  state.checklistChecked =
+    [];
 
-      checkbox.checked = false;
 
-      checkbox
-        .closest(".check-item")
-        ?.classList.remove("done");
-    });
+  state.transactionId =
+    createTransactionId();
 
-  setStatus(
-    "Workspace reset. All transaction values are ₱0.",
-    "success"
-  );
+
+  try{
+
+    localStorage.removeItem(
+      STORAGE_KEY
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Unable to clear local storage:",
+      error
+    );
+  }
+
+
+  renderChecklist();
 
   calculate();
 
   updateReportLocation();
+
+
+  setStatus(
+    "Workspace reset.",
+    "success"
+  );
+
+
+  setAutosaveStatus(
+    "Workspace reset. No previous transaction data is saved.",
+    "saved"
+  );
+
+
+  await loadProvinces();
 }
 
-/* ---------------- BUTTONS ---------------- */
 
-$("updateBtn").addEventListener(
-  "click",
-  () => {
+/* =========================================================
+   VALIDATION
+   ========================================================= */
 
-    calculate();
+function validateInputs(){
 
-    document
-      .getElementById("costs")
-      .scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
+  const numericFields = [
+
+    "sellingPrice",
+    "fairMarketValue",
+    "zonalValue",
+    "acquisitionPrice",
+    "lotArea",
+    "commissionRate"
+
+  ];
+
+
+  let valid =
+    true;
+
+
+  numericFields.forEach(
+    id => {
+
+      const element =
+        $(id);
+
+      if(!element){
+        return;
+      }
+
+
+      const value =
+        safeNumber(
+          element.value
+        );
+
+
+      const raw =
+        element.value.trim();
+
+
+      element.classList.remove(
+        "input-error"
+      );
+
+
+      if(
+        raw !== "" &&
+        value < 0
+      ){
+
+        element.classList.add(
+          "input-error"
+        );
+
+        valid =
+          false;
+      }
+
+
+      if(
+        id ===
+          "commissionRate" &&
+        value > 100
+      ){
+
+        element.classList.add(
+          "input-error"
+        );
+
+        valid =
+          false;
+      }
+    }
+  );
+
+
+  if(!valid){
+
+    setAutosaveStatus(
+      "Please correct the highlighted values.",
+      "error"
+    );
+
+    return false;
   }
-);
 
-$("resetBtn").addEventListener(
-  "click",
-  resetWorkspace
-);
 
-/* ---------------- AUTO CALCULATE ---------------- */
+  return true;
+}
 
-[
+
+/* =========================================================
+   INPUT EVENTS
+   ========================================================= */
+
+const numericInputIds = [
+
   "sellingPrice",
   "fairMarketValue",
   "zonalValue",
   "acquisitionPrice",
   "lotArea",
   "commissionRate"
-].forEach(id => {
 
-  $(id).addEventListener(
-    "input",
-    calculate
-  );
-});
+];
+
+
+numericInputIds.forEach(
+  id => {
+
+    $(id).addEventListener(
+      "input",
+      () => {
+
+        if(
+          validateInputs()
+        ){
+
+          calculate();
+        }
+      }
+    );
+  }
+);
+
 
 [
   "transactionType",
   "propertyType"
-].forEach(id => {
+].forEach(
+  id => {
 
-  $(id).addEventListener(
-    "change",
-    calculate
-  );
-});
+    $(id).addEventListener(
+      "change",
+      () => {
 
-/* ---------------- DARK MODE ---------------- */
+        calculate();
+      }
+    );
+  }
+);
 
-const savedTheme =
-  localStorage.getItem(
-    "ph-property-theme"
-  );
 
-if(savedTheme){
+/* =========================================================
+   UPDATE BUTTON
+   ========================================================= */
 
-  document.documentElement.dataset.theme =
-    savedTheme;
-}
+$("updateBtn").addEventListener(
+  "click",
+  () => {
+
+    if(
+      !validateInputs()
+    ){
+      return;
+    }
+
+
+    calculate();
+
+
+    $("costs").scrollIntoView(
+      {
+        behavior:"smooth",
+        block:"start"
+      }
+    );
+  }
+);
+
+
+/* =========================================================
+   RESET BUTTON
+   ========================================================= */
+
+$("resetBtn").addEventListener(
+  "click",
+  resetWorkspace
+);
+
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+$("printBtn").addEventListener(
+  "click",
+  () => {
+
+    calculate();
+
+    window.print();
+  }
+);
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
 
 function updateThemeButton(){
 
   const dark =
-    document.documentElement.dataset.theme ===
+    document.documentElement
+      .dataset
+      .theme ===
     "dark";
 
+
   $("themeBtn").textContent =
-    dark ? "☾" : "☀";
+    dark
+      ? "☾"
+      : "☀";
+
+
+  $("themeBtn").setAttribute(
+    "aria-label",
+    dark
+      ? "Switch to light mode"
+      : "Switch to dark mode"
+  );
+
+
+  $("themeBtn").setAttribute(
+    "title",
+    dark
+      ? "Switch to light mode"
+      : "Switch to dark mode"
+  );
 }
+
+
+function initializeTheme(){
+
+  let savedTheme =
+    null;
+
+
+  try{
+
+    savedTheme =
+      localStorage.getItem(
+        THEME_KEY
+      );
+
+  }catch(error){
+
+    console.warn(
+      "Theme preference unavailable:",
+      error
+    );
+  }
+
+
+  if(
+    savedTheme ===
+      "dark" ||
+    savedTheme ===
+      "light"
+  ){
+
+    document.documentElement
+      .dataset
+      .theme =
+      savedTheme;
+
+  }else{
+
+    /*
+      Respect system preference
+      when no preference exists.
+    */
+
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+
+
+    document.documentElement
+      .dataset
+      .theme =
+      prefersDark
+        ? "dark"
+        : "light";
+  }
+
+
+  updateThemeButton();
+}
+
 
 $("themeBtn").addEventListener(
   "click",
   () => {
 
     const current =
-      document.documentElement.dataset.theme;
+      document.documentElement
+        .dataset
+        .theme;
+
 
     const next =
-      current === "dark"
+      current ===
+        "dark"
         ? "light"
         : "dark";
 
-    document.documentElement.dataset.theme =
+
+    document.documentElement
+      .dataset
+      .theme =
       next;
 
-    localStorage.setItem(
-      "ph-property-theme",
-      next
-    );
+
+    try{
+
+      localStorage.setItem(
+        THEME_KEY,
+        next
+      );
+
+    }catch(error){
+
+      console.warn(
+        "Theme could not be saved:",
+        error
+      );
+    }
+
 
     updateThemeButton();
+
+    saveWorkspace(
+      false
+    );
   }
 );
 
-updateThemeButton();
 
-/* ---------------- REPORT DATE ---------------- */
+/* =========================================================
+   REPORT DATE
+   ========================================================= */
 
 function updateReportDate(){
 
   const now =
     new Date();
+
 
   $("reportDate").textContent =
     now.toLocaleDateString(
@@ -2775,33 +4981,129 @@ function updateReportDate(){
     );
 }
 
-updateReportDate();
 
-/* ---------------- TRANSACTION ID ---------------- */
+/* =========================================================
+   GENERATE / RESTORE TRANSACTION ID
+   ========================================================= */
 
-function generateTransactionId(){
+function initializeTransactionId(){
 
-  const random =
-    Math.floor(
-      10000000 +
-      Math.random() * 90000000
-    );
+  if(
+    !state.transactionId
+  ){
+
+    state.transactionId =
+      createTransactionId();
+  }
+
 
   $("transactionId").textContent =
-    "PTW-" + random;
+    state.transactionId;
+
+
+  $("rTransactionId").textContent =
+    state.transactionId;
 }
 
-generateTransactionId();
 
-/* ---------------- INITIALIZATION ---------------- */
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
 
-renderChecklist();
+async function initialize(){
 
-calculate();
+  initializeTheme();
 
-updateReportLocation();
+  updateReportDate();
 
-loadProvinces();
+
+  const saved =
+    getSavedWorkspace();
+
+
+  /*
+    Load basic fields first so the
+    calculator can render immediately.
+  */
+
+  if(saved){
+
+    restoreBasicInputs(
+      saved
+    );
+
+  }else{
+
+    state.transactionId =
+      createTransactionId();
+
+    $("commissionRate").value =
+      DEFAULT_COMMISSION_RATE;
+  }
+
+
+  initializeTransactionId();
+
+  renderChecklist();
+
+  calculate();
+
+  updateReportLocation();
+
+
+  /*
+    Load the geographic hierarchy.
+  */
+
+  await restoreLocation(
+    saved
+  );
+
+
+  /*
+    If there was no saved province,
+    load provinces normally.
+  */
+
+  if(
+    !saved ||
+    !saved.province
+  ){
+
+    await loadProvinces();
+  }
+
+
+  /*
+    Final report refresh after
+    asynchronous location loading.
+  */
+
+  updateReportLocation();
+
+  calculate();
+
+
+  state.initialized =
+    true;
+
+
+  setAutosaveStatus(
+    saved
+      ? "Saved workspace restored locally."
+      : "Workspace ready.",
+    saved
+      ? "saved"
+      : ""
+  );
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+initialize();
 
 </script>
 
