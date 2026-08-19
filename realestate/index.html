@@ -1,746 +1,1511 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PH Property Transaction Workspace</title>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Philippine Property Transaction Workspace by Joshua Dela Cruz"
+>
+
+<title>
+  PH Property Transaction Workspace · Joshua Dela Cruz
+</title>
 
 <style>
-:root{
-  --bg:#f5f7fb;
-  --card:#fff;
-  --soft:#eef2f7;
-  --text:#101828;
-  --muted:#667085;
-  --line:#e4e7ec;
-  --p:#2563eb;
-  --p2:#7c3aed;
-  --warn:#b45309;
-  --danger:#dc2626;
-}
-html.dark{
-  --bg:#080b12;
-  --card:#111827;
-  --soft:#182131;
-  --text:#f8fafc;
-  --muted:#94a3b8;
-  --line:#263244;
-  --p:#60a5fa;
-  --p2:#a78bfa;
-  --warn:#fbbf24;
-  --danger:#f87171;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font:13px Inter,Segoe UI,system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  transition:.18s
-}
-button,input,select{font:inherit}
-button{cursor:pointer}
-a{text-decoration:none;color:inherit}
 
-.sidebar{
-  position:fixed;
-  inset:0 auto 0 0;
-  width:245px;
-  padding:22px 15px;
-  background:var(--card);
-  border-right:1px solid var(--line);
-  z-index:10
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+
+  --primary: #111827;
+  --primary-text: #ffffff;
+
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+
+  --shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06);
+
+  --radius: 18px;
+
+  --transition:
+    160ms cubic-bezier(.2,.8,.2,1);
+
 }
 
-.brand{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  padding:3px 8px 25px
-}
-.logo{
-  display:grid;
-  place-items:center;
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--p),var(--p2));
-  color:#fff;
-  font-weight:900
-}
-.brand b{font-size:12px}
-.brand small{
-  display:block;
-  color:var(--muted);
-  font-size:9px
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+html.dark {
+
+  --bg: #0b0f19;
+  --surface: #111827;
+  --surface-2: #172033;
+  --text: #f3f4f6;
+  --muted: #9ca3af;
+  --border: #273244;
+
+  --primary: #f3f4f6;
+  --primary-text: #111827;
+
+  --accent: #60a5fa;
+  --accent-soft: #172554;
+
+  --shadow:
+    0 15px 40px rgba(0,0,0,.25);
+
 }
 
-.nav-label{
-  font-size:9px;
-  color:var(--muted);
-  font-weight:800;
-  letter-spacing:.12em;
-  padding:12px 10px 5px;
-  text-transform:uppercase
-}
-.nav a{
-  display:block;
-  padding:10px;
-  border-radius:10px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:700
-}
-.nav a:hover,
-.nav a.active{
-  background:var(--soft);
-  color:var(--p)
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
 }
 
-.side-note{
-  position:absolute;
-  left:15px;
-  right:15px;
-  bottom:18px;
-  padding:10px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:var(--soft);
-  font-size:8px;
-  color:var(--muted)
+html {
+  scroll-behavior: smooth;
 }
 
-main{
-  margin-left:245px;
-  width:calc(100% - 245px);
-  max-width:1500px;
-  padding:22px 30px 60px
+body {
+
+  margin: 0;
+
+  background: var(--bg);
+
+  color: var(--text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  transition:
+    background var(--transition),
+    color var(--transition);
+
 }
 
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-  color:var(--muted);
-  font-size:10px
-}
-.top a{
-  color:var(--p);
-  font-weight:800
-}
-.tools{
-  display:flex;
-  gap:7px
-}
-.icon{
-  width:36px;
-  height:36px;
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--text);
-  border-radius:10px
-}
-.mobile{display:none}
+button,
+input,
+select {
 
-.hero{
-  padding:27px;
-  border:1px solid var(--line);
-  border-radius:23px;
-  background:
-    radial-gradient(circle at 90% 15%,#2563eb1c,transparent 30%),
-    var(--card)
-}
-.pill{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:99px;
-  background:#2563eb14;
-  color:var(--p);
-  font-size:8px;
-  font-weight:850
-}
-.hero h1{
-  font-size:clamp(30px,4vw,48px);
-  line-height:1.04;
-  letter-spacing:-.045em;
-  margin:12px 0 8px
-}
-.hero p{
-  max-width:760px;
-  color:var(--muted);
-  font-size:11px
+  font: inherit;
+
 }
 
-.layout{
-  display:grid;
-  grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);
-  gap:14px;
-  margin-top:14px
+button {
+
+  cursor: pointer;
+
 }
 
-.card{
-  border:1px solid var(--line);
-  border-radius:19px;
-  background:var(--card)
+a {
+
+  color: inherit;
+
+  text-decoration: none;
+
 }
 
-.panel{padding:20px}
 
-.head{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  margin-bottom:14px
-}
-.head h2{
-  margin:0;
-  font-size:15px
-}
-.head p{
-  margin:3px 0 0;
-  color:var(--muted);
-  font-size:9px
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+
+  min-height: 100vh;
+
+  display: flex;
+
 }
 
-.form{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:11px
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+
+  width: 260px;
+
+  position: fixed;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  background: var(--surface);
+
+  border-right:
+    1px solid var(--border);
+
+  padding: 22px;
+
+  z-index: 20;
+
+  transition:
+    transform var(--transition);
+
 }
 
-.field label{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  font-weight:750;
-  margin-bottom:5px
+
+.brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 28px;
+
 }
+
+
+.logo {
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 13px;
+
+  display: grid;
+
+  place-items: center;
+
+  background: var(--primary);
+
+  color: var(--primary-text);
+
+  font-weight: 800;
+
+}
+
+
+.brand strong {
+
+  display: block;
+
+  font-size: 15px;
+
+}
+
+
+.brand span {
+
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 12px;
+
+  color: var(--muted);
+
+}
+
+
+.side-label {
+
+  margin:
+
+    22px
+    0
+    8px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  color: var(--muted);
+
+  text-transform: uppercase;
+
+  letter-spacing: .08em;
+
+}
+
+
+.nav {
+
+  display: grid;
+
+  gap: 4px;
+
+}
+
+
+.nav a {
+
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  transition:
+    background var(--transition),
+    color var(--transition);
+
+}
+
+
+.nav a:hover {
+
+  background: var(--surface-2);
+
+  color: var(--text);
+
+}
+
+
+.sidebar-note {
+
+  margin-top: 28px;
+
+  padding: 14px;
+
+  border-radius: 13px;
+
+  background: var(--surface-2);
+
+  border: 1px solid var(--border);
+
+  font-size: 11px;
+
+  line-height: 1.6;
+
+  color: var(--muted);
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+
+  width: calc(100% - 260px);
+
+  margin-left: 260px;
+
+  padding: 22px 28px 60px;
+
+}
+
+
+.topbar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 22px;
+
+}
+
+
+.crumbs {
+
+  font-size: 13px;
+
+  color: var(--muted);
+
+}
+
+
+.crumbs strong {
+
+  color: var(--text);
+
+}
+
+
+.actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+}
+
+
+.icon-btn {
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+
+  color: var(--text);
+
+}
+
+
+.mobile-menu {
+
+  display: none;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+  margin-bottom: 24px;
+
+}
+
+
+.badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: var(--accent-soft);
+
+  color: var(--accent);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+}
+
+
+.hero h1 {
+
+  margin: 12px 0 8px;
+
+  font-size:
+    clamp(30px, 4vw, 48px);
+
+  line-height: 1.02;
+
+  letter-spacing: -.04em;
+
+}
+
+
+.hero p {
+
+  max-width: 780px;
+
+  margin: 0;
+
+  color: var(--muted);
+
+  line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+
+  background: var(--surface);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  box-shadow: var(--shadow);
+
+}
+
+
+.card-header {
+
+  padding: 20px 22px;
+
+  border-bottom:
+    1px solid var(--border);
+
+}
+
+
+.card-header h2 {
+
+  margin: 0;
+
+  font-size: 17px;
+
+}
+
+
+.card-header p {
+
+  margin: 5px 0 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+}
+
+
+.card-body {
+
+  padding: 22px;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+
+}
+
+
+.field {
+
+  display: grid;
+
+  gap: 7px;
+
+}
+
+
+.field.full {
+
+  grid-column: 1 / -1;
+
+}
+
+
+.field label {
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+}
+
 
 .field input,
-.field select{
-  width:100%;
-  padding:10px 11px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:var(--card);
-  color:var(--text);
-  outline:0
+.field select {
+
+  width: 100%;
+
+  min-height: 45px;
+
+  padding:
+    0
+    13px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 11px;
+
+  outline: none;
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  transition:
+    border var(--transition),
+    box-shadow var(--transition);
+
 }
+
 
 .field input:focus,
-.field select:focus{
-  border-color:var(--p);
-  box-shadow:0 0 0 3px #2563eb14
+.field select:focus {
+
+  border-color:
+    var(--accent);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(37,99,235,.10);
+
 }
 
-.field select:disabled{
-  opacity:.55;
-  cursor:not-allowed
+
+.field small {
+
+  font-size: 11px;
+
+  color: var(--muted);
+
 }
 
-.location-grid{
-  grid-column:1/-1;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:11px;
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--soft)
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+.location-box {
+
+  padding: 15px;
+
+  border-radius: 14px;
+
+  background: var(--surface-2);
+
+  border:
+    1px solid var(--border);
+
 }
 
-.location-title{
-  grid-column:1/-1;
-  display:flex;
-  justify-content:space-between;
-  align-items:center
+
+.location-title {
+
+  margin-bottom: 12px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
 }
 
-.location-title b{
-  font-size:10px
+
+.location-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0,1fr));
+
+  gap: 12px;
+
 }
 
-.location-title span{
-  color:var(--muted);
-  font-size:8px
+
+.location-status {
+
+  margin-top: 9px;
+
+  font-size: 11px;
+
+  color: var(--muted);
+
 }
 
-.location-status{
-  grid-column:1/-1;
-  color:var(--muted);
-  font-size:8px;
-  min-height:12px
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.button-row {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  margin-top: 18px;
+
 }
 
-.actions{
-  display:flex;
-  gap:8px;
-  margin-top:13px;
-  flex-wrap:wrap
+
+.btn {
+
+  min-height: 42px;
+
+  padding:
+    0
+    15px;
+
+  border-radius: 11px;
+
+  border:
+    1px solid var(--border);
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  font-weight: 700;
+
+  transition:
+    transform var(--transition),
+    background var(--transition);
+
 }
 
-.btn{
-  border:0;
-  border-radius:10px;
-  padding:10px 14px;
-  font-size:10px;
-  font-weight:800
+
+.btn:hover {
+
+  transform: translateY(-1px);
+
 }
 
-.primary{
-  color:#fff;
-  background:linear-gradient(135deg,var(--p),var(--p2))
+
+.btn.primary {
+
+  background: var(--primary);
+
+  color: var(--primary-text);
+
+  border-color:
+    var(--primary);
+
 }
 
-.secondary{
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--text)
+
+.btn.danger {
+
+  color: var(--danger);
+
 }
 
-.summary{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  margin-top:14px
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0,1fr));
+
+  gap: 12px;
+
+  margin-top: 18px;
+
 }
 
-.mini{padding:15px}
-.mini small{
-  display:block;
-  color:var(--muted);
-  font-size:8px
-}
-.mini strong{
-  display:block;
-  font-size:17px;
-  margin-top:5px;
-  letter-spacing:-.02em
-}
 
-.results{display:grid;gap:9px}
+.metric {
 
-.result{
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:var(--soft)
+  padding: 18px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 14px;
+
+  background: var(--surface);
+
 }
 
-.rline{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px
+
+.metric span {
+
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  margin-bottom: 8px;
+
 }
 
-.result b{font-size:10px}
-.amount{
-  font-weight:850;
-  font-size:13px
-}
-.note{
-  font-size:8px;
-  color:var(--muted);
-  margin-top:3px
-}
 
-.total{
-  padding:15px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#2563eb12,#7c3aed12);
-  border:1px solid #2563eb28
+.metric strong {
+
+  display: block;
+
+  font-size: 18px;
+
+  letter-spacing: -.02em;
+
 }
 
-.total .amount{font-size:23px}
 
-.notice{
-  margin-top:14px;
-  padding:11px;
-  border:1px solid #f59e0b33;
-  background:#f59e0b0d;
-  border-radius:11px;
-  color:var(--warn);
-  font-size:8px
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+.two-col {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 18px;
+
+  margin-top: 18px;
+
 }
 
-.allocation{
-  display:grid;
-  grid-template-columns:1fr 130px 130px;
-  gap:8px;
-  align-items:center;
-  font-size:9px
+
+/* =========================================================
+   EXPENSES
+========================================================= */
+
+.expense {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 15px 0;
+
+  border-bottom:
+    1px solid var(--border);
+
 }
 
-.allocation.header{
-  color:var(--muted);
-  font-weight:800;
-  padding-bottom:5px
+
+.expense:last-child {
+
+  border-bottom: 0;
+
 }
 
-.allocation>div{
-  padding:9px 7px;
-  border-bottom:1px solid var(--line)
+
+.expense-name {
+
+  font-weight: 700;
+
+  font-size: 13px;
+
 }
 
-.allocation select{
-  width:100%;
-  padding:7px;
-  border:1px solid var(--line);
-  border-radius:8px;
-  background:var(--card);
-  color:var(--text);
-  font-size:9px
+
+.expense-note {
+
+  margin-top: 4px;
+
+  font-size: 11px;
+
+  color: var(--muted);
+
 }
 
-.allocation .num{
-  text-align:right;
-  font-weight:800
+
+.expense-value {
+
+  white-space: nowrap;
+
+  font-weight: 800;
+
 }
 
-.section-gap{margin-top:14px}
 
-.chart{
-  height:210px;
-  display:flex;
-  align-items:end;
-  gap:16px;
-  padding:12px 16px 23px;
+.total-row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  padding-top: 18px;
+
+  font-weight: 900;
+
+}
+
+
+/* =========================================================
+   ALLOCATION
+========================================================= */
+
+.allocation-row {
+
+  display: grid;
+
+  grid-template-columns:
+    1.4fr
+    .8fr
+    1fr;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 0;
+
+  border-bottom:
+    1px solid var(--border);
+
+  font-size: 12px;
+
+}
+
+
+.allocation-row:last-child {
+
+  border-bottom: 0;
+
+}
+
+
+.allocation-row select {
+
+  min-height: 38px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 9px;
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  padding: 0 8px;
+
+}
+
+
+.num {
+
+  font-weight: 800;
+
+}
+
+
+/* =========================================================
+   GRAPH
+========================================================= */
+
+.chart {
+
+  height: 250px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-around;
+
+  gap: 18px;
+
+  padding:
+    20px
+    10px
+    8px;
+
+}
+
+
+.bar-wrap {
+
+  height: 100%;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 8px;
+
+}
+
+
+.bar {
+
+  width: min(55px, 75%);
+
+  min-height: 0;
+
+  border-radius:
+    9px
+    9px
+    4px
+    4px;
+
   background:
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 39px,
-      var(--line) 40px
-    )
+    linear-gradient(
+      180deg,
+      var(--accent),
+      #7c3aed
+    );
+
+  transition:
+    height 300ms cubic-bezier(.2,.8,.2,1);
+
 }
 
-.barbox{
-  height:100%;
-  flex:1;
-  display:flex;
-  align-items:center;
-  flex-direction:column;
-  justify-content:end
+
+.bar-label {
+
+  font-size: 10px;
+
+  color: var(--muted);
+
 }
 
-.bar{
-  width:min(52px,75%);
-  border-radius:7px 7px 2px 2px;
-  background:linear-gradient(to top,var(--p),var(--p2));
-  transform-origin:bottom;
-  animation:grow .5s both
+
+/* =========================================================
+   CHECKLIST
+========================================================= */
+
+.progress-wrap {
+
+  height: 9px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: var(--surface-2);
+
+  border:
+    1px solid var(--border);
+
 }
 
-.barbox small{
-  font-size:8px;
-  color:var(--muted);
-  margin-top:6px
+
+.progress {
+
+  width: 0%;
+
+  height: 100%;
+
+  background: var(--accent);
+
+  transition:
+    width 250ms ease;
+
 }
 
-@keyframes grow{
-  from{transform:scaleY(0)}
-  to{transform:scaleY(1)}
+
+.checklist {
+
+  display: grid;
+
+  gap: 10px;
+
+  margin-top: 16px;
+
 }
 
-.check{
-  display:grid;
-  gap:6px
+
+.check {
+
+  display: flex;
+
+  gap: 10px;
+
+  align-items: center;
+
+  padding: 11px;
+
+  border-radius: 10px;
+
+  background: var(--surface-2);
+
+  font-size: 12px;
+
 }
 
-.check label{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  padding:8px;
-  border-bottom:1px solid var(--line);
-  font-size:9px
+
+.check input {
+
+  width: 16px;
+  height: 16px;
+
 }
 
-.check input{accent-color:var(--p)}
 
-.progress{
-  height:7px;
-  background:var(--soft);
-  border-radius:99px;
-  overflow:hidden;
-  margin-top:10px
+/* =========================================================
+   REPORT
+========================================================= */
+
+.report {
+
+  margin-top: 18px;
+
+  padding: 28px;
+
 }
 
-.progress i{
-  display:block;
-  height:100%;
-  width:0;
-  background:linear-gradient(90deg,var(--p),var(--p2));
-  transition:.25s
+
+.report-title {
+
+  text-align: center;
+
+  padding-bottom: 20px;
+
+  border-bottom:
+    1px solid var(--border);
+
 }
 
-.report{
-  margin-top:14px;
-  padding:28px
+
+.report-title h2 {
+
+  margin: 0;
+
+  font-size: 22px;
+
 }
 
-.report-header{
-  display:flex;
-  justify-content:space-between;
-  gap:20px;
-  border-bottom:2px solid var(--text);
-  padding-bottom:16px;
-  margin-bottom:18px
+
+.report-title p {
+
+  margin: 6px 0 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
 }
 
-.report-title h2{
-  font-size:24px;
-  letter-spacing:-.03em;
-  margin:8px 0 3px
+
+.report-section {
+
+  padding:
+    20px
+    0;
+
+  border-bottom:
+    1px solid var(--border);
+
 }
 
-.report-title p,
-.report-meta{
-  color:var(--muted);
-  font-size:9px
+
+.report-section h3 {
+
+  margin: 0 0 13px;
+
+  font-size: 11px;
+
+  letter-spacing: .08em;
+
+  text-transform: uppercase;
+
+  color: var(--muted);
+
 }
 
-.report-meta{
-  text-align:right;
-  min-width:180px
+
+.report-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 8px 25px;
+
 }
 
-.report-meta strong{
-  display:block;
-  color:var(--text);
-  font-size:11px;
-  margin-bottom:6px
+
+.report-line {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 7px 0;
+
+  font-size: 12px;
+
 }
 
-.report-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px
+
+.report-line strong {
+
+  text-align: right;
+
 }
 
-.report-section{
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:15px
+
+.net {
+
+  margin-top: 10px;
+
+  padding: 18px;
+
+  border-radius: 13px;
+
+  background: var(--accent-soft);
+
 }
 
-.report-section h3{
-  font-size:11px;
-  margin:0 0 10px
+
+.net strong {
+
+  color: var(--accent);
+
+  font-size: 22px;
+
 }
 
-.kv{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:8px;
-  font-size:9px
+
+.warning {
+
+  margin-top: 18px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: var(--surface-2);
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.6;
+
 }
 
-.kv span{color:var(--muted)}
-.kv b{text-align:right}
 
-.report-total{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  margin-top:16px;
-  padding:16px 0 8px;
-  border-top:2px solid var(--text)
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+
+  margin-top: 25px;
+
+  text-align: center;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
 }
 
-.report-total small{
-  color:var(--muted);
-  font-size:9px;
-  font-weight:800
-}
 
-.report-total strong{font-size:27px}
+/* =========================================================
+   MOBILE
+========================================================= */
 
-.report-footer{
-  margin-top:18px;
-  padding-top:13px;
-  border-top:1px solid var(--line);
-  font-size:8px;
-  line-height:1.6;
-  color:var(--muted)
-}
+@media (max-width: 1050px) {
 
-.footer{
-  margin-top:35px;
-  padding-top:16px;
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-size:8px;
-  display:flex;
-  justify-content:space-between
-}
+  .summary-grid {
 
-.footer a{
-  color:var(--p);
-  font-weight:800
-}
+    grid-template-columns:
+      repeat(3,1fr);
 
-@media(max-width:1050px){
-  .summary{grid-template-columns:repeat(3,1fr)}
-  .layout{grid-template-columns:1fr}
-}
-
-@media(max-width:700px){
-  .sidebar{
-    transform:translateX(-100%);
-    transition:.2s;
-    width:245px
   }
 
-  .sidebar.open{transform:translateX(0)}
-
-  .mobile{display:block}
-
-  main{
-    margin:0;
-    width:100%;
-    padding:15px
-  }
-
-  .form,
-  .summary,
-  .report-grid,
-  .location-grid{
-    grid-template-columns:1fr
-  }
-
-  .location-title,
-  .location-status{
-    grid-column:1
-  }
-
-  .hero{padding:20px}
-
-  .report-header{flex-direction:column}
-
-  .report-meta{text-align:left}
-
-  .allocation{
-    grid-template-columns:1fr 100px 100px
-  }
-
-  .footer{
-    flex-direction:column;
-    gap:5px
-  }
 }
 
-@media print{
-  *{
-    -webkit-print-color-adjust:exact!important;
-    print-color-adjust:exact!important
+
+@media (max-width: 850px) {
+
+  .sidebar {
+
+    transform:
+      translateX(-100%);
+
   }
 
-  body{
-    background:#fff!important;
-    color:#111827!important;
-    font-family:Arial,Helvetica,sans-serif
+  .sidebar.open {
+
+    transform:
+      translateX(0);
+
+  }
+
+  .main {
+
+    width: 100%;
+
+    margin-left: 0;
+
+    padding:
+      18px;
+
+  }
+
+  .mobile-menu {
+
+    display: grid;
+
+    place-items: center;
+
+  }
+
+  .two-col {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .form-grid,
+  .location-grid,
+  .report-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .field.full {
+
+    grid-column: auto;
+
+  }
+
+  .summary-grid {
+
+    grid-template-columns:
+      repeat(2,1fr);
+
+  }
+
+  .allocation-row {
+
+    grid-template-columns:
+      1fr;
+
+    gap: 6px;
+
+  }
+
+  .button-row {
+
+    flex-direction: column;
+
+  }
+
+  .btn {
+
+    width: 100%;
+
+  }
+
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+  body {
+
+    background: white;
+
+    color: black;
+
   }
 
   .sidebar,
-  .top,
+  .topbar,
   .hero,
   #workspace,
   #costs,
   #allocation,
   #analytics,
   #checklist,
-  .footer,
-  .screen-only{
-    display:none!important
+  footer,
+  .no-print {
+
+    display: none !important;
+
   }
 
-  main{
-    margin:0!important;
-    width:100%!important;
-    max-width:none!important;
-    padding:0!important
+  .main {
+
+    width: 100%;
+
+    margin: 0;
+
+    padding: 0;
+
   }
 
-  .report{
-    display:block!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    background:#fff!important;
-    color:#111827!important
+  .report {
+
+    display: block !important;
+
+    border: 0;
+
+    box-shadow: none;
+
+    padding: 0;
+
   }
 
-  .report-section{
-    border:1px solid #d0d5dd!important;
-    background:#fff!important
+  .card {
+
+    border: 0;
+
+    box-shadow: none;
+
   }
 
-  .report-header{
-    border-color:#111827!important
-  }
-
-  .report-meta strong,
-  .report-section h3,
-  .kv b,
-  .report-total{
-    color:#111827!important
-  }
-
-  .report-title p,
-  .report-meta,
-  .kv span,
-  .report-total small,
-  .report-footer{
-    color:#667085!important
-  }
-
-  .report-total{
-    border-color:#111827!important
-  }
-
-  @page{
-    size:A4;
-    margin:14mm
-  }
 }
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading {
+
+  opacity: .6;
+
+  pointer-events: none;
+
+}
+
 </style>
 </head>
 
+
 <body>
 
-<aside class="sidebar" id="sidebar">
+<div class="app">
+
+
+<!-- =======================================================
+     SIDEBAR
+======================================================== -->
+
+<aside
+  class="sidebar"
+  id="sidebar"
+>
 
   <div class="brand">
-    <div class="logo">PH</div>
-    <div>
-      <b>Property Workspace</b>
-      <small>Philippines · Transaction Prep</small>
+
+    <div class="logo">
+      PH
     </div>
+
+    <div>
+      <strong>
+        Property Workspace
+      </strong>
+
+      <span>
+        Philippines · Transaction Prep
+      </span>
+    </div>
+
   </div>
+
+
+  <div class="side-label">
+    Workspace
+  </div>
+
 
   <nav class="nav">
 
-    <div class="nav-label">Workspace</div>
+    <a href="#workspace">
+      ▦ Transaction
+    </a>
 
-    <a class="active" href="#workspace">▦ Transaction</a>
-    <a href="#costs">◒ Costs</a>
-    <a href="#allocation">⇄ Allocation</a>
-    <a href="#analytics">◔ Analytics</a>
-    <a href="#checklist">✓ Checklist</a>
-    <a href="#report">▤ Report</a>
+    <a href="#costs">
+      ◒ Costs
+    </a>
 
-    <div class="nav-label">Portfolio</div>
+    <a href="#allocation">
+      ⇄ Allocation
+    </a>
+
+    <a href="#analytics">
+      ◔ Analytics
+    </a>
+
+    <a href="#checklist">
+      ✓ Checklist
+    </a>
+
+    <a href="#report">
+      ▤ Report
+    </a>
+
+  </nav>
+
+
+  <div class="side-label">
+    Portfolio
+  </div>
+
+  <nav class="nav">
 
     <a href="https://joshuadelacruz.solutions/">
       ← Joshua Dela Cruz
     </a>
 
-    <div class="nav-label">Reference</div>
+  </nav>
+
+
+  <div class="side-label">
+    Reference
+  </div>
+
+  <nav class="nav">
 
     <a
       href="https://www.bir.gov.ph/"
@@ -752,230 +1517,153 @@ main{
 
   </nav>
 
-  <div class="side-note">
-    <b>Planning tool</b><br>
-    Rates and allocations are illustrative unless verified
-    for the specific transaction, LGU and current rules.
+
+  <div class="sidebar-note">
+
+    <strong>
+      Planning tool
+    </strong>
+
+    <br><br>
+
+    Rates and allocations are
+    illustrative unless verified
+    for the specific transaction,
+    LGU and current rules.
+
   </div>
 
 </aside>
 
-<main>
 
-<div class="top">
+<!-- =======================================================
+     MAIN
+======================================================== -->
 
-  <span>
-    <a href="https://joshuadelacruz.solutions/">
-      ← Portfolio
-    </a>
-    &nbsp;/&nbsp;
-    Real Estate /
-    <b style="color:var(--text)">
-      Transaction Workspace
-    </b>
-  </span>
+<main class="main">
 
-  <div class="tools">
 
-    <button
-      class="icon mobile"
-      id="menu"
-      type="button"
-      aria-label="Menu"
-    >
-      ☰
-    </button>
+  <div class="topbar">
 
-    <button
-      class="icon"
-      id="theme"
-      type="button"
-      aria-label="Toggle dark mode"
-    >
-      ☾
-    </button>
+    <div class="crumbs">
+
+      <a href="https://joshuadelacruz.solutions/">
+        ← Portfolio
+      </a>
+
+      &nbsp; / &nbsp;
+
+      Real Estate /
+
+      &nbsp;
+
+      <strong>
+        Transaction Workspace
+      </strong>
+
+    </div>
+
+
+    <div class="actions">
+
+      <button
+        class="icon-btn mobile-menu"
+        id="menu"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
+      <button
+        class="icon-btn"
+        id="theme"
+        aria-label="Toggle dark mode"
+      >
+        ☾
+      </button>
+
+    </div>
 
   </div>
 
-</div>
+
+<!-- =======================================================
+     HERO
+======================================================== -->
 
 <section class="hero">
 
-  <span class="pill">
+  <div class="badge">
     VERSION 3 · PHILIPPINE LOCATION
-  </span>
+  </div>
 
   <h1>
-    Prepare the transaction.<br>
-    <span style="color:var(--p)">
-      Know who pays what.
-    </span>
+    Prepare the transaction.
+    Know who pays what.
   </h1>
 
   <p>
-    Build a preliminary Philippine property transaction estimate,
-    allocate expenses between buyer and seller, track documents
-    and produce a clean client-ready report.
+
+    Build a preliminary Philippine
+    property transaction estimate,
+    allocate expenses between buyer
+    and seller, track documents and
+    produce a clean client-ready report.
+
   </p>
 
 </section>
 
+
+<!-- =======================================================
+     WORKSPACE
+======================================================== -->
+
 <section
-  class="card panel"
   id="workspace"
-  style="margin-top:14px"
+  class="card"
 >
 
-  <div class="head">
+  <div class="card-header">
 
-    <div>
-      <h2>Transaction Setup</h2>
-      <p>
-        Enter the information available from the property documents.
-      </p>
-    </div>
+    <h2>
+      Transaction Setup
+    </h2>
 
-    <span class="pill">LIVE</span>
+    <p>
+      Enter the information available
+      from the property documents.
+    </p>
 
   </div>
 
-  <div class="form">
 
-    <div class="field">
-
-      <label>Transaction</label>
-
-      <select id="type">
-        <option>Sale of property</option>
-        <option>Purchase planning</option>
-        <option>Broker listing estimate</option>
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label>Property type</label>
-
-      <select id="property">
-        <option>House & Lot</option>
-        <option>Vacant Land</option>
-        <option>Condominium</option>
-        <option>Commercial Property</option>
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label>Gross selling price (₱)</label>
-
-      <input
-        id="price"
-        type="number"
-        value="0"
-        min="0"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label>Fair market value (₱)</label>
-
-      <input
-        id="fmv"
-        type="number"
-        value="0"
-        min="0"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label>BIR zonal value (₱)</label>
-
-      <input
-        id="zonal"
-        type="number"
-        value="0"
-        min="0"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label>Acquisition price (₱)</label>
-
-      <input
-        id="acq"
-        type="number"
-        value="0"
-        min="0"
-      >
-
-    </div>
+  <div class="card-body">
 
 
-    <!-- PHILIPPINE LOCATION -->
-
-    <div class="location-grid">
-
-      <div class="location-title">
-
-        <b>Property Location / LGU</b>
-
-        <span>
-          Philippine Standard Geographic Code
-        </span>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Province</label>
-
-        <select id="province">
-          <option value="">
-            Loading provinces...
-          </option>
-        </select>
-
-      </div>
+    <div class="form-grid">
 
 
       <div class="field">
 
         <label>
-          City / Municipality
+          Transaction
         </label>
 
-        <select
-          id="cityMunicipality"
-          disabled
-        >
-          <option value="">
-            Select province first
+        <select id="type">
+
+          <option>
+            Sale of property
           </option>
-        </select>
 
-      </div>
-
-
-      <div class="field">
-
-        <label>Barangay</label>
-
-        <select
-          id="barangay"
-          disabled
-        >
-          <option value="">
-            Select city / municipality first
+          <option>
+            Purchase planning
           </option>
+
+          <option>
+            Broker listing estimate
+          </option>
+
         </select>
 
       </div>
@@ -984,584 +1672,1085 @@ main{
       <div class="field">
 
         <label>
-          ZIP Code
+          Property type
+        </label>
+
+        <select id="property">
+
+          <option>
+            House & Lot
+          </option>
+
+          <option>
+            Vacant Land
+          </option>
+
+          <option>
+            Condominium
+          </option>
+
+          <option>
+            Commercial Property
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Gross selling price (₱)
         </label>
 
         <input
-          id="zip"
-          type="text"
-          inputmode="numeric"
-          maxlength="4"
-          placeholder="Auto-filled"
+          id="price"
+          type="number"
+          min="0"
+          step="1000"
+          value="0"
         >
 
       </div>
 
+
+      <div class="field">
+
+        <label>
+          Fair market value (₱)
+        </label>
+
+        <input
+          id="fmv"
+          type="number"
+          min="0"
+          step="1000"
+          value="0"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          BIR zonal value (₱)
+        </label>
+
+        <input
+          id="zonal"
+          type="number"
+          min="0"
+          step="1000"
+          value="0"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Acquisition price (₱)
+        </label>
+
+        <input
+          id="acq"
+          type="number"
+          min="0"
+          step="1000"
+          value="0"
+        >
+
+      </div>
+
+
+      <!-- LOCATION -->
+
+      <div class="field full">
+
+        <div class="location-box">
+
+          <div class="location-title">
+
+            Property Location / LGU
+
+          </div>
+
+
+          <div class="location-grid">
+
+
+            <div class="field">
+
+              <label>
+                Province
+              </label>
+
+              <select
+                id="province"
+              >
+
+                <option value="">
+                  Loading provinces...
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                City / Municipality
+              </label>
+
+              <select
+                id="cityMunicipality"
+                disabled
+              >
+
+                <option value="">
+                  Select province first
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Barangay
+              </label>
+
+              <select
+                id="barangay"
+                disabled
+              >
+
+                <option value="">
+                  Select city / municipality first
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                ZIP Code
+              </label>
+
+              <input
+                id="zip"
+                type="text"
+                inputmode="numeric"
+                maxlength="4"
+                placeholder="e.g. 3022"
+              >
+
+            </div>
+
+
+          </div>
+
+
+          <div
+            class="location-status"
+            id="locationStatus"
+          >
+            Loading Philippine location data...
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Lot area (sqm)
+        </label>
+
+        <input
+          id="lot"
+          type="number"
+          min="0"
+          step="0.01"
+          value="0"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Broker commission rate (%)
+        </label>
+
+        <input
+          id="commissionRate"
+          type="number"
+          min="0"
+          step="0.1"
+          value="0"
+        >
+
+      </div>
+
+
+    </div>
+
+
+    <div class="button-row">
+
+      <button
+        class="btn primary"
+        id="calc"
+      >
+        Update workspace →
+      </button>
+
+      <button
+        class="btn danger"
+        id="reset"
+        type="button"
+      >
+        Reset
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     SUMMARY
+======================================================== -->
+
+<section class="summary-grid">
+
+  <div class="metric">
+
+    <span>
+      Property Value
+    </span>
+
+    <strong id="sprice">
+      ₱0
+    </strong>
+
+  </div>
+
+
+  <div class="metric">
+
+    <span>
+      Tax Base
+    </span>
+
+    <strong id="sbase">
+      ₱0
+    </strong>
+
+  </div>
+
+
+  <div class="metric">
+
+    <span>
+      Seller Expenses
+    </span>
+
+    <strong id="sseller">
+      ₱0
+    </strong>
+
+  </div>
+
+
+  <div class="metric">
+
+    <span>
+      Buyer Expenses
+    </span>
+
+    <strong id="sbuyer">
+      ₱0
+    </strong>
+
+  </div>
+
+
+  <div class="metric">
+
+    <span>
+      Seller Net
+    </span>
+
+    <strong id="snet">
+      ₱0
+    </strong>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     COSTS + ALLOCATION
+======================================================== -->
+
+<div class="two-col">
+
+
+<section
+  id="costs"
+  class="card"
+>
+
+  <div class="card-header">
+
+    <h2>
+      Transaction Costs
+    </h2>
+
+    <p>
+      Illustrative rates for planning.
+    </p>
+
+  </div>
+
+
+  <div class="card-body">
+
+
+    <div class="expense">
+
+      <div>
+
+        <div class="expense-name">
+          Capital Gains Tax · 6%
+        </div>
+
+        <div class="expense-note">
+          Illustrative seller-side CGT
+          for qualifying capital-asset sale.
+        </div>
+
+      </div>
 
       <div
-        class="location-status"
-        id="locationStatus"
+        class="expense-value"
+        id="cgt"
       >
-        Loading Philippine location data...
+        ₱0
       </div>
 
     </div>
 
 
-    <div class="field">
+    <div class="expense">
 
-      <label>Lot area (sqm)</label>
+      <div>
 
-      <input
-        id="lot"
-        type="number"
-        value="0"
-        min="0"
+        <div class="expense-name">
+          Documentary Stamp Tax · 1.5%
+        </div>
+
+        <div class="expense-note">
+          Illustrative planning rate.
+        </div>
+
+      </div>
+
+      <div
+        class="expense-value"
+        id="dst"
       >
+        ₱0
+      </div>
 
     </div>
 
 
-    <div class="field">
+    <div class="expense">
 
-      <label>
-        Broker commission rate (%)
-      </label>
+      <div>
 
-      <input
-        id="commissionRate"
-        type="number"
-        value="0"
-        min="0"
-        step="0.1"
+        <div class="expense-name">
+          Transfer Tax · 0.5%
+        </div>
+
+        <div class="expense-note">
+          Actual LGU rate must be verified.
+        </div>
+
+      </div>
+
+      <div
+        class="expense-value"
+        id="transfer"
       >
-
-    </div>
-
-  </div>
-
-
-  <div class="actions">
-
-    <button
-      class="btn primary"
-      id="calc"
-      type="button"
-    >
-      Update workspace →
-    </button>
-
-    <button
-      class="btn secondary"
-      id="reset"
-      type="button"
-    >
-      Reset
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- SUMMARY -->
-
-<div class="summary">
-
-  <div class="card mini">
-    <small>Property Value</small>
-    <strong id="sprice">₱0</strong>
-  </div>
-
-  <div class="card mini">
-    <small>Tax Base</small>
-    <strong id="sbase">₱0</strong>
-  </div>
-
-  <div class="card mini">
-    <small>Seller Expenses</small>
-    <strong id="sseller">₱0</strong>
-  </div>
-
-  <div class="card mini">
-    <small>Buyer Expenses</small>
-    <strong id="sbuyer">₱0</strong>
-  </div>
-
-  <div class="card mini">
-    <small>Seller Net</small>
-    <strong id="snet">₱0</strong>
-  </div>
-
-</div>
-
-
-<!-- COSTS + ALLOCATION -->
-
-<div class="layout section-gap">
-
-<section class="card panel" id="costs">
-
-  <div class="head">
-
-    <div>
-      <h2>Transaction Costs</h2>
-
-      <p>
-        Illustrative rates for planning.
-      </p>
-    </div>
-
-  </div>
-
-
-  <div class="results">
-
-    <div class="result">
-
-      <div class="rline">
-        <b>Capital Gains Tax · 6%</b>
-        <span
-          class="amount"
-          id="cgt"
-        >
-          ₱0
-        </span>
-      </div>
-
-      <div class="note">
-        Illustrative seller-side CGT for qualifying
-        capital-asset sale.
+        ₱0
       </div>
 
     </div>
 
 
-    <div class="result">
+    <div class="expense">
 
-      <div class="rline">
-        <b>Documentary Stamp Tax · 1.5%</b>
+      <div>
 
-        <span
-          class="amount"
-          id="dst"
-        >
-          ₱0
-        </span>
+        <div class="expense-name">
+          Registration / other · 0.25%
+        </div>
+
+        <div class="expense-note">
+          Planning placeholder.
+        </div>
+
       </div>
 
-      <div class="note">
-        Illustrative planning rate.
-      </div>
-
-    </div>
-
-
-    <div class="result">
-
-      <div class="rline">
-        <b>Transfer Tax · 0.5%</b>
-
-        <span
-          class="amount"
-          id="transfer"
-        >
-          ₱0
-        </span>
-      </div>
-
-      <div class="note">
-        Actual LGU rate must be verified.
+      <div
+        class="expense-value"
+        id="registration"
+      >
+        ₱0
       </div>
 
     </div>
 
 
-    <div class="result">
+    <div class="expense">
 
-      <div class="rline">
-        <b>Registration / other · 0.25%</b>
+      <div>
 
-        <span
-          class="amount"
-          id="registration"
-        >
-          ₱0
-        </span>
+        <div class="expense-name">
+          Broker Commission
+        </div>
+
+        <div class="expense-note">
+          Based on the commission rate
+          entered above.
+        </div>
+
       </div>
 
-      <div class="note">
-        Planning placeholder.
-      </div>
-
-    </div>
-
-
-    <div class="result">
-
-      <div class="rline">
-
-        <b>Broker Commission</b>
-
-        <span
-          class="amount"
-          id="commission"
-        >
-          ₱0
-        </span>
-
+      <div
+        class="expense-value"
+        id="commission"
+      >
+        ₱0
       </div>
 
     </div>
 
 
-    <div class="total">
+    <div class="total-row">
 
-      <div class="rline">
-
-        <b>Total Estimated Costs</b>
-
-        <span
-          class="amount"
-          id="total"
-        >
-          ₱0
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section
-  class="card panel"
-  id="allocation"
->
-
-  <div class="head">
-
-    <div>
-
-      <h2>Who Pays What?</h2>
-
-      <p>
-        Change the payer for each planning item.
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <div class="allocation header">
-
-    <div>Expense</div>
-    <div>Amount</div>
-    <div>Payer</div>
-
-  </div>
-
-
-  <div id="allocationRows"></div>
-
-
-  <div class="notice">
-
-    Payment allocation is configurable because
-    actual agreements and transaction practice can vary.
-    Confirm the final arrangement in the parties'
-    documents.
-
-  </div>
-
-</section>
-
-</div>
-
-
-<!-- ANALYTICS -->
-
-<div
-  class="layout section-gap"
-  id="analytics"
->
-
-<section class="card panel">
-
-  <div class="head">
-
-    <div>
-
-      <h2>Cost Visualization</h2>
-
-      <p>
-        Relative size of each transaction component.
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <div class="chart">
-
-    <div class="barbox">
-      <i
-        class="bar"
-        id="b1"
-        style="height:7%"
-      ></i>
-      <small>CGT</small>
-    </div>
-
-    <div class="barbox">
-      <i
-        class="bar"
-        id="b2"
-        style="height:7%"
-      ></i>
-      <small>DST</small>
-    </div>
-
-    <div class="barbox">
-      <i
-        class="bar"
-        id="b3"
-        style="height:7%"
-      ></i>
-      <small>Transfer</small>
-    </div>
-
-    <div class="barbox">
-      <i
-        class="bar"
-        id="b4"
-        style="height:7%"
-      ></i>
-      <small>Other</small>
-    </div>
-
-    <div class="barbox">
-      <i
-        class="bar"
-        id="b5"
-        style="height:7%"
-      ></i>
-      <small>Commission</small>
-    </div>
-
-  </div>
-
-</section>
-
-
-<section
-  class="card panel"
-  id="checklist"
->
-
-  <div class="head">
-
-    <div>
-
-      <h2>Transaction Checklist</h2>
-
-      <p>
-        Track preparation before the client meeting.
-      </p>
-
-    </div>
-
-    <b id="checkCount">0%</b>
-
-  </div>
-
-
-  <div class="check">
-
-    <label>
-      <input type="checkbox">
-      Certified True Copy of Title
-    </label>
-
-    <label>
-      <input type="checkbox">
-      Current Tax Declaration
-    </label>
-
-    <label>
-      <input type="checkbox">
-      Valid IDs and TIN details
-    </label>
-
-    <label>
-      <input type="checkbox">
-      Deed of Absolute Sale / draft
-    </label>
-
-    <label>
-      <input type="checkbox">
-      SPA or authority, if applicable
-    </label>
-
-    <label>
-      <input type="checkbox">
-      BIR ONETT / eCAR requirements reviewed
-    </label>
-
-    <label>
-      <input type="checkbox">
-      LGU transfer requirements reviewed
-    </label>
-
-    <label>
-      <input type="checkbox">
-      Registry of Deeds requirements reviewed
-    </label>
-
-  </div>
-
-
-  <div class="progress">
-    <i id="progress"></i>
-  </div>
-
-</section>
-
-</div>
-
-
-<!-- REPORT -->
-
-<section
-  class="card report"
-  id="report"
->
-
-  <div class="report-header">
-
-    <div class="report-title">
-
-      <span class="pill">
-        PRELIMINARY TRANSACTION REPORT
+      <span>
+        Total Estimated Costs
       </span>
 
-      <h2>
-        Property Transaction Estimate
-      </h2>
+      <span id="total">
+        ₱0
+      </span>
 
-      <p>
-        Prepared from the information entered
-        in the workspace.
-      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section
+  id="allocation"
+  class="card"
+>
+
+  <div class="card-header">
+
+    <h2>
+      Who Pays What?
+    </h2>
+
+    <p>
+      Change the payer for each
+      planning item.
+    </p>
+
+  </div>
+
+
+  <div class="card-body">
+
+    <div class="allocation-row">
+
+      <strong>
+        Expense
+      </strong>
+
+      <strong>
+        Amount
+      </strong>
+
+      <strong>
+        Payer
+      </strong>
 
     </div>
 
 
-    <div class="report-meta">
+    <div id="allocationRows"></div>
 
-      Report date
 
-      <strong id="rdate">—</strong>
+    <p
+      style="
+        margin:16px 0 0;
+        color:var(--muted);
+        font-size:11px;
+        line-height:1.6;
+      "
+    >
 
-      Property location
+      Payment allocation is configurable
+      because actual agreements and
+      transaction practice can vary.
+      Confirm the final arrangement in
+      the parties' documents.
 
-      <strong id="rlocation">—</strong>
+    </p>
+
+  </div>
+
+</section>
+
+</div>
+
+
+<!-- =======================================================
+     ANALYTICS
+======================================================== -->
+
+<section
+  id="analytics"
+  class="card"
+  style="margin-top:18px;"
+>
+
+  <div class="card-header">
+
+    <h2>
+      Cost Visualization
+    </h2>
+
+    <p>
+      Relative size of each transaction component.
+    </p>
+
+  </div>
+
+
+  <div class="card-body">
+
+    <div class="chart">
+
+      <div class="bar-wrap">
+
+        <div
+          class="bar"
+          id="b1"
+          style="height:0%"
+        ></div>
+
+        <div class="bar-label">
+          CGT
+        </div>
+
+      </div>
+
+
+      <div class="bar-wrap">
+
+        <div
+          class="bar"
+          id="b2"
+          style="height:0%"
+        ></div>
+
+        <div class="bar-label">
+          DST
+        </div>
+
+      </div>
+
+
+      <div class="bar-wrap">
+
+        <div
+          class="bar"
+          id="b3"
+          style="height:0%"
+        ></div>
+
+        <div class="bar-label">
+          Transfer
+        </div>
+
+      </div>
+
+
+      <div class="bar-wrap">
+
+        <div
+          class="bar"
+          id="b4"
+          style="height:0%"
+        ></div>
+
+        <div class="bar-label">
+          Other
+        </div>
+
+      </div>
+
+
+      <div class="bar-wrap">
+
+        <div
+          class="bar"
+          id="b5"
+          style="height:0%"
+        ></div>
+
+        <div class="bar-label">
+          Commission
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     CHECKLIST
+======================================================== -->
+
+<section
+  id="checklist"
+  class="card"
+  style="margin-top:18px;"
+>
+
+  <div class="card-header">
+
+    <h2>
+      Transaction Checklist
+    </h2>
+
+    <p>
+      Track preparation before the client meeting.
+    </p>
+
+  </div>
+
+
+  <div class="card-body">
+
+    <strong id="checkCount">
+      0%
+    </strong>
+
+
+    <div
+      class="progress-wrap"
+      style="margin-top:10px;"
+    >
+
+      <div
+        class="progress"
+        id="progress"
+      ></div>
+
+    </div>
+
+
+    <div class="checklist">
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        Certified True Copy of Title
+
+      </label>
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        Current Tax Declaration
+
+      </label>
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        Valid IDs and TIN details
+
+      </label>
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        Deed of Absolute Sale / draft
+
+      </label>
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        SPA or authority, if applicable
+
+      </label>
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        BIR ONETT / eCAR requirements reviewed
+
+      </label>
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        LGU transfer requirements reviewed
+
+      </label>
+
+
+      <label class="check">
+
+        <input type="checkbox">
+
+        Registry of Deeds requirements reviewed
+
+      </label>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     REPORT
+======================================================== -->
+
+<section
+  id="report"
+  class="card report"
+>
+
+  <div class="report-title">
+
+    <h2>
+      PRELIMINARY TRANSACTION REPORT
+    </h2>
+
+    <p>
+      Property Transaction Estimate
+    </p>
+
+    <p>
+      Prepared from the information
+      entered in the workspace.
+    </p>
+
+  </div>
+
+
+  <div class="report-section">
+
+    <div class="report-grid">
+
+      <div class="report-line">
+
+        <span>
+          Report date
+        </span>
+
+        <strong id="rdate">
+          —
+        </strong>
+
+      </div>
+
+
+      <div class="report-line">
+
+        <span>
+          Property location
+        </span>
+
+        <strong id="rlocation">
+          Not specified
+        </strong>
+
+      </div>
 
     </div>
 
   </div>
 
 
-  <div class="report-grid">
+  <div class="report-section">
 
-    <div class="report-section">
+    <h3>
+      Property Details
+    </h3>
 
-      <h3>PROPERTY DETAILS</h3>
 
-      <div class="kv">
+    <div class="report-line">
 
-        <span>Transaction</span>
-        <b id="rtype">—</b>
+      <span>
+        Transaction
+      </span>
 
-        <span>Property type</span>
-        <b id="rproperty">—</b>
-
-        <span>Province</span>
-        <b id="rprovince">—</b>
-
-        <span>City / Municipality</span>
-        <b id="rcity">—</b>
-
-        <span>Barangay</span>
-        <b id="rbarangay">—</b>
-
-        <span>ZIP Code</span>
-        <b id="rzip">—</b>
-
-        <span>Lot area</span>
-        <b id="rlot">0 sqm</b>
-
-      </div>
+      <strong id="rtype">
+        Sale of property
+      </strong>
 
     </div>
 
 
-    <div class="report-section">
+    <div class="report-line">
 
-      <h3>VALUATION</h3>
+      <span>
+        Property type
+      </span>
 
-      <div class="kv">
+      <strong id="rproperty">
+        House & Lot
+      </strong>
 
-        <span>Gross selling price</span>
-        <b id="rprice">₱0</b>
+    </div>
 
-        <span>Fair market value</span>
-        <b id="rfmv">₱0</b>
 
-        <span>BIR zonal value</span>
-        <b id="rzonal">₱0</b>
+    <div class="report-line">
 
-        <span>Illustrative tax base</span>
-        <b id="rbase">₱0</b>
+      <span>
+        Province
+      </span>
 
-      </div>
+      <strong id="rprovince">
+        —
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        City / Municipality
+      </span>
+
+      <strong id="rcity">
+        —
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Barangay
+      </span>
+
+      <strong id="rbarangay">
+        —
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        ZIP Code
+      </span>
+
+      <strong id="rzip">
+        —
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Lot area
+      </span>
+
+      <strong id="rlot">
+        0 sqm
+      </strong>
 
     </div>
 
   </div>
 
 
-  <div
-    class="report-section"
-    style="margin-top:16px"
-  >
+  <div class="report-section">
 
-    <h3>FINANCIAL SUMMARY</h3>
+    <h3>
+      Valuation
+    </h3>
 
-    <div class="kv">
 
-      <span>Seller expenses</span>
-      <b id="rseller">₱0</b>
+    <div class="report-line">
 
-      <span>Buyer expenses</span>
-      <b id="rbuyer">₱0</b>
+      <span>
+        Gross selling price
+      </span>
 
-      <span>Broker commission</span>
-      <b id="rcommission">₱0</b>
+      <strong id="rprice">
+        ₱0
+      </strong>
 
     </div>
 
 
-    <div class="report-total">
+    <div class="report-line">
 
-      <small>
+      <span>
+        Fair market value
+      </span>
+
+      <strong id="rfmv">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        BIR zonal value
+      </span>
+
+      <strong id="rzonal">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Illustrative tax base
+      </span>
+
+      <strong id="rbase">
+        ₱0
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <div class="report-section">
+
+    <h3>
+      Financial Summary
+    </h3>
+
+
+    <div class="report-line">
+
+      <span>
+        Seller expenses
+      </span>
+
+      <strong id="rseller">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Buyer expenses
+      </span>
+
+      <strong id="rbuyer">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Broker commission
+      </span>
+
+      <strong id="rcommission">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="net">
+
+      <div
+        style="
+          color:var(--muted);
+          font-size:11px;
+          margin-bottom:5px;
+        "
+      >
         SELLER NET PROCEEDS
-      </small>
+      </div>
 
       <strong id="rnet">
         ₱0
@@ -1572,31 +2761,131 @@ main{
   </div>
 
 
-  <div
-    class="report-section"
-    style="margin-top:16px"
-  >
+  <div class="report-section">
 
     <h3>
-      ESTIMATED COST BREAKDOWN
+      Estimated Cost Breakdown
     </h3>
 
-    <div class="kv">
 
-      <span>Capital Gains Tax</span>
-      <b id="rcgt">₱0</b>
+    <div class="report-line">
 
-      <span>Documentary Stamp Tax</span>
-      <b id="rdst">₱0</b>
+      <span>
+        Capital Gains Tax
+      </span>
 
-      <span>Transfer Tax</span>
-      <b id="rtransfer">₱0</b>
+      <strong id="rcgt">
+        ₱0
+      </strong>
 
-      <span>Registration / other</span>
-      <b id="rregistration">₱0</b>
+    </div>
 
-      <span>Broker Commission</span>
-      <b id="rcommission2">₱0</b>
+
+    <div class="report-line">
+
+      <span>
+        Documentary Stamp Tax
+      </span>
+
+      <strong id="rdst">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Transfer Tax
+      </span>
+
+      <strong id="rtransfer">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Registration / other
+      </span>
+
+      <strong id="rregistration">
+        ₱0
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Broker Commission
+      </span>
+
+      <strong id="rcommission2">
+        ₱0
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <div class="report-section">
+
+    <h3>
+      Preparation Status
+    </h3>
+
+
+    <div class="report-line">
+
+      <span>
+        Checklist completion
+      </span>
+
+      <strong id="rcheck">
+        0%
+      </strong>
+
+    </div>
+
+
+    <div class="report-line">
+
+      <span>
+        Transaction ID
+      </span>
+
+      <strong id="rid">
+        PTW-00000000
+      </strong>
+
+    </div>
+
+
+    <div class="warning">
+
+      <strong>
+        Important:
+      </strong>
+
+      This is a preliminary planning
+      estimate only. It is not a BIR
+      assessment, official computation,
+      legal opinion or substitute for
+      professional advice.
+
+      Actual taxes, fees, valuation
+      bases, payment allocations and
+      documentary requirements should
+      be verified with the BIR, applicable
+      LGU, Registry of Deeds and qualified
+      professionals.
 
     </div>
 
@@ -1604,49 +2893,12 @@ main{
 
 
   <div
-    class="report-section"
-    style="margin-top:16px"
+    class="button-row no-print"
   >
-
-    <h3>
-      PREPARATION STATUS
-    </h3>
-
-    <div class="kv">
-
-      <span>Checklist completion</span>
-      <b id="rcheck">0%</b>
-
-      <span>Transaction ID</span>
-      <b id="rid">—</b>
-
-    </div>
-
-  </div>
-
-
-  <div class="report-footer">
-
-    <b>Important:</b>
-
-    This is a preliminary planning estimate only.
-    It is not a BIR assessment, official computation,
-    legal opinion or substitute for professional advice.
-
-    Actual taxes, fees, valuation bases, payment
-    allocations and documentary requirements should
-    be verified with the BIR, applicable LGU,
-    Registry of Deeds and qualified professionals.
-
-  </div>
-
-
-  <div class="actions screen-only">
 
     <button
       class="btn primary"
       id="print"
-      type="button"
     >
       Print / Save as PDF →
     </button>
@@ -1656,86 +2908,38 @@ main{
 </section>
 
 
-<div class="footer">
+<!-- =======================================================
+     FOOTER
+======================================================== -->
 
-  <span>
-    © 2026 Joshua Dela Cruz ·
-    PH Property Transaction Workspace
-  </span>
+<footer>
+
+  © 2026 Joshua Dela Cruz ·
+  PH Property Transaction Workspace
+
+  <br><br>
 
   <a href="https://joshuadelacruz.solutions/">
     ← Back to main portfolio
   </a>
 
-  <span>
-    Version 3 MVP
-  </span>
+  <br><br>
 
-</div>
+  Version 3 MVP
+
+</footer>
+
 
 </main>
 
+</div>
+
+
+<!-- =======================================================
+     JAVASCRIPT
+======================================================== -->
 
 <script>
-
-/* =========================================================
-   BASIC UI
-========================================================= */
-
-const root = document.documentElement;
-const theme = document.getElementById("theme");
-
-const savedTheme =
-  localStorage.getItem("jdtheme");
-
-if(
-  savedTheme === "dark" ||
-  (
-    !savedTheme &&
-    window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches
-  )
-){
-  root.classList.add("dark");
-}
-
-function updateThemeIcon(){
-
-  theme.textContent =
-    root.classList.contains("dark")
-      ? "☀"
-      : "☾";
-
-}
-
-updateThemeIcon();
-
-theme.onclick = function(){
-
-  root.classList.toggle("dark");
-
-  localStorage.setItem(
-    "jdtheme",
-    root.classList.contains("dark")
-      ? "dark"
-      : "light"
-  );
-
-  updateThemeIcon();
-
-};
-
-
-document.getElementById("menu").onclick =
-function(){
-
-  document
-    .getElementById("sidebar")
-    .classList.toggle("open");
-
-};
-
 
 /* =========================================================
    HELPERS
@@ -1744,24 +2948,109 @@ function(){
 const $ = id =>
   document.getElementById(id);
 
-const money = number =>
-  new Intl.NumberFormat(
+
+const money = value => {
+
+  return new Intl.NumberFormat(
     "en-PH",
     {
-      style:"currency",
-      currency:"PHP",
-      maximumFractionDigits:0
+      style: "currency",
+      currency: "PHP",
+      maximumFractionDigits: 0
     }
-  ).format(number || 0);
+  ).format(
+    Number(value) || 0
+  );
+
+};
 
 
 /* =========================================================
-   LOCATION SYSTEM
+   THEME
+========================================================= */
+
+const root =
+  document.documentElement;
+
+const theme =
+  $("theme");
+
+const savedTheme =
+  localStorage.getItem(
+    "jdtheme"
+  );
+
+
+if (
+  savedTheme === "dark" ||
+  (
+    !savedTheme &&
+    window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches
+  )
+) {
+
+  root.classList.add("dark");
+
+}
+
+
+function updateThemeIcon() {
+
+  theme.textContent =
+    root.classList.contains("dark")
+      ? "☀"
+      : "☾";
+
+}
+
+
+updateThemeIcon();
+
+
+theme.addEventListener(
+  "click",
+  () => {
+
+    root.classList.toggle(
+      "dark"
+    );
+
+    localStorage.setItem(
+      "jdtheme",
+      root.classList.contains("dark")
+        ? "dark"
+        : "light"
+    );
+
+    updateThemeIcon();
+
+  }
+);
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+$("menu").addEventListener(
+  "click",
+  () => {
+
+    $("sidebar")
+      .classList.toggle("open");
+
+  }
+);
+
+
+/* =========================================================
    PSGC CLOUD
 ========================================================= */
 
-const PSGC =
-  "https://psgc.cloud/api/v1";
+const PSGC_API =
+  "https://psgc.cloud/api/v2";
 
 
 const provinceSelect =
@@ -1785,123 +3074,209 @@ let cities = [];
 let barangays = [];
 
 
-/*
-  Generic JSON fetch helper.
-*/
-async function fetchJSON(url){
+/* =========================================================
+   API HELPER
+========================================================= */
+
+async function fetchJSON(url) {
 
   const response =
-    await fetch(url, {
-      headers:{
-        "Accept":"application/json"
+    await fetch(
+      url,
+      {
+        headers: {
+          Accept:
+            "application/json"
+        }
       }
-    });
-
-  if(!response.ok){
-    throw new Error(
-      "HTTP " + response.status
     );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "HTTP " +
+      response.status
+    );
+
   }
+
 
   return response.json();
 
 }
 
 
-/*
-  Some API responses can be wrapped
-  in a data property.
+/* =========================================================
+   NORMALIZE API
+========================================================= */
 
-  This makes the UI more tolerant.
-*/
-function normalizeList(payload){
+function normalizeList(
+  payload
+) {
 
-  if(Array.isArray(payload)){
+  if (
+    Array.isArray(payload)
+  ) {
+
     return payload;
+
   }
 
-  if(payload && Array.isArray(payload.data)){
+
+  if (
+    payload &&
+    Array.isArray(
+      payload.data
+    )
+  ) {
+
     return payload.data;
+
   }
 
-  if(payload && Array.isArray(payload.results)){
-    return payload.results;
-  }
 
   return [];
 
 }
 
 
-/*
-  Populate a select.
-*/
-function populateSelect(
-  select,
-  items,
-  placeholder
-){
+function itemCode(
+  item
+) {
 
-  select.innerHTML = "";
-
-  const first =
-    document.createElement("option");
-
-  first.value = "";
-  first.textContent = placeholder;
-
-  select.appendChild(first);
-
-  items.forEach(item => {
-
-    const option =
-      document.createElement("option");
-
-    option.value =
-      item.code || item.name || "";
-
-    option.textContent =
-      item.name || item.code || "";
-
-    option.dataset.name =
-      item.name || "";
-
-    option.dataset.zip =
-      item.zip_code ||
-      item.zip ||
-      "";
-
-    select.appendChild(option);
-
-  });
+  return (
+    item.code ||
+    item.psgc_code ||
+    item.psgcCode ||
+    ""
+  );
 
 }
 
 
-/*
-  Load provinces.
-*/
-async function loadProvinces(){
+function itemName(
+  item
+) {
+
+  return (
+    item.name ||
+    item.label ||
+    ""
+  );
+
+}
+
+
+/* =========================================================
+   SELECT POPULATION
+========================================================= */
+
+function populateSelect(
+  select,
+  items,
+  placeholder
+) {
+
+  select.innerHTML = "";
+
+
+  const option =
+    document.createElement(
+      "option"
+    );
+
+  option.value = "";
+
+  option.textContent =
+    placeholder;
+
+  select.appendChild(
+    option
+  );
+
+
+  items.forEach(
+    item => {
+
+      const opt =
+        document.createElement(
+          "option"
+        );
+
+
+      opt.value =
+        itemCode(item);
+
+
+      opt.textContent =
+        itemName(item);
+
+
+      opt.dataset.name =
+        itemName(item);
+
+
+      opt.dataset.zip =
+        item.zip_code ||
+        item.zip ||
+        "";
+
+
+      select.appendChild(
+        opt
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   LOAD PROVINCES
+========================================================= */
+
+async function loadProvinces() {
+
+  provinceSelect.innerHTML =
+    `
+      <option value="">
+        Loading provinces...
+      </option>
+    `;
+
+  provinceSelect.disabled =
+    true;
+
 
   locationStatus.textContent =
-    "Loading provinces...";
+    "Loading Philippine provinces...";
 
-  try{
+
+  try {
 
     const payload =
       await fetchJSON(
-        PSGC + "/provinces"
+        PSGC_API +
+        "/provinces"
       );
 
+
     provinces =
-      normalizeList(payload);
+      normalizeList(
+        payload
+      );
+
 
     provinces.sort(
       (a,b) =>
-        (a.name || "").localeCompare(
-          b.name || ""
-        )
+        itemName(a)
+          .localeCompare(
+            itemName(b)
+          )
     );
+
 
     populateSelect(
       provinceSelect,
@@ -1909,16 +3284,35 @@ async function loadProvinces(){
       "Select province"
     );
 
+
+    provinceSelect.disabled =
+      false;
+
+
     locationStatus.textContent =
       provinces.length +
       " provinces loaded.";
 
-  }catch(error){
+  }
 
-    console.error(error);
+  catch(error) {
+
+    console.error(
+      error
+    );
+
 
     provinceSelect.innerHTML =
-      '<option value="">Unable to load provinces</option>';
+      `
+        <option value="">
+          Unable to load provinces
+        </option>
+      `;
+
+
+    provinceSelect.disabled =
+      false;
+
 
     locationStatus.textContent =
       "Unable to load Philippine location data. Please refresh and try again.";
@@ -1928,31 +3322,54 @@ async function loadProvinces(){
 }
 
 
-/*
-  Province selected.
-*/
+/* =========================================================
+   PROVINCE CHANGE
+========================================================= */
+
 provinceSelect.addEventListener(
   "change",
-  async function(){
+  async function() {
 
-    citySelect.disabled = true;
-    barangaySelect.disabled = true;
+    const code =
+      this.value;
+
+
+    citySelect.disabled =
+      true;
+
+    barangaySelect.disabled =
+      true;
+
 
     citySelect.innerHTML =
-      '<option value="">Loading cities / municipalities...</option>';
+      `
+        <option value="">
+          Loading cities / municipalities...
+        </option>
+      `;
+
 
     barangaySelect.innerHTML =
-      '<option value="">Select city / municipality first</option>';
+      `
+        <option value="">
+          Select city / municipality first
+        </option>
+      `;
 
-    zipInput.value = "";
 
-    const provinceCode =
-      provinceSelect.value;
+    zipInput.value =
+      "";
 
-    if(!provinceCode){
+
+    if (!code) {
 
       citySelect.innerHTML =
-        '<option value="">Select province first</option>';
+        `
+          <option value="">
+            Select province first
+          </option>
+        `;
+
 
       locationStatus.textContent =
         "Select a province.";
@@ -1960,33 +3377,39 @@ provinceSelect.addEventListener(
       calculate();
 
       return;
+
     }
 
 
-    try{
+    try {
 
       locationStatus.textContent =
         "Loading cities and municipalities...";
 
+
       const payload =
         await fetchJSON(
-          PSGC +
+          PSGC_API +
           "/provinces/" +
-          encodeURIComponent(
-            provinceCode
-          ) +
+          encodeURIComponent(code) +
           "/cities-municipalities"
         );
 
+
       cities =
-        normalizeList(payload);
+        normalizeList(
+          payload
+        );
+
 
       cities.sort(
         (a,b) =>
-          (a.name || "").localeCompare(
-            b.name || ""
-          )
+          itemName(a)
+            .localeCompare(
+              itemName(b)
+            )
       );
+
 
       populateSelect(
         citySelect,
@@ -1994,20 +3417,38 @@ provinceSelect.addEventListener(
         "Select city / municipality"
       );
 
-      citySelect.disabled = false;
+
+      citySelect.disabled =
+        false;
+
 
       locationStatus.textContent =
         cities.length +
         " cities / municipalities available.";
 
+
       calculate();
 
-    }catch(error){
+    }
 
-      console.error(error);
+    catch(error) {
+
+      console.error(
+        error
+      );
+
 
       citySelect.innerHTML =
-        '<option value="">Unable to load locations</option>';
+        `
+          <option value="">
+            Unable to load locations
+          </option>
+        `;
+
+
+      citySelect.disabled =
+        false;
+
 
       locationStatus.textContent =
         "Unable to load cities / municipalities.";
@@ -2018,74 +3459,80 @@ provinceSelect.addEventListener(
 );
 
 
-/*
-  City / municipality selected.
-*/
+/* =========================================================
+   CITY CHANGE
+========================================================= */
+
 citySelect.addEventListener(
   "change",
-  async function(){
+  async function() {
 
-    barangaySelect.disabled = true;
+    const code =
+      this.value;
+
+
+    barangaySelect.disabled =
+      true;
+
 
     barangaySelect.innerHTML =
-      '<option value="">Loading barangays...</option>';
+      `
+        <option value="">
+          Loading barangays...
+        </option>
+      `;
 
-    zipInput.value = "";
 
-    const cityCode =
-      citySelect.value;
+    zipInput.value =
+      "";
 
-    if(!cityCode){
+
+    if (!code) {
 
       barangaySelect.innerHTML =
-        '<option value="">Select city / municipality first</option>';
+        `
+          <option value="">
+            Select city / municipality first
+          </option>
+        `;
+
 
       calculate();
 
       return;
+
     }
 
 
-    /*
-      Automatically use ZIP code
-      returned by PSGC Cloud where available.
-    */
-
-    const selectedOption =
-      citySelect.options[
-        citySelect.selectedIndex
-      ];
-
-    const cityZip =
-      selectedOption?.dataset?.zip || "";
-
-    if(cityZip){
-      zipInput.value = cityZip;
-    }
-
-
-    try{
+    try {
 
       locationStatus.textContent =
         "Loading barangays...";
 
+
       const payload =
         await fetchJSON(
-          PSGC +
+          PSGC_API +
           "/cities-municipalities/" +
-          encodeURIComponent(cityCode) +
+          encodeURIComponent(code) +
           "/barangays"
         );
 
+
       barangays =
-        normalizeList(payload);
+        normalizeList(
+          payload
+        );
+
 
       barangays.sort(
         (a,b) =>
-          (a.name || "").localeCompare(
-            b.name || ""
-          )
+          itemName(a)
+            .localeCompare(
+              itemName(b)
+            )
       );
+
 
       populateSelect(
         barangaySelect,
@@ -2093,20 +3540,38 @@ citySelect.addEventListener(
         "Select barangay"
       );
 
-      barangaySelect.disabled = false;
+
+      barangaySelect.disabled =
+        false;
+
 
       locationStatus.textContent =
         barangays.length +
         " barangays available.";
 
+
       calculate();
 
-    }catch(error){
+    }
 
-      console.error(error);
+    catch(error) {
+
+      console.error(
+        error
+      );
+
 
       barangaySelect.innerHTML =
-        '<option value="">Unable to load barangays</option>';
+        `
+          <option value="">
+            Unable to load barangays
+          </option>
+        `;
+
+
+      barangaySelect.disabled =
+        false;
+
 
       locationStatus.textContent =
         "Unable to load barangays.";
@@ -2117,33 +3582,46 @@ citySelect.addEventListener(
 );
 
 
-/*
-  Barangay selected.
-*/
+/* =========================================================
+   BARANGAY CHANGE
+========================================================= */
+
 barangaySelect.addEventListener(
   "change",
-  function(){
+  function() {
 
     const province =
-      provinceSelect.options[
-        provinceSelect.selectedIndex
-      ]?.dataset?.name || "";
+      provinceSelect
+        .options[
+          provinceSelect.selectedIndex
+        ]
+        ?.dataset
+        ?.name || "";
+
 
     const city =
-      citySelect.options[
-        citySelect.selectedIndex
-      ]?.dataset?.name || "";
+      citySelect
+        .options[
+          citySelect.selectedIndex
+        ]
+        ?.dataset
+        ?.name || "";
+
 
     const barangay =
-      barangaySelect.options[
-        barangaySelect.selectedIndex
-      ]?.dataset?.name || "";
+      barangaySelect
+        .options[
+          barangaySelect.selectedIndex
+        ]
+        ?.dataset
+        ?.name || "";
 
-    if(
+
+    if (
       province &&
       city &&
       barangay
-    ){
+    ) {
 
       locationStatus.textContent =
         barangay +
@@ -2154,23 +3632,6 @@ barangaySelect.addEventListener(
 
     }
 
-    calculate();
-
-  }
-);
-
-
-/*
-  ZIP can still be manually corrected.
-*/
-zipInput.addEventListener(
-  "input",
-  function(){
-
-    this.value =
-      this.value
-        .replace(/\D/g,"")
-        .slice(0,4);
 
     calculate();
 
@@ -2179,34 +3640,54 @@ zipInput.addEventListener(
 
 
 /* =========================================================
-   TRANSACTION CALCULATOR
+   ZIP
+========================================================= */
+
+zipInput.addEventListener(
+  "input",
+  function() {
+
+    this.value =
+      this.value
+        .replace(/\D/g, "")
+        .slice(0,4);
+
+
+    calculate();
+
+  }
+);
+
+
+/* =========================================================
+   EXPENSE DEFINITIONS
 ========================================================= */
 
 const expenses = [
 
   {
-    key:"cgt",
-    name:"Capital Gains Tax"
+    key: "cgt",
+    name: "Capital Gains Tax"
   },
 
   {
-    key:"dst",
-    name:"Documentary Stamp Tax"
+    key: "dst",
+    name: "Documentary Stamp Tax"
   },
 
   {
-    key:"transfer",
-    name:"Transfer Tax"
+    key: "transfer",
+    name: "Transfer Tax"
   },
 
   {
-    key:"registration",
-    name:"Registration / other"
+    key: "registration",
+    name: "Registration / other"
   },
 
   {
-    key:"commission",
-    name:"Broker Commission"
+    key: "commission",
+    name: "Broker Commission"
   }
 
 ];
@@ -2214,36 +3695,68 @@ const expenses = [
 
 let payers = {
 
-  cgt:"Seller",
-  dst:"Buyer",
-  transfer:"Buyer",
-  registration:"Buyer",
-  commission:"Seller"
+  cgt: "Seller",
+
+  dst: "Buyer",
+
+  transfer: "Buyer",
+
+  registration: "Buyer",
+
+  commission: "Seller"
 
 };
 
 
-let current = {};
+let current = {
+
+  price: 0,
+
+  fmv: 0,
+
+  zonal: 0,
+
+  base: 0,
+
+  cgt: 0,
+
+  dst: 0,
+
+  transfer: 0,
+
+  registration: 0,
+
+  commission: 0
+
+};
 
 
-/*
-  Build payer rows.
-*/
-function buildAllocation(){
+/* =========================================================
+   ALLOCATION
+========================================================= */
 
-  const box =
+function buildAllocation() {
+
+  const container =
     $("allocationRows");
 
-  box.innerHTML = "";
+
+  container.innerHTML =
+    "";
+
 
   expenses.forEach(
     expense => {
 
       const row =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       row.className =
-        "allocation";
+        "allocation-row";
+
 
       row.innerHTML = `
 
@@ -2258,43 +3771,58 @@ function buildAllocation(){
           ₱0
         </div>
 
-        <div>
+        <select
+          data-key="${expense.key}"
+        >
 
-          <select
-            data-key="${expense.key}"
-          >
+          <option value="Seller">
+            Seller
+          </option>
 
-            <option>Seller</option>
-            <option>Buyer</option>
-            <option>Split 50/50</option>
+          <option value="Buyer">
+            Buyer
+          </option>
 
-          </select>
+          <option value="Split 50/50">
+            Split 50/50
+          </option>
 
-        </div>
+        </select>
 
       `;
 
 
       const select =
-        row.querySelector("select");
+        row.querySelector(
+          "select"
+        );
+
 
       select.value =
-        payers[expense.key];
+        payers[
+          expense.key
+        ];
 
 
-      select.onchange =
-        function(){
+      select.addEventListener(
+        "change",
+        function() {
 
           payers[
             expense.key
-          ] = this.value;
+          ] =
+            this.value;
+
 
           calculate();
 
-        };
+        }
+      );
 
 
-      box.appendChild(row);
+      container.appendChild(
+        row
+      );
 
     }
   );
@@ -2302,22 +3830,122 @@ function buildAllocation(){
 }
 
 
-/*
-  Calculate transaction.
-*/
-function calculate(){
+/* =========================================================
+   LOCATION DATA
+========================================================= */
+
+function getLocationData() {
+
+  const province =
+    provinceSelect
+      .options[
+        provinceSelect.selectedIndex
+      ]
+      ?.dataset
+      ?.name || "";
+
+
+  const city =
+    citySelect
+      .options[
+        citySelect.selectedIndex
+      ]
+      ?.dataset
+      ?.name || "";
+
+
+  const barangay =
+    barangaySelect
+      .options[
+        barangaySelect.selectedIndex
+      ]
+      ?.dataset
+      ?.name || "";
+
+
+  const zip =
+    zipInput.value.trim();
+
+
+  return {
+
+    province,
+
+    city,
+
+    barangay,
+
+    zip
+
+  };
+
+}
+
+
+function formatLocation() {
+
+  const location =
+    getLocationData();
+
+
+  const parts = [
+
+    location.barangay,
+
+    location.city,
+
+    location.province
+
+  ].filter(Boolean);
+
+
+  if (
+    location.zip
+  ) {
+
+    parts.push(
+      "ZIP " +
+      location.zip
+    );
+
+  }
+
+
+  return parts.length
+    ? parts.join(", ")
+    : "Not specified";
+
+}
+
+
+/* =========================================================
+   CALCULATE
+========================================================= */
+
+function calculate() {
 
   const price =
-    Number($("price").value) || 0;
+    Number(
+      $("price").value
+    ) || 0;
+
 
   const fmv =
-    Number($("fmv").value) || 0;
+    Number(
+      $("fmv").value
+    ) || 0;
+
 
   const zonal =
-    Number($("zonal").value) || 0;
+    Number(
+      $("zonal").value
+    ) || 0;
+
 
   const commissionRate =
-    Number($("commissionRate").value) || 0;
+    Number(
+      $("commissionRate").value
+    ) || 0;
 
 
   const base =
@@ -2331,20 +3959,21 @@ function calculate(){
   const values = {
 
     cgt:
-      base * 0.06,
+      base * .06,
 
     dst:
-      base * 0.015,
+      base * .015,
 
     transfer:
-      base * 0.005,
+      base * .005,
 
     registration:
-      base * 0.0025,
+      base * .0025,
 
     commission:
       price *
-      (commissionRate / 100)
+      commissionRate /
+      100
 
   };
 
@@ -2352,48 +3981,73 @@ function calculate(){
   current = {
 
     price,
+
     fmv,
+
     zonal,
+
     base,
+
     ...values
 
   };
 
 
-  let seller = 0;
-  let buyer = 0;
+  let seller =
+    0;
+
+  let buyer =
+    0;
 
 
   expenses.forEach(
     expense => {
 
-      const value =
-        values[expense.key];
+      const amount =
+        values[
+          expense.key
+        ];
 
 
-      $("a_" + expense.key)
-        .textContent =
-        money(value);
+      const amountElement =
+        $("a_" + expense.key);
 
 
-      if(
-        payers[expense.key] ===
-        "Seller"
-      ){
+      if (amountElement) {
 
-        seller += value;
+        amountElement.textContent =
+          money(amount);
 
-      }else if(
-        payers[expense.key] ===
-        "Buyer"
-      ){
+      }
 
-        buyer += value;
 
-      }else{
+      if (
+        payers[
+          expense.key
+        ] === "Seller"
+      ) {
 
-        seller += value / 2;
-        buyer += value / 2;
+        seller += amount;
+
+      }
+
+      else if (
+        payers[
+          expense.key
+        ] === "Buyer"
+      ) {
+
+        buyer += amount;
+
+      }
+
+      else {
+
+        seller +=
+          amount / 2;
+
+        buyer +=
+          amount / 2;
 
       }
 
@@ -2404,36 +4058,53 @@ function calculate(){
   const total =
     seller + buyer;
 
+
   const net =
     price - seller;
 
 
-  const summaryValues = [
-
-    ["sprice",price],
-    ["sbase",base],
-    ["sseller",seller],
-    ["sbuyer",buyer],
-    ["snet",net],
-
-    ["cgt",values.cgt],
-    ["dst",values.dst],
-    ["transfer",values.transfer],
-    ["registration",values.registration],
-    ["commission",values.commission],
-    ["total",total]
-
-  ];
+  $("sprice").textContent =
+    money(price);
 
 
-  summaryValues.forEach(
-    ([id,value]) => {
+  $("sbase").textContent =
+    money(base);
 
-      $(id).textContent =
-        money(value);
 
-    }
-  );
+  $("sseller").textContent =
+    money(seller);
+
+
+  $("sbuyer").textContent =
+    money(buyer);
+
+
+  $("snet").textContent =
+    money(net);
+
+
+  $("cgt").textContent =
+    money(values.cgt);
+
+
+  $("dst").textContent =
+    money(values.dst);
+
+
+  $("transfer").textContent =
+    money(values.transfer);
+
+
+  $("registration").textContent =
+    money(values.registration);
+
+
+  $("commission").textContent =
+    money(values.commission);
+
+
+  $("total").textContent =
+    money(total);
 
 
   updateReport(
@@ -2454,81 +4125,6 @@ function calculate(){
 
 
 /* =========================================================
-   LOCATION REPORT
-========================================================= */
-
-function getLocationData(){
-
-  const province =
-    provinceSelect
-      .options[
-        provinceSelect.selectedIndex
-      ]?.dataset?.name || "";
-
-
-  const city =
-    citySelect
-      .options[
-        citySelect.selectedIndex
-      ]?.dataset?.name || "";
-
-
-  const barangay =
-    barangaySelect
-      .options[
-        barangaySelect.selectedIndex
-      ]?.dataset?.name || "";
-
-
-  const zip =
-    zipInput.value.trim();
-
-
-  return {
-
-    province,
-    city,
-    barangay,
-    zip
-
-  };
-
-}
-
-
-function formatLocation(){
-
-  const location =
-    getLocationData();
-
-
-  const parts = [
-
-    location.barangay,
-    location.city,
-    location.province
-
-  ].filter(Boolean);
-
-
-  if(location.zip){
-
-    parts.push(
-      "ZIP " +
-      location.zip
-    );
-
-  }
-
-
-  return parts.length
-    ? parts.join(", ")
-    : "Not specified";
-
-}
-
-
-/* =========================================================
    REPORT
 ========================================================= */
 
@@ -2536,21 +4132,22 @@ function updateReport(
   seller,
   buyer,
   net
-){
+) {
 
   const location =
     getLocationData();
 
 
   $("rdate").textContent =
-    new Date().toLocaleDateString(
-      "en-PH",
-      {
-        year:"numeric",
-        month:"long",
-        day:"numeric"
-      }
-    );
+    new Date()
+      .toLocaleDateString(
+        "en-PH",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      );
 
 
   $("rlocation").textContent =
@@ -2587,7 +4184,9 @@ function updateReport(
 
   $("rlot").textContent =
     (
-      Number($("lot").value) || 0
+      Number(
+        $("lot").value
+      ) || 0
     ).toLocaleString(
       "en-PH"
     ) +
@@ -2619,47 +4218,77 @@ function updateReport(
 
 
   $("rcommission").textContent =
-    money(current.commission);
+    money(
+      current.commission
+    );
 
 
   $("rcommission2").textContent =
-    money(current.commission);
+    money(
+      current.commission
+    );
 
 
   $("rcgt").textContent =
-    money(current.cgt);
+    money(
+      current.cgt
+    );
 
 
   $("rdst").textContent =
-    money(current.dst);
+    money(
+      current.dst
+    );
 
 
   $("rtransfer").textContent =
-    money(current.transfer);
+    money(
+      current.transfer
+    );
 
 
   $("rregistration").textContent =
-    money(current.registration);
+    money(
+      current.registration
+    );
 
 
   $("rnet").textContent =
     money(net);
 
 
-  $("rid").textContent =
-    "PTW-" +
-    Date.now()
-      .toString()
-      .slice(-8);
+  /*
+    Generate a transaction ID only
+    for the current report.
+  */
+
+  if (
+    !$("rid").dataset.created
+  ) {
+
+    $("rid").textContent =
+      "PTW-" +
+      Math.floor(
+        10000000 +
+        Math.random() *
+        90000000
+      );
+
+    $("rid").dataset.created =
+      "true";
+
+  }
 
 }
 
 
 /* =========================================================
-   CHART
+   GRAPH
 ========================================================= */
 
-function updateChart(values){
+function updateChart(
+  values
+) {
 
   const max =
     Math.max(
@@ -2672,39 +4301,46 @@ function updateChart(values){
     );
 
 
-  const keys = [
+  const ids = [
 
-    "cgt",
-    "dst",
-    "transfer",
-    "registration",
-    "commission"
+    ["b1", values.cgt],
+
+    ["b2", values.dst],
+
+    ["b3", values.transfer],
+
+    ["b4", values.registration],
+
+    ["b5", values.commission]
 
   ];
 
 
-  keys.forEach(
-    (key,index) => {
+  ids.forEach(
+    ([id,value]) => {
 
       const bar =
-        $("b" + (index + 1));
+        $(id);
 
 
-      const value =
-        values[key];
+      if (!value) {
 
+        bar.style.height =
+          "0%";
 
-      const height =
-        value === 0
-          ? 0
-          : Math.max(
-              value / max * 88,
-              7
-            );
+        return;
+
+      }
 
 
       bar.style.height =
-        height + "%";
+        Math.max(
+          7,
+          value /
+          max *
+          88
+        ) +
+        "%";
 
     }
   );
@@ -2716,7 +4352,7 @@ function updateChart(values){
    CHECKLIST
 ========================================================= */
 
-function updateChecklist(){
+function updateChecklist() {
 
   const boxes =
     [
@@ -2726,17 +4362,17 @@ function updateChecklist(){
     ];
 
 
-  const done =
+  const completed =
     boxes.filter(
-      checkbox =>
-        checkbox.checked
+      box =>
+        box.checked
     ).length;
 
 
   const percent =
     boxes.length
       ? Math.round(
-          done /
+          completed /
           boxes.length *
           100
         )
@@ -2745,17 +4381,20 @@ function updateChecklist(){
 
   $("checkCount")
     .textContent =
-    percent + "%";
+    percent +
+    "%";
 
 
   $("progress")
     .style.width =
-    percent + "%";
+    percent +
+    "%";
 
 
   $("rcheck")
     .textContent =
-    percent + "%";
+    percent +
+    "%";
 
 }
 
@@ -2764,12 +4403,14 @@ function updateChecklist(){
    RESET
 ========================================================= */
 
-function resetWorkspace(){
+function resetWorkspace() {
 
   /*
     IMPORTANT:
-    Reset means a NEW EMPTY TRANSACTION.
-    It does NOT restore demo values.
+
+    Reset does NOT restore sample data.
+
+    Everything becomes zero/blank.
   */
 
 
@@ -2782,27 +4423,27 @@ function resetWorkspace(){
 
 
   $("price").value =
-    0;
+    "0";
 
 
   $("fmv").value =
-    0;
+    "0";
 
 
   $("zonal").value =
-    0;
+    "0";
 
 
   $("acq").value =
-    0;
+    "0";
 
 
   $("lot").value =
-    0;
+    "0";
 
 
   $("commissionRate").value =
-    0;
+    "0";
 
 
   provinceSelect.value =
@@ -2810,14 +4451,24 @@ function resetWorkspace(){
 
 
   citySelect.innerHTML =
-    '<option value="">Select province first</option>';
+    `
+      <option value="">
+        Select province first
+      </option>
+    `;
+
 
   citySelect.disabled =
     true;
 
 
   barangaySelect.innerHTML =
-    '<option value="">Select city / municipality first</option>';
+    `
+      <option value="">
+        Select city / municipality first
+      </option>
+    `;
+
 
   barangaySelect.disabled =
     true;
@@ -2836,20 +4487,32 @@ function resetWorkspace(){
       ".check input"
     )
     .forEach(
-      checkbox =>
-        checkbox.checked = false
+      checkbox => {
+
+        checkbox.checked =
+          false;
+
+      }
     );
 
 
   payers = {
 
-    cgt:"Seller",
-    dst:"Buyer",
-    transfer:"Buyer",
-    registration:"Buyer",
-    commission:"Seller"
+    cgt: "Seller",
+
+    dst: "Buyer",
+
+    transfer: "Buyer",
+
+    registration: "Buyer",
+
+    commission: "Seller"
 
   };
+
+
+  $("rid").dataset.created =
+    "";
 
 
   buildAllocation();
@@ -2860,8 +4523,8 @@ function resetWorkspace(){
 
   $("workspace")
     .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
+      behavior: "smooth",
+      block: "start"
     });
 
 }
@@ -2871,31 +4534,37 @@ function resetWorkspace(){
    BUTTONS
 ========================================================= */
 
-$("calc").onclick =
-  calculate;
+$("calc").addEventListener(
+  "click",
+  calculate
+);
 
 
-$("reset").onclick =
-  resetWorkspace;
+$("reset").addEventListener(
+  "click",
+  resetWorkspace
+);
 
 
-$("print").onclick =
-function(){
+$("print").addEventListener(
+  "click",
+  () => {
 
-  calculate();
+    calculate();
 
-  window.print();
+    window.print();
 
-};
+  }
+);
 
 
 /* =========================================================
-   LIVE CALCULATION
+   LIVE INPUTS
 ========================================================= */
 
 document
   .querySelectorAll(
-    ".field input, .field select"
+    ".field input:not(#zip), .field select"
   )
   .forEach(
     element => {
@@ -2905,6 +4574,7 @@ document
         calculate
       );
 
+
       element.addEventListener(
         "change",
         calculate
@@ -2913,6 +4583,10 @@ document
     }
   );
 
+
+/* =========================================================
+   CHECKBOXES
+========================================================= */
 
 document
   .querySelectorAll(
@@ -2931,7 +4605,7 @@ document
 
 
 /* =========================================================
-   INITIALIZE
+   INITIALIZATION
 ========================================================= */
 
 buildAllocation();
