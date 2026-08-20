@@ -1,0 +1,139 @@
+name: Fix real estate mobile chart
+
+on:
+  push:
+    paths:
+      - .github/workflows/fix-realestate-mobile-chart.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message == 'Temporary workflow to patch mobile real estate chart'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch only Cost Visualization mobile CSS and bar-height JS
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('realestate/index.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+
+          css_marker = '''/* =========================================================
+   CHECKLIST
+   ========================================================= */'''
+
+          mobile_css = '''/* =========================================================
+   CHART — MOBILE / IN-APP BROWSERS
+   ========================================================= */
+
+@media(max-width:600px){
+
+  .chart{
+    height:185px;
+    gap:8px;
+    padding:12px 0 0;
+    overflow:visible;
+  }
+
+  .bar-wrap{
+    min-width:0;
+    gap:5px;
+  }
+
+  .bar{
+    width:min(38px,72%);
+  }
+
+  .bar-value,
+  .bar-label{
+    font-size:9px;
+    white-space:nowrap;
+  }
+
+}
+
+@media(max-width:380px){
+
+  .chart{
+    height:170px;
+    gap:5px;
+  }
+
+  .bar{
+    width:min(30px,68%);
+  }
+
+  .bar-value,
+  .bar-label{
+    font-size:8px;
+  }
+
+}
+
+'''
+
+          if 'CHART — MOBILE / IN-APP BROWSERS' in text:
+              raise SystemExit('Mobile chart CSS already present; refusing duplicate patch.')
+          if css_marker not in text:
+              raise SystemExit('Checklist CSS marker not found; refusing patch.')
+
+          text = text.replace(css_marker, mobile_css + css_marker, 1)
+
+          pattern = re.compile(
+              r'''    const height =\n      value === 0\n        \? 3\n        : Math\.max\(\n            8,\n            \(value / max\) \* 190\n          \);'''
+          )
+
+          replacement = '''    const availableBarHeight =
+      Math.max(
+        70,
+        chart.clientHeight - 65
+      );
+
+
+    const height =
+      value === 0
+        ? 3
+        : Math.max(
+            8,
+            (value / max) *
+            availableBarHeight
+          );'''
+
+          text, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one chart height block; replaced {count}. Refusing patch.')
+
+          if text == original:
+              raise SystemExit('No changes produced; refusing empty commit.')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Verify diff
+        shell: bash
+        run: |
+          git diff --check
+          echo '--- PATCH DIFF ---'
+          git diff -- realestate/index.html
+          test "$(git diff --name-only | wc -l)" -eq 1
+          test "$(git diff --name-only)" = "realestate/index.html"
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          git config user.name "Joshua Dela Cruz Workspace Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add realestate/index.html
+          git commit -m "Optimize real estate cost visualization for mobile"
+          git push origin HEAD:main
