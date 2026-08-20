@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Joshua Dela Cruz — Workspaces dashboard for practical technology solutions.">
+<title>Workspaces | Joshua Dela Cruz</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--soft:#eef2f7;--text:#101828;--muted:#667085;--line:#e4e7ec;--primary:#2563eb;--primary2:#7c3aed;--good:#16a34a;--shadow:0 12px 40px rgba(16,24,40,.07);--r:20px}html.dark{--bg:#080b12;--card:#111827;--soft:#182131;--text:#f8fafc;--muted:#94a3b8;--line:#263244;--primary:#60a5fa;--primary2:#a78bfa;--good:#4ade80;--shadow:0 16px 50px rgba(0,0,0,.3)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 Inter,Segoe UI,system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .18s,color .18s}a{color:inherit;text-decoration:none}button{font:inherit}.app{min-height:100vh}.sidebar{position:fixed;z-index:10;inset:0 auto 0 0;width:245px;padding:24px 15px;background:color-mix(in srgb,var(--card) 82%,transparent);backdrop-filter:blur(18px);border-right:1px solid var(--line)}.brand{display:flex;align-items:center;gap:11px;padding:5px 9px 28px}.logo{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;color:#fff;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));box-shadow:0 8px 25px #2563eb35}.brand b{display:block;font-size:13px}.brand small{color:var(--muted);font-size:10px}.nav-label{padding:12px 10px 6px;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.nav a{display:block;padding:10px;border-radius:11px;color:var(--muted);font-weight:650;font-size:12px;transition:.18s}.nav a:hover,.nav a.active{background:var(--soft);color:var(--primary);transform:translateX(2px)}.status{position:absolute;bottom:22px;left:15px;right:15px;padding:11px;border:1px solid var(--line);border-radius:13px;background:var(--soft);color:var(--muted);font-size:10px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--good);margin-right:7px;box-shadow:0 0 0 4px #16a34a18}main{margin-left:245px;padding:24px 32px 55px;max-width:1500px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;color:var(--muted);font-size:11px}.actions{display:flex;gap:7px}.icon{width:37px;height:37px;border:1px solid var(--line);border-radius:11px;background:var(--card);color:var(--text);cursor:pointer}.mobile{display:none}.hero{padding:34px;border:1px solid var(--line);border-radius:25px;background:radial-gradient(circle at 90% 15%,#2563eb1c,transparent 30%),var(--card);box-shadow:var(--shadow)}.hero h1{font-size:clamp(36px,5vw,58px);line-height:1.02;letter-spacing:-.05em;margin:17px 0 0}.hero p{max-width:720px;color:var(--muted);font-size:14px;margin:17px 0 0}.pill{display:inline-flex;padding:6px 10px;border-radius:99px;background:#2563eb14;color:var(--primary);font-size:9px;font-weight:800}.head{display:flex;justify-content:space-between;align-items:end;margin:34px 0 14px}.head h2{font-size:24px;letter-spacing:-.03em;margin:0}.head p{color:var(--muted);font-size:11px;margin:4px 0 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow)}.workspace{padding:20px;display:flex;flex-direction:column;min-height:260px}.workspace.featured{grid-column:span 2;background:linear-gradient(135deg,var(--card),var(--soft))}.workspaceTop{display:flex;justify-content:space-between;gap:14px;align-items:start}.workspaceIcon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:var(--soft);font-size:22px}.state{display:inline-flex;padding:5px 8px;border-radius:99px;font-size:8px;font-weight:800;background:#16a34a14;color:var(--good)}.workspace h3{font-size:20px;letter-spacing:-.025em;line-height:1.2;margin:18px 0 7px}.workspace p{font-size:11px;color:var(--muted);margin:0}.tags{display:flex;flex-wrap:wrap;gap:6px;margin:15px 0}.tag{padding:5px 8px;border-radius:8px;background:var(--soft);color:var(--muted);font-size:8px;font-weight:750}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:11px;font-size:10px;font-weight:800;transition:transform .18s}.btn:hover{transform:translateY(-2px)}.primary{color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary2));box-shadow:0 10px 25px #2563eb28}.secondary{border:1px solid var(--line);background:var(--card)}.empty{border-style:dashed;box-shadow:none}.empty .state{background:var(--soft);color:var(--muted)}.empty h3{color:var(--muted)}.note{margin-top:28px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:var(--soft);color:var(--muted);font-size:11px}.note b{color:var(--text)}footer{display:flex;justify-content:space-between;margin-top:45px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:9px}@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.workspace.featured{grid-column:span 2}}@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}.mobile{display:block}main{margin:0;padding:17px 14px 40px}.hero{padding:24px}.hero h1{font-size:38px}.grid{grid-template-columns:1fr}.workspace.featured{grid-column:auto}.workspace{min-height:0}footer{flex-direction:column;gap:5px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="../"><div class="logo">JD</div><div><b>Joshua Dela Cruz</b><small>Technology Portfolio</small></div></a>
+  <nav class="nav">
+    <div class="nav-label">Navigate</div>
+    <a href="../">⌂ &nbsp; Portfolio</a>
+    <a class="active" href="./">▦ &nbsp; Workspaces</a>
+    <div class="nav-label">Categories</div>
+    <a href="#real-estate">⌂ &nbsp; Real Estate</a>
+    <a href="#finance">₱ &nbsp; Finance</a>
+    <a href="#pi-network">π &nbsp; Pi Network</a>
+    <a href="#it-cloud">☁ &nbsp; IT / Cloud / Security</a>
+  </nav>
+  <div class="status"><span class="dot"></span>Building practical solutions</div>
+</aside>
+<main>
+  <div class="top"><span>Portfolio / <b style="color:var(--text)">Workspaces</b></span><div class="actions"><button class="icon mobile" id="menu">☰</button><button class="icon" id="theme" title="Toggle light/dark mode">☾</button></div></div>
+
+  <section class="hero">
+    <span class="pill">WORKSPACES DASHBOARD</span>
+    <h1>Practical tools,<br>organized by niche.</h1>
+    <p>A focused directory of applications and technical workspaces I build for real-world problems. Each workspace is separated by domain so the main portfolio stays simple and easy to scan.</p>
+  </section>
+
+  <section id="real-estate">
+    <div class="head"><div><h2>Real Estate</h2><p>Property transaction and broker workflow tools.</p></div></div>
+    <div class="grid">
+      <article class="card workspace featured">
+        <div class="workspaceTop"><div class="workspaceIcon">🏠</div><span class="state">ACTIVE DEMO</span></div>
+        <h3>PH Property Transaction Workspace</h3>
+        <p>Preliminary Philippine property transaction estimates with buyer/seller expense allocation, GPS-assisted location selection, saved transactions, checklists, analytics and clean client-ready reports.</p>
+        <div class="tags"><span class="tag">PH Real Estate</span><span class="tag">GPS / PSGC</span><span class="tag">Tax Planning</span><span class="tag">PDF Report</span><span class="tag">Saved Deals</span></div>
+        <div class="buttons"><a class="btn primary" href="../realestate/">Open Workspace →</a><a class="btn secondary" href="../">Back to Portfolio</a></div>
+      </article>
+      <article class="card workspace empty">
+        <div class="workspaceTop"><div class="workspaceIcon">＋</div><span class="state">ROADMAP</span></div>
+        <h3>More Real Estate Tools</h3>
+        <p>Future property, valuation and transaction utilities can live here without crowding the main portfolio.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="finance">
+    <div class="head"><div><h2>Finance</h2><p>Personal finance and planning workspaces.</p></div></div>
+    <div class="grid">
+      <article class="card workspace empty"><div class="workspaceTop"><div class="workspaceIcon">₱</div><span class="state">EXPANDING</span></div><h3>Finance Workspaces</h3><p>Finance-focused applications will be organized in this section as they are added to the public portfolio.</p></article>
+    </div>
+  </section>
+
+  <section id="pi-network">
+    <div class="head"><div><h2>Pi Network</h2><p>Mini apps and experiments built for the Pi ecosystem.</p></div></div>
+    <div class="grid">
+      <article class="card workspace empty"><div class="workspaceTop"><div class="workspaceIcon">π</div><span class="state">EXPANDING</span></div><h3>Pi Network Apps</h3><p>Pi projects can be surfaced here separately from professional and business workspaces.</p></article>
+    </div>
+  </section>
+
+  <section id="it-cloud">
+    <div class="head"><div><h2>IT / Cloud / Security</h2><p>Technical labs, utilities and architecture work.</p></div></div>
+    <div class="grid">
+      <article class="card workspace empty"><div class="workspaceTop"><div class="workspaceIcon">🛡️</div><span class="state">ROADMAP</span></div><h3>Technical Workspaces</h3><p>Future IAM, cloud, support and cybersecurity tools can be grouped here as the portfolio grows.</p></article>
+    </div>
+  </section>
+
+  <div class="note"><b>Why a separate dashboard?</b> The landing page can stay focused on who I am, my experience and featured work, while this page becomes the organized directory for applications across different niches.</div>
+
+  <footer><span>© 2026 Joshua Dela Cruz</span><span>Technology Portfolio · Workspaces</span></footer>
+</main>
+</div>
+<script>
+const root=document.documentElement;const saved=localStorage.getItem('portfolio-theme');if(saved==='dark')root.classList.add('dark');const theme=document.getElementById('theme');function syncTheme(){theme.textContent=root.classList.contains('dark')?'☀':'☾'}syncTheme();theme.addEventListener('click',()=>{root.classList.toggle('dark');localStorage.setItem('portfolio-theme',root.classList.contains('dark')?'dark':'light');syncTheme()});const menu=document.getElementById('menu');const sidebar=document.getElementById('sidebar');menu?.addEventListener('click',()=>sidebar.classList.toggle('open'));document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>sidebar.classList.remove('open')));
+</script>
+</body>
+</html>
