@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   patch:
-    if: github.event.head_commit.message == 'Temporary workflow to patch mobile real estate chart'
+    if: github.event.head_commit.message == 'Run corrected mobile chart patch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,7 +23,6 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
 
           path = Path('realestate/index.html')
           text = path.read_text(encoding='utf-8')
@@ -83,36 +82,45 @@ jobs:
 
 '''
 
-          if 'CHART — MOBILE / IN-APP BROWSERS' in text:
-              raise SystemExit('Mobile chart CSS already present; refusing duplicate patch.')
-          if css_marker not in text:
-              raise SystemExit('Checklist CSS marker not found; refusing patch.')
+          old = '''    const height =
+      value === 0
+        ? 3
+        : Math.max(
+            8,
+            (
+              value /
+              max
+            ) *
+            190
+          );'''
 
-          text = text.replace(css_marker, mobile_css + css_marker, 1)
-
-          pattern = re.compile(
-              r'''    const height =\n      value === 0\n        \? 3\n        : Math\.max\(\n            8,\n            \(value / max\) \* 190\n          \);'''
-          )
-
-          replacement = '''    const availableBarHeight =
+          new = '''    const availableBarHeight =
       Math.max(
         70,
         chart.clientHeight - 65
       );
-
 
     const height =
       value === 0
         ? 3
         : Math.max(
             8,
-            (value / max) *
+            (
+              value /
+              max
+            ) *
             availableBarHeight
           );'''
 
-          text, count = pattern.subn(replacement, text, count=1)
-          if count != 1:
-              raise SystemExit(f'Expected one chart height block; replaced {count}. Refusing patch.')
+          if 'CHART — MOBILE / IN-APP BROWSERS' in text:
+              raise SystemExit('Mobile chart CSS already present; refusing duplicate patch.')
+          if css_marker not in text:
+              raise SystemExit('Checklist CSS marker not found; refusing patch.')
+          if text.count(old) != 1:
+              raise SystemExit(f'Expected one chart height block; found {text.count(old)}. Refusing patch.')
+
+          text = text.replace(css_marker, mobile_css + css_marker, 1)
+          text = text.replace(old, new, 1)
 
           if text == original:
               raise SystemExit('No changes produced; refusing empty commit.')
