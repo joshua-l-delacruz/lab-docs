@@ -7,6 +7,7 @@ import {
   MAX_REQUEST_BYTES,
   PLAN_LIMITS,
   API_SECURITY_HEADERS,
+  HOME_SECURITY_HEADERS,
   SECURITY_HEADERS,
   hasSameOrigin,
   limitsFor,
@@ -113,4 +114,26 @@ test("uses a locked-down CSP for JSON API responses", () => {
   );
   assert.doesNotMatch(API_SECURITY_HEADERS["content-security-policy"], /unsafe-inline|data:|https:/);
   assert.equal(SECURITY_HEADERS["strict-transport-security"], "max-age=63072000; includeSubDomains");
+});
+
+
+test("homepage uses external assets and a strict CSP", async () => {
+  const homepage = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  assert.match(homepage, /href="\/assets\/css\/home\.css\?v=1"/);
+  assert.match(homepage, /src="\/assets\/js\/home\.js\?v=1"/);
+  assert.doesNotMatch(homepage, /<style[\s>]/i);
+  assert.doesNotMatch(homepage, /\sstyle=/i);
+  assert.doesNotMatch(homepage, /<script(?![^>]*\bsrc=)[^>]*>/i);
+  assert.match(HOME_SECURITY_HEADERS["content-security-policy"], /script-src 'self'/);
+  assert.match(HOME_SECURITY_HEADERS["content-security-policy"], /style-src 'self'/);
+  assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
+});
+
+test("strict homepage policy can be applied without changing other pages", () => {
+  const secured = secureResponse(new Response("home"), HOME_SECURITY_HEADERS);
+  assert.equal(
+    secured.headers.get("content-security-policy"),
+    HOME_SECURITY_HEADERS["content-security-policy"]
+  );
+  assert.match(SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
 });

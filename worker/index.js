@@ -32,6 +32,26 @@ const SECURITY_HEADERS = {
   "x-permitted-cross-domain-policies": "none"
 };
 
+const HOME_SECURITY_HEADERS = {
+  ...SECURITY_HEADERS,
+  "content-security-policy": [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "script-src 'self'",
+    "style-src 'self'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self'",
+    "frame-src 'none'",
+    "worker-src 'self'",
+    "manifest-src 'self'",
+    "upgrade-insecure-requests"
+  ].join("; ")
+};
+
 const API_SECURITY_HEADERS = {
   ...SECURITY_HEADERS,
   "content-security-policy": "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'none'"
@@ -63,7 +83,11 @@ export default {
 
     if (!url.pathname.startsWith("/api/v2/")) {
       const assetResponse = await env.ASSETS.fetch(request);
-      return secureResponse(assetResponse);
+      const policy =
+        url.pathname === "/" || url.pathname === "/index.html"
+          ? HOME_SECURITY_HEADERS
+          : SECURITY_HEADERS;
+      return secureResponse(assetResponse, policy);
     }
 
     try {
@@ -484,10 +508,10 @@ function cleanText(value, limit) {
   return String(value || "").trim().slice(0, limit);
 }
 
-function secureResponse(response) {
+function secureResponse(response, policy = SECURITY_HEADERS) {
   const headers = new Headers(response.headers);
 
-  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+  for (const [name, value] of Object.entries(policy)) {
     headers.set(name, value);
   }
 
@@ -523,6 +547,7 @@ export {
   MAX_REQUEST_BYTES,
   PLAN_LIMITS,
   API_SECURITY_HEADERS,
+  HOME_SECURITY_HEADERS,
   SECURITY_HEADERS,
   cleanText,
   hasSameOrigin,
