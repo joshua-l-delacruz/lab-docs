@@ -1198,6 +1198,22 @@ footer{
     flex-direction:column;
   }
 }
+
+/* V1.4 CLIENT & DEAL WORKSPACE */
+.client-workspace{margin:0 0 20px;padding:18px;border:1px solid var(--border);border-radius:14px;background:var(--surface2)}
+.client-workspace .card-title{margin-bottom:16px}
+textarea{width:100%;min-height:96px;resize:vertical;padding:11px 12px;border:1px solid var(--border);border-radius:11px;background:var(--surface);color:var(--text);outline:none;font:inherit;line-height:1.5}
+textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}
+.deal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.deal-stat{padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--surface2)}
+.deal-stat strong{display:block;font-size:21px}.deal-stat span{color:var(--muted);font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:.05em}
+.deal-filters{display:grid;grid-template-columns:minmax(220px,1fr) 190px 190px;gap:10px;margin-bottom:14px}
+.status-chip{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:9px;font-weight:850;letter-spacing:.05em;text-transform:uppercase;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+.status-chip.lead{color:var(--muted)}.status-chip.pending{color:var(--warning)}.status-chip.closed{color:var(--success)}.status-chip.cancelled,.status-chip.archived{color:var(--danger)}
+.saved-item.archived{opacity:.72}.deal-client{margin-top:5px;color:var(--text);font-size:12px;font-weight:750}
+.deal-timeline{display:grid;gap:8px;margin-top:12px}.timeline-item{display:grid;grid-template-columns:10px minmax(0,1fr);gap:10px;align-items:start;color:var(--muted);font-size:11px}.timeline-dot{width:8px;height:8px;margin-top:4px;border-radius:50%;background:var(--accent)}.timeline-item strong{display:block;color:var(--text);font-size:11px}
+@media(max-width:800px){.deal-stats{grid-template-columns:repeat(2,1fr)}.deal-filters{grid-template-columns:1fr}}
+
 </style>
 </head>
 
@@ -1260,12 +1276,12 @@ footer{
   <section class="hero">
 
     <div class="kicker">
-      VERSION 1.3 · SAVED TRANSACTIONS
+      VERSION 1.4 · CLIENT & DEAL WORKSPACE
     </div>
 
     <h1>
-      Prepare the transaction.<br>
-      Save the deal.
+      Manage the client.<br>
+      Move the deal forward.
     </h1>
 
     <p>
@@ -1283,7 +1299,7 @@ footer{
     </a>
 
     <a href="#savedTransactions">
-      💾 Saved
+      ◆ Deals
     </a>
 
     <a href="#costs">
@@ -1374,6 +1390,23 @@ footer{
 
       </div>
 
+    </div>
+
+    <div class="client-workspace">
+      <div class="card-title">
+        <div><h2>Client & Deal Details</h2><p>Connect this property transaction to a client and track its progress.</p></div>
+        <span class="badge">V1.4</span>
+      </div>
+      <div class="form-grid three">
+        <div class="field"><label for="dealName">Deal name</label><input id="dealName" type="text" maxlength="100" placeholder="e.g. Cruz family house purchase"></div>
+        <div class="field"><label for="dealStatus">Deal status</label><select id="dealStatus"><option>Lead</option><option selected>Active</option><option>Pending</option><option>Closed</option><option>Cancelled</option></select></div>
+        <div class="field"><label for="clientRole">Client role</label><select id="clientRole"><option>Buyer</option><option>Seller</option><option>Buyer & Seller</option><option>Other</option></select></div>
+        <div class="field"><label for="clientName">Client name</label><input id="clientName" type="text" maxlength="100" placeholder="Full name or company"></div>
+        <div class="field"><label for="clientEmail">Client email</label><input id="clientEmail" type="email" maxlength="120" placeholder="name@example.com"></div>
+        <div class="field"><label for="clientPhone">Client phone</label><input id="clientPhone" type="tel" maxlength="40" placeholder="+63 9XX XXX XXXX"></div>
+        <div class="field full"><label for="dealNotes">Deal notes</label><textarea id="dealNotes" maxlength="2000" placeholder="Next steps, client requirements, viewing notes or follow-up reminders"></textarea></div>
+      </div>
+      <div class="deal-timeline" id="dealTimeline"><div class="saved-empty">Activity will appear after this deal is saved.</div></div>
     </div>
 
     <!-- BASIC DETAILS -->
@@ -1752,45 +1785,25 @@ footer{
 
   <br>
 
-  <!-- =====================================================
-       SAVED TRANSACTIONS
-       ===================================================== -->
-
-  <section
-    class="card"
-    id="savedTransactions"
-  >
-
+  <!-- CLIENT & DEAL PIPELINE -->
+  <section class="card" id="savedTransactions">
     <div class="card-title">
-
-      <div>
-
-        <h2>
-          Saved Transactions
-        </h2>
-
-        <p>
-          Transactions saved in this browser.
-        </p>
-
-      </div>
-
-      <span
-        class="saved-count"
-        id="savedCount"
-      >
-        0 saved
-      </span>
-
+      <div><h2>Client & Deal Workspace</h2><p>Search, filter and manage every locally saved property deal.</p></div>
+      <span class="saved-count" id="savedCount">0 deals</span>
     </div>
-
-    <div
-      class="saved-list"
-      id="savedTransactionsList"
-    ></div>
-
+    <div class="deal-stats" aria-label="Deal pipeline summary">
+      <div class="deal-stat"><strong id="totalDeals">0</strong><span>Total deals</span></div>
+      <div class="deal-stat"><strong id="activeDeals">0</strong><span>Active</span></div>
+      <div class="deal-stat"><strong id="pendingDeals">0</strong><span>Pending</span></div>
+      <div class="deal-stat"><strong id="closedDeals">0</strong><span>Closed</span></div>
+    </div>
+    <div class="deal-filters">
+      <input id="dealSearch" type="search" placeholder="Search deal, client, location or transaction ID" aria-label="Search deals">
+      <select id="dealStatusFilter" aria-label="Filter by status"><option>All</option><option>Lead</option><option>Active</option><option>Pending</option><option>Closed</option><option>Cancelled</option><option>Archived</option></select>
+      <select id="dealSort" aria-label="Sort deals"><option value="updated-desc">Recently updated</option><option value="updated-asc">Oldest updated</option><option value="value-desc">Highest value</option><option value="client-asc">Client name</option></select>
+    </div>
+    <div class="saved-list" id="savedTransactionsList"></div>
   </section>
-
   <br>
 
   <!-- =====================================================
@@ -2489,7 +2502,7 @@ footer{
 
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
-   V1.3 — SAVED TRANSACTIONS
+   V1.4 — CLIENT & DEAL WORKSPACE
    ========================================================= */
 
 const PSGC_BASE =
@@ -6330,6 +6343,54 @@ function updateReportDate(){
    INITIALIZATION
    ========================================================= */
 
+
+function normalizeDealTransaction(t){
+ const date=t.updatedAt||t.createdAt||new Date().toISOString(),d=t.deal||{},client=d.client||{};
+ return {...t,version:"1.4",deal:{name:d.name||((t.propertyType||"Property")+" Deal"),status:d.status||"Active",archived:Boolean(d.archived),client:{name:client.name||"",role:client.role||"Buyer",email:client.email||"",phone:client.phone||""},notes:d.notes||"",activity:Array.isArray(d.activity)&&d.activity.length?d.activity:[{message:"Imported from Saved Transactions V1.3",at:date}]}};
+}
+const loadV13=loadSavedTransactionsFromStorage;
+loadSavedTransactionsFromStorage=function(){loadV13();state.savedTransactions=state.savedTransactions.map(normalizeDealTransaction);persistSavedTransactions();};
+const captureV13=captureTransaction;
+captureTransaction=function(){
+ const t=captureV13(),existing=state.savedTransactions.find(x=>x.id===t.id),now=t.updatedAt;
+ return normalizeDealTransaction({...t,version:"1.4",deal:{name:$("dealName").value.trim()||($("clientName").value.trim()?$("clientName").value.trim()+" · "+t.propertyType:t.propertyType+" Deal"),status:$("dealStatus").value,archived:Boolean(existing?.deal?.archived),client:{name:$("clientName").value.trim(),role:$("clientRole").value,email:$("clientEmail").value.trim(),phone:$("clientPhone").value.trim()},notes:$("dealNotes").value.trim(),activity:[{message:existing?"Deal details updated":"Deal created",at:now},...(existing?.deal?.activity||[])].slice(0,30)}});
+};
+const newV13=newTransaction;
+newTransaction=function(confirmFirst=true){
+ const wasDirty=state.isDirty; newV13(confirmFirst);
+ if(confirmFirst&&wasDirty&&state.isDirty)return;
+ $("dealName").value="";$("dealStatus").value="Active";$("clientRole").value="Buyer";$("clientName").value="";$("clientEmail").value="";$("clientPhone").value="";$("dealNotes").value="";renderDealTimeline(null);
+};
+const openV13=openSavedTransaction;
+openSavedTransaction=async function(id){
+ await openV13(id); const t=state.savedTransactions.find(x=>x.id===id); if(!t)return; const d=normalizeDealTransaction(t).deal;
+ $("dealName").value=d.name;$("dealStatus").value=d.status;$("clientRole").value=d.client.role;$("clientName").value=d.client.name;$("clientEmail").value=d.client.email;$("clientPhone").value=d.client.phone;$("dealNotes").value=d.notes;renderDealTimeline(d);
+};
+const duplicateV13=duplicateSavedTransaction;
+duplicateSavedTransaction=async function(id){
+ const before=new Set(state.savedTransactions.map(x=>x.id)); await duplicateV13(id); const copy=state.savedTransactions.find(x=>!before.has(x.id));
+ if(copy){copy.deal=normalizeDealTransaction(copy).deal;copy.deal.name="Copy of "+copy.deal.name;copy.deal.activity.unshift({message:"Deal duplicated",at:new Date().toISOString()});persistSavedTransactions();await openSavedTransaction(copy.id);}
+};
+function renderDealTimeline(deal){
+ const el=$("dealTimeline"),items=deal?.activity||[];
+ el.innerHTML=items.length?items.slice(0,8).map(x=>`<div class="timeline-item"><span class="timeline-dot"></span><div><strong>${escapeHtml(x.message)}</strong>${escapeHtml(formatDateTime(x.at))}</div></div>`).join(""):'<div class="saved-empty">Activity will appear after this deal is saved.</div>';
+}
+function setDealArchived(id,archived){
+ const t=state.savedTransactions.find(x=>x.id===id);if(!t)return;t.deal=normalizeDealTransaction(t).deal;t.deal.archived=archived;t.updatedAt=new Date().toISOString();t.deal.activity.unshift({message:archived?"Deal archived":"Deal reopened",at:t.updatedAt});persistSavedTransactions();renderSavedTransactions();if(state.activeTransactionId===id)renderDealTimeline(t.deal);
+}
+renderSavedTransactions=function(){
+ const box=$("savedTransactionsList"),all=state.savedTransactions.map(normalizeDealTransaction);
+ $("totalDeals").textContent=all.length;$("activeDeals").textContent=all.filter(x=>!x.deal.archived&&x.deal.status==="Active").length;$("pendingDeals").textContent=all.filter(x=>!x.deal.archived&&x.deal.status==="Pending").length;$("closedDeals").textContent=all.filter(x=>!x.deal.archived&&x.deal.status==="Closed").length;$("savedCount").textContent=all.length===1?"1 deal":all.length+" deals";
+ const q=$("dealSearch").value.trim().toLowerCase(),status=$("dealStatusFilter").value,sort=$("dealSort").value;
+ const items=all.filter(t=>{const d=t.deal,statusOK=status==="Archived"?d.archived:status==="All"?true:!d.archived&&d.status===status;const hay=[t.id,d.name,d.client.name,d.client.email,d.client.phone,d.client.role,t.propertyType,t.location?.barangayName,t.location?.cityName,t.location?.provinceName].join(" ").toLowerCase();return statusOK&&(!q||hay.includes(q));});
+ items.sort((x,y)=>sort==="updated-asc"?new Date(x.updatedAt||0)-new Date(y.updatedAt||0):sort==="value-desc"?(y.sellingPrice||0)-(x.sellingPrice||0):sort==="client-asc"?(x.deal.client.name||x.deal.name).localeCompare(y.deal.client.name||y.deal.name):new Date(y.updatedAt||0)-new Date(x.updatedAt||0));
+ if(!items.length){box.innerHTML=`<div class="saved-empty">${all.length?"No deals match the current search or filter.":"No deals saved yet.<br>Complete the workspace and choose <strong>Save Transaction</strong>."}</div>`;return;}
+ box.innerHTML=items.map(t=>{const d=t.deal,active=t.id===state.activeTransactionId,loc=[t.location?.barangayName,t.location?.cityName,t.location?.provinceName].filter(Boolean).join(", ")||"Location not specified",client=d.client.name||"Client not specified",chip=d.archived?"archived":d.status.toLowerCase();return `<article class="saved-item ${active?"active":""} ${d.archived?"archived":""}"><div class="saved-main"><div class="saved-id">${escapeHtml(t.id)}${active?'<span class="current-chip">CURRENT</span>':""}<span class="status-chip ${escapeHtml(chip)}">${escapeHtml(d.archived?"Archived":d.status)}</span></div><div class="saved-title">${escapeHtml(d.name)}</div><div class="deal-client">${escapeHtml(client)} · ${escapeHtml(d.client.role)}</div><div class="saved-meta"><span>${escapeHtml(t.propertyType||"Property")} · ${escapeHtml(peso(t.sellingPrice||0))}</span><span>·</span><span>${escapeHtml(loc)}</span><span>·</span><span>Updated ${escapeHtml(formatDateTime(t.updatedAt||t.createdAt))}</span></div></div><div class="saved-actions"><button class="secondary-btn small-btn" type="button" data-action="open" data-id="${escapeHtml(t.id)}">Open</button><button class="secondary-btn small-btn" type="button" data-action="duplicate" data-id="${escapeHtml(t.id)}">Duplicate</button><button class="secondary-btn small-btn" type="button" data-action="${d.archived?"reopen":"archive"}" data-id="${escapeHtml(t.id)}">${d.archived?"Reopen":"Archive"}</button><button class="danger-btn small-btn" type="button" data-action="delete" data-id="${escapeHtml(t.id)}">Delete</button></div></article>`;}).join("");
+};
+["dealName","dealStatus","clientRole","clientName","clientEmail","clientPhone","dealNotes"].forEach(id=>$(id).addEventListener(id==="dealStatus"||id==="clientRole"?"change":"input",markDirty));
+$("dealSearch").addEventListener("input",renderSavedTransactions);$("dealStatusFilter").addEventListener("change",renderSavedTransactions);$("dealSort").addEventListener("change",renderSavedTransactions);
+$("savedTransactionsList").addEventListener("click",e=>{const b=e.target.closest("button[data-action]");if(!b)return;if(b.dataset.action==="archive")setDealArchived(b.dataset.id,true);if(b.dataset.action==="reopen")setDealArchived(b.dataset.id,false);});
+
 async function initialize(){
 
   initializeTheme();
@@ -6350,6 +6411,8 @@ async function initialize(){
   updateReportLocation();
 
   renderSavedTransactions();
+
+  renderDealTimeline(null);
 
   updateSaveStateUI();
 
