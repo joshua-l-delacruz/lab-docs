@@ -3,6 +3,20 @@ const JSON_HEADERS = {
   "cache-control": "no-store"
 };
 
+const MAX_REQUEST_BYTES = 256 * 1024;
+const PLAN_LIMITS = {
+  free: { active: 10, total: 50 },
+  professional: { active: 1000, total: 5000 }
+};
+
+class ApiError extends Error {
+  constructor(status, code, message) {
+    super(message);
+    this.status = status;
+    this.code = code;
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -15,7 +29,7 @@ export default {
       if (url.pathname === "/api/v2/health" && request.method === "GET") {
         return json({
           ok: true,
-          version: "2.0-foundation",
+          version: "2.1.1",
           database: Boolean(env.DB),
           billing: "disabled",
           cloudLifecycle: true
@@ -76,6 +90,9 @@ export default {
 
       return problem(404, "NOT_FOUND", "The requested V2 endpoint does not exist.");
     } catch (error) {
+      if (error instanceof ApiError) {
+        return problem(error.status, error.code, error.message);
+      }
       console.error("V2 API failure", error);
       return problem(500, "INTERNAL_ERROR", "The request could not be completed.");
     }
@@ -185,13 +202,19 @@ async function getDeal(env, user, id) {
 
 async function createDeal(request, env, user) {
   const input = await readJson(request);
-  const limit = user.plan === "professional" ? 1000 : 10;
-  const count = await env.DB.prepare(
-    "SELECT COUNT(*) AS total FROM deals WHERE owner_id = ? AND archived = 0"
+  const limits = limitsFor(user);
+  const counts = await env.DB.prepare(
+    `SELECT COUNT(*) AS total,
+            SUM(CASE WHEN archived = 0 THEN 1 ELSE 0 END) AS active
+       FROM deals WHERE owner_id = ?`
   ).bind(user.id).first();
 
-  if (Number(count?.total || 0) >= limit) {
+  if (Number(counts?.active || 0) >= limits.active) {
     return problem(403, "PLAN_LIMIT_REACHED", "Upgrade the workspace plan to save more active deals.");
+  }
+
+  if (Number(counts?.total || 0) >= limits.total) {
+    return problem(403, "STORAGE_LIMIT_REACHED", "Permanently delete archived cloud deals before saving another deal.");
   }
 
   const id = crypto.randomUUID();
@@ -214,38 +237,44 @@ async function createDeal(request, env, user) {
 
 async function updateDeal(request, env, user, id) {
   const input = await readJson(request);
-  const existing = await env.DB.prepare(
-    "SELECT id, updated_at FROM deals WHERE id = ? AND owner_id = ?"
-  ).bind(id, user.id).first();
-
-  if (!existing) return problem(404, "DEAL_NOT_FOUND", "The deal was not found.");
-
   const expectedUpdatedAt = cleanText(input.expectedUpdatedAt, 80);
-  if (expectedUpdatedAt && expectedUpdatedAt !== existing.updated_at) {
-    return json({
-      error: {
-        code: "CLOUD_CONFLICT",
-        message: "This cloud deal was changed on another device. Refresh before replacing it.",
-        currentUpdatedAt: existing.updated_at
-      }
-    }, 409);
-  }
-
   const deal = normalizeDeal(input, id);
   const now = new Date().toISOString();
-  await env.DB.prepare(
+
+  const result = await env.DB.prepare(
     `UPDATE deals SET
        title = ?, status = ?, client_name = ?, client_email = ?,
        property_type = ?, selling_price = ?, location_label = ?,
        payload_json = ?, updated_at = ?
-     WHERE id = ? AND owner_id = ?`
+     WHERE id = ? AND owner_id = ? AND archived = 0
+       AND (? = '' OR updated_at = ?)`
   ).bind(
     deal.title, deal.status, deal.clientName, deal.clientEmail,
     deal.propertyType, deal.sellingPrice, deal.locationLabel,
-    JSON.stringify(deal.payload), now, id, user.id
+    JSON.stringify(deal.payload), now, id, user.id,
+    expectedUpdatedAt, expectedUpdatedAt
   ).run();
 
-  return json({ deal: { ...deal, id, archived: false, updatedAt: now } });
+  if (result.meta?.changes) {
+    return json({ deal: { ...deal, id, archived: false, updatedAt: now } });
+  }
+
+  const current = await env.DB.prepare(
+    "SELECT archived, updated_at FROM deals WHERE id = ? AND owner_id = ?"
+  ).bind(id, user.id).first();
+
+  if (!current) return problem(404, "DEAL_NOT_FOUND", "The deal was not found.");
+  if (current.archived) {
+    return problem(409, "DEAL_ARCHIVED", "Reopen the cloud deal before updating it.");
+  }
+
+  return json({
+    error: {
+      code: "CLOUD_CONFLICT",
+      message: "This cloud deal was changed on another device. Refresh before replacing it.",
+      currentUpdatedAt: current.updated_at
+    }
+  }, 409);
 }
 
 async function archiveDeal(env, user, id) {
@@ -259,11 +288,24 @@ async function archiveDeal(env, user, id) {
 
 async function reopenDeal(env, user, id) {
   const now = new Date().toISOString();
+  const limit = limitsFor(user).active;
   const result = await env.DB.prepare(
-    "UPDATE deals SET archived = 0, updated_at = ? WHERE id = ? AND owner_id = ?"
-  ).bind(now, id, user.id).run();
-  if (!result.meta?.changes) return problem(404, "DEAL_NOT_FOUND", "The deal was not found.");
-  return json({ deal: { id, archived: false, updatedAt: now } });
+    `UPDATE deals SET archived = 0, updated_at = ?
+      WHERE id = ? AND owner_id = ? AND archived = 1
+        AND (SELECT COUNT(*) FROM deals WHERE owner_id = ? AND archived = 0) < ?`
+  ).bind(now, id, user.id, user.id, limit).run();
+
+  if (result.meta?.changes) {
+    return json({ deal: { id, archived: false, updatedAt: now } });
+  }
+
+  const current = await env.DB.prepare(
+    "SELECT archived FROM deals WHERE id = ? AND owner_id = ?"
+  ).bind(id, user.id).first();
+
+  if (!current) return problem(404, "DEAL_NOT_FOUND", "The deal was not found.");
+  if (!current.archived) return problem(409, "DEAL_ALREADY_ACTIVE", "The cloud deal is already active.");
+  return problem(403, "PLAN_LIMIT_REACHED", "Archive another active deal before reopening this one.");
 }
 
 async function permanentlyDeleteDeal(env, user, id) {
@@ -280,7 +322,7 @@ function normalizeDeal(input, id) {
   const payload = input && typeof input === "object" ? input : {};
   const title = cleanText(payload.title || payload.dealName, 160);
 
-  if (!title) throw new Error("A deal title is required.");
+  if (!title) throw new ApiError(400, "INVALID_DEAL", "A deal title is required.");
 
   return {
     id,
@@ -316,8 +358,32 @@ function deserializeDeal(row) {
 
 async function readJson(request) {
   const type = request.headers.get("content-type") || "";
-  if (!type.includes("application/json")) throw new Error("Expected application/json.");
-  return request.json();
+  if (!type.toLowerCase().includes("application/json")) {
+    throw new ApiError(415, "UNSUPPORTED_MEDIA_TYPE", "Expected application/json.");
+  }
+
+  const declaredLength = Number(request.headers.get("content-length") || 0);
+  if (declaredLength > MAX_REQUEST_BYTES) {
+    throw new ApiError(413, "PAYLOAD_TOO_LARGE", "The request body exceeds the 256 KB limit.");
+  }
+
+  const body = await request.text();
+  if (new TextEncoder().encode(body).byteLength > MAX_REQUEST_BYTES) {
+    throw new ApiError(413, "PAYLOAD_TOO_LARGE", "The request body exceeds the 256 KB limit.");
+  }
+
+  let value;
+  try {
+    value = JSON.parse(body);
+  } catch {
+    throw new ApiError(400, "INVALID_JSON", "The request body is not valid JSON.");
+  }
+
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new ApiError(400, "INVALID_JSON", "The request body must be a JSON object.");
+  }
+
+  return value;
 }
 
 function hasSameOrigin(request) {
@@ -328,6 +394,10 @@ function hasSameOrigin(request) {
 
 function isMutation(method) {
   return ["POST", "PUT", "PATCH", "DELETE"].includes(method);
+}
+
+function limitsFor(user) {
+  return user.plan === "professional" ? PLAN_LIMITS.professional : PLAN_LIMITS.free;
 }
 
 function cleanText(value, limit) {
@@ -341,3 +411,14 @@ function json(data, status = 200) {
 function problem(status, code, message) {
   return json({ error: { code, message } }, status);
 }
+
+export {
+  ApiError,
+  MAX_REQUEST_BYTES,
+  PLAN_LIMITS,
+  cleanText,
+  hasSameOrigin,
+  limitsFor,
+  normalizeDeal,
+  readJson
+};
