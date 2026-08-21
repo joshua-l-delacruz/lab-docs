@@ -1218,6 +1218,199 @@ textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb
 .field-error{min-height:16px;color:var(--danger);font-size:10px;font-weight:700}
 input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 12%,transparent)}
 
+
+/* =========================================================
+   V1.5 PROFESSIONAL PDF REPORTS
+   ========================================================= */
+
+.report-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.report-brand-mark{
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+
+.report-eyebrow{
+  color:var(--accent);
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.report-meta{
+  display:grid;
+  gap:5px;
+  min-width:220px;
+  text-align:right;
+}
+
+.report-meta-line{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  font-size:11px;
+}
+
+.report-meta-line span{
+  color:var(--muted);
+}
+
+.report-meta-line strong{
+  overflow-wrap:anywhere;
+}
+
+.report-confidential{
+  display:inline-flex;
+  align-self:flex-end;
+  padding:4px 8px;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--accent) 11%,transparent);
+  color:var(--accent);
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.08em;
+}
+
+.report-notes{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.report-signatures{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:36px;
+  margin-top:28px;
+}
+
+.signature-line{
+  padding-top:28px;
+  border-bottom:1px solid var(--border);
+}
+
+.signature-caption{
+  padding-top:6px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.report-document-footer{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  margin-top:20px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:9px;
+}
+
+@media(max-width:650px){
+  .report-meta{
+    min-width:0;
+    text-align:left;
+  }
+
+  .report-meta-line{
+    justify-content:flex-start;
+  }
+
+  .report-confidential{
+    align-self:flex-start;
+  }
+
+  .report-signatures{
+    grid-template-columns:1fr;
+  }
+}
+
+@page{
+  size:A4;
+  margin:13mm 14mm 14mm;
+}
+
+@media print{
+
+  #report .report-brand-mark{
+    width:12mm!important;
+    height:12mm!important;
+    border-radius:2.5mm!important;
+    background:#111827!important;
+    color:#fff!important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  #report .report-eyebrow{
+    color:#333!important;
+    font-size:7pt!important;
+  }
+
+  #report .report-meta{
+    min-width:55mm!important;
+    gap:1mm!important;
+  }
+
+  #report .report-meta-line{
+    font-size:7.5pt!important;
+  }
+
+  #report .report-confidential{
+    padding:1mm 2mm!important;
+    border:1px solid #777!important;
+    background:#fff!important;
+    color:#333!important;
+    font-size:6.5pt!important;
+  }
+
+  #report .report-notes{
+    white-space:pre-wrap!important;
+    overflow-wrap:anywhere!important;
+    white-space:normal!important;
+  }
+
+  #report .report-signatures{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:18mm!important;
+    margin-top:7mm!important;
+    break-inside:avoid!important;
+  }
+
+  #report .signature-line{
+    padding-top:9mm!important;
+    border-bottom:1px solid #555!important;
+  }
+
+  #report .signature-caption{
+    padding-top:1.5mm!important;
+    color:#555!important;
+    font-size:7pt!important;
+  }
+
+  #report .report-document-footer{
+    display:flex!important;
+    margin-top:5mm!important;
+    padding-top:3mm!important;
+    border-top:1px solid #aaa!important;
+    color:#555!important;
+    font-size:6.5pt!important;
+    break-inside:avoid!important;
+  }
+}
+
 </style>
 </head>
 
@@ -1280,18 +1473,18 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
   <section class="hero">
 
     <div class="kicker">
-      VERSION 1.4 · CLIENT & DEAL WORKSPACE
+      VERSION 1.5 · PROFESSIONAL PDF REPORTS
     </div>
 
     <h1>
-      Manage the client.<br>
-      Move the deal forward.
+      Prepare the deal.<br>
+      Deliver the report.
     </h1>
 
     <p>
       Build a preliminary Philippine property transaction estimate,
       allocate expenses between buyer and seller, track documents,
-      save transactions locally and produce a clean client-ready report.
+      manage clients and deals locally, and generate a professional client-ready PDF report.
     </p>
 
   </section>
@@ -2221,30 +2414,37 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
 
     <div class="report-header">
 
-      <div>
-
-        <h2>
-          PRELIMINARY TRANSACTION REPORT
-        </h2>
-
-        <p>
-          Philippine Property Transaction Estimate
-        </p>
-
+      <div class="report-brand">
+        <div class="report-brand-mark">PH</div>
+        <div>
+          <div class="report-eyebrow">Joshua Dela Cruz · Property Workspace</div>
+          <h2>PROPERTY TRANSACTION REPORT</h2>
+          <p>Philippine Property Transaction Estimate</p>
+        </div>
       </div>
 
-      <div style="text-align:right">
-
-        <strong id="reportDate">
-          —
-        </strong>
-
-        <p>
-          Planning document
-        </p>
-
+      <div class="report-meta">
+        <div class="report-confidential">CLIENT CONFIDENTIAL</div>
+        <div class="report-meta-line"><span>Report reference</span><strong id="reportReference">—</strong></div>
+        <div class="report-meta-line"><span>Prepared</span><strong id="reportDate">—</strong></div>
+        <div class="report-meta-line"><span>Status</span><strong id="rDealStatus">Active</strong></div>
       </div>
 
+    </div>
+
+    <div class="report-section">
+      <h3>Client & Deal</h3>
+      <div class="report-grid">
+        <div class="report-line"><span>Deal name</span><strong id="rDealName">—</strong></div>
+        <div class="report-line"><span>Client</span><strong id="rClientName">—</strong></div>
+        <div class="report-line"><span>Client role</span><strong id="rClientRole">—</strong></div>
+        <div class="report-line"><span>Email</span><strong id="rClientEmail">—</strong></div>
+        <div class="report-line"><span>Phone</span><strong id="rClientPhone">—</strong></div>
+      </div>
+      <div class="report-line" style="margin-top:8px;align-items:flex-start">
+        <span>Deal notes</span>
+        <strong class="report-notes" id="rDealNotes">—</strong>
+      </div>
     </div>
 
     <!-- PROPERTY DETAILS -->
@@ -2426,6 +2626,17 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
 
     </div>
 
+    <div class="report-section">
+      <h3>Payment Allocation</h3>
+      <div class="report-grid">
+        <div class="report-line"><span>Capital Gains Tax</span><strong id="rPayerCGT">Seller</strong></div>
+        <div class="report-line"><span>Documentary Stamp Tax</span><strong id="rPayerDST">Buyer</strong></div>
+        <div class="report-line"><span>Transfer Tax</span><strong id="rPayerTransfer">Buyer</strong></div>
+        <div class="report-line"><span>Registration / other</span><strong id="rPayerRegistration">Buyer</strong></div>
+        <div class="report-line"><span>Broker Commission</span><strong id="rPayerCommission">Seller</strong></div>
+      </div>
+    </div>
+
     <!-- PREPARATION STATUS -->
 
     <div class="report-section">
@@ -2470,6 +2681,23 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
 
     </div>
 
+    <div class="report-signatures">
+      <div>
+        <div class="signature-line"></div>
+        <div class="signature-caption">Prepared by / Property professional</div>
+      </div>
+      <div>
+        <div class="signature-line"></div>
+        <div class="signature-caption">Client acknowledgement</div>
+      </div>
+    </div>
+
+    <div class="report-document-footer">
+      <span>Joshua Dela Cruz · Property Workspace</span>
+      <span id="reportFooterReference">Report reference: —</span>
+      <span>V1.5</span>
+    </div>
+
     <div
       class="button-row no-print"
       style="justify-content:flex-end"
@@ -2480,7 +2708,7 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
         id="printReportBtn"
         type="button"
       >
-        Print / Save as PDF →
+        Generate Professional PDF →
       </button>
 
     </div>
@@ -2506,7 +2734,7 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
 
 /* =========================================================
    PH PROPERTY TRANSACTION WORKSPACE
-   V1.4 — CLIENT & DEAL WORKSPACE
+   V1.5 — PROFESSIONAL PDF REPORTS
    ========================================================= */
 
 const PSGC_BASE =
@@ -6285,6 +6513,36 @@ $("printReportBtn")
 
       updateChecklistReport();
 
+      updateProfessionalReport();
+
+      const originalTitle =
+        document.title;
+
+      document.title =
+        professionalPdfFilename()
+          .replace(
+            /\.pdf$/i,
+            ""
+          );
+
+      const restoreTitle =
+        () => {
+
+          document.title =
+            originalTitle;
+
+          window.removeEventListener(
+            "afterprint",
+            restoreTitle
+          );
+
+        };
+
+      window.addEventListener(
+        "afterprint",
+        restoreTitle
+      );
+
       window.print();
 
     }
@@ -6449,6 +6707,127 @@ $("themeBtn")
    REPORT DATE
    ========================================================= */
 
+
+function cleanReportValue(
+  value
+){
+
+  const text =
+    String(
+      value || ""
+    ).trim();
+
+  return text || "—";
+
+}
+
+function createReportReference(){
+
+  ensureTransactionId();
+
+  return "PTR-" +
+    state.transactionId
+      .replace(
+        /^PTW-/,
+        ""
+      );
+
+}
+
+function updateProfessionalReport(){
+
+  const reference =
+    createReportReference();
+
+  $("reportReference").textContent =
+    reference;
+
+  $("reportFooterReference").textContent =
+    "Report reference: " +
+    reference;
+
+  $("rDealName").textContent =
+    cleanReportValue(
+      $("dealName").value
+    );
+
+  $("rDealStatus").textContent =
+    cleanReportValue(
+      $("dealStatus").value
+    );
+
+  $("rClientName").textContent =
+    cleanReportValue(
+      $("clientName").value
+    );
+
+  $("rClientRole").textContent =
+    cleanReportValue(
+      $("clientRole").value
+    );
+
+  $("rClientEmail").textContent =
+    cleanReportValue(
+      $("clientEmail").value
+    );
+
+  $("rClientPhone").textContent =
+    cleanReportValue(
+      $("clientPhone").value
+    );
+
+  $("rDealNotes").textContent =
+    cleanReportValue(
+      $("dealNotes").value
+    );
+
+  $("rPayerCGT").textContent =
+    state.allocation.cgt;
+
+  $("rPayerDST").textContent =
+    state.allocation.dst;
+
+  $("rPayerTransfer").textContent =
+    state.allocation.transfer;
+
+  $("rPayerRegistration").textContent =
+    state.allocation.registration;
+
+  $("rPayerCommission").textContent =
+    state.allocation.commission;
+
+  return reference;
+
+}
+
+function professionalPdfFilename(){
+
+  const deal =
+    $("dealName").value
+      .trim()
+      .replace(
+        /[^a-z0-9]+/gi,
+        "-"
+      )
+      .replace(
+        /^-|-$/g,
+        ""
+      )
+      .slice(
+        0,
+        50
+      ) ||
+    "property-transaction";
+
+  return (
+    deal +
+    "-" +
+    createReportReference() +
+    ".pdf"
+  ).toLowerCase();
+
+}
+
 function updateReportDate(){
 
   const now =
@@ -6487,12 +6866,12 @@ const newV13=newTransaction;
 newTransaction=function(confirmFirst=true){
  const wasDirty=state.isDirty; newV13(confirmFirst);
  if(confirmFirst&&wasDirty&&state.isDirty)return;
- $("dealName").value="";$("dealStatus").value="Active";$("clientRole").value="Buyer";$("clientName").value="";$("clientEmail").value="";$("clientPhone").value="";$("dealNotes").value="";renderDealTimeline(null);
+ $("dealName").value="";$("dealStatus").value="Active";$("clientRole").value="Buyer";$("clientName").value="";$("clientEmail").value="";$("clientPhone").value="";$("dealNotes").value="";renderDealTimeline(null);updateProfessionalReport();
 };
 const openV13=openSavedTransaction;
 openSavedTransaction=async function(id){
  await openV13(id); const t=state.savedTransactions.find(x=>x.id===id); if(!t)return; const d=normalizeDealTransaction(t).deal;
- $("dealName").value=d.name;$("dealStatus").value=d.status;$("clientRole").value=d.client.role;$("clientName").value=d.client.name;$("clientEmail").value=d.client.email;$("clientPhone").value=d.client.phone;$("dealNotes").value=d.notes;renderDealTimeline(d);
+ $("dealName").value=d.name;$("dealStatus").value=d.status;$("clientRole").value=d.client.role;$("clientName").value=d.client.name;$("clientEmail").value=d.client.email;$("clientPhone").value=d.client.phone;$("dealNotes").value=d.notes;renderDealTimeline(d);updateProfessionalReport();
 };
 const duplicateV13=duplicateSavedTransaction;
 duplicateSavedTransaction=async function(id){
@@ -6562,6 +6941,22 @@ $("clientPhone").addEventListener(
   }
 );
 
+["dealName","clientName","clientEmail","clientPhone","dealNotes"]
+  .forEach(
+    id => $(id).addEventListener(
+      "input",
+      updateProfessionalReport
+    )
+  );
+
+["dealStatus","clientRole"]
+  .forEach(
+    id => $(id).addEventListener(
+      "change",
+      updateProfessionalReport
+    )
+  );
+
 ["dealName","dealStatus","clientRole","clientName","clientEmail","clientPhone","dealNotes"].forEach(id=>$(id).addEventListener(id==="dealStatus"||id==="clientRole"?"change":"input",markDirty));
 $("dealSearch").addEventListener("input",renderSavedTransactions);$("dealStatusFilter").addEventListener("change",renderSavedTransactions);$("dealSort").addEventListener("change",renderSavedTransactions);
 $("savedTransactionsList").addEventListener("click",e=>{const b=e.target.closest("button[data-action]");if(!b)return;if(b.dataset.action==="archive")setDealArchived(b.dataset.id,true);if(b.dataset.action==="reopen")setDealArchived(b.dataset.id,false);});
@@ -6584,6 +6979,8 @@ async function initialize(){
   calculate();
 
   updateReportLocation();
+
+  updateProfessionalReport();
 
   renderSavedTransactions();
 
