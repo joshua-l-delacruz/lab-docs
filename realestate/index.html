@@ -1439,6 +1439,21 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
   }
 }
 
+
+@media print{
+
+  #report .report-allocation .report-grid{
+    grid-template-columns:1fr!important;
+    row-gap:.8mm!important;
+  }
+
+  #report .report-allocation .report-line{
+    width:100%!important;
+    grid-template-columns:minmax(0,1fr) minmax(28mm,auto)!important;
+    gap:8mm!important;
+  }
+}
+
 </style>
 </head>
 
