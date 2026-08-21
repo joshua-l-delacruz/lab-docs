@@ -6,6 +6,7 @@ import {
   ApiError,
   MAX_REQUEST_BYTES,
   PLAN_LIMITS,
+  API_SECURITY_HEADERS,
   SECURITY_HEADERS,
   hasSameOrigin,
   limitsFor,
@@ -89,7 +90,7 @@ test("applies the site-wide browser security policy", async () => {
   assert.equal(secured.headers.get("x-content-type-options"), "nosniff");
   assert.equal(secured.headers.get("x-frame-options"), "DENY");
   assert.equal(secured.headers.get("referrer-policy"), "strict-origin-when-cross-origin");
-  assert.match(secured.headers.get("strict-transport-security"), /max-age=31536000/);
+  assert.match(secured.headers.get("strict-transport-security"), /max-age=63072000/);
   assert.match(secured.headers.get("permissions-policy"), /geolocation=\(self\)/);
   assert.match(secured.headers.get("content-security-policy"), /frame-ancestors 'none'/);
   assert.match(secured.headers.get("content-security-policy"), /object-src 'none'/);
@@ -102,4 +103,14 @@ test("security policy keeps sensitive capabilities disabled", () => {
   assert.match(SECURITY_HEADERS["permissions-policy"], /microphone=\(\)/);
   assert.match(SECURITY_HEADERS["permissions-policy"], /payment=\(\)/);
   assert.match(SECURITY_HEADERS["permissions-policy"], /usb=\(\)/);
+});
+
+
+test("uses a locked-down CSP for JSON API responses", () => {
+  assert.equal(
+    API_SECURITY_HEADERS["content-security-policy"],
+    "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'none'"
+  );
+  assert.doesNotMatch(API_SECURITY_HEADERS["content-security-policy"], /unsafe-inline|data:|https:/);
+  assert.equal(SECURITY_HEADERS["strict-transport-security"], "max-age=63072000; includeSubDomains");
 });
