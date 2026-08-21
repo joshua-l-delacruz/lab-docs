@@ -51,6 +51,16 @@ export default {
       }
 
       if (url.pathname === "/api/v2/me" && request.method === "GET") {
+        const isBrowserNavigation =
+          request.headers.get("sec-fetch-mode") === "navigate";
+
+        if (isBrowserNavigation) {
+          return Response.redirect(
+            new URL("/realestate/?brokerSignIn=complete#brokerCloud", url.origin),
+            303
+          );
+        }
+
         const returnTo = url.searchParams.get("returnTo");
 
         if (returnTo) {
