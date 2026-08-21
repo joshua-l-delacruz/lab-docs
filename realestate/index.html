@@ -7597,19 +7597,32 @@ function syncStateForCloud(deal){
   return {label:"Synced",kind:"success"};
 }
 
+function brokerSignInUrl(){
+  const returnTo="/realestate/?brokerSignIn=complete#brokerCloud";
+  return "/api/v2/me?returnTo="+encodeURIComponent(returnTo);
+}
+
+function startBrokerSignIn(){
+  setCloudStatus(
+    "Opening secure Cloudflare Access sign-in. You will return to this workspace automatically.",
+    "warning"
+  );
+  window.location.assign(brokerSignInUrl());
+}
+
 function requireBrokerAuthentication(action){
   if(cloudState.connected&&cloudState.user){
     return true;
   }
 
   const message=
-    "Sign in through Cloudflare Access before "+action+". Return here and choose Refresh.";
+    "Sign in through Cloudflare Access before "+action+".";
   setCloudStatus(message,"warning");
   $("brokerCloud").scrollIntoView({behavior:"smooth",block:"center"});
   $("cloudSignInBtn").focus();
 
-  if(window.confirm("Authentication required. Open Cloudflare Access sign-in now?")){
-    window.open("/api/v2/me","_blank","noopener");
+  if(window.confirm("Authentication required. Sign in securely now?")){
+    startBrokerSignIn();
   }
 
   return false;
@@ -7929,10 +7942,7 @@ async function changeCloudLifecycle(cloudId,action){
   }
 }
 
-$("cloudSignInBtn").addEventListener("click",()=>{
-  window.open("/api/v2/me","_blank","noopener");
-  setCloudStatus("Complete Cloudflare Access sign-in in the new tab, then choose Refresh.","warning");
-});
+$("cloudSignInBtn").addEventListener("click",startBrokerSignIn);
 
 $("cloudRefreshBtn").addEventListener("click",()=>refreshBrokerCloud(true));
 $("cloudSyncBtn").addEventListener("click",syncCurrentDealToCloud);
@@ -7979,7 +7989,18 @@ async function initialize(){
 
   await loadProvinces();
 
-  await refreshBrokerCloud(false);
+  const signInReturn=
+    new URLSearchParams(window.location.search).get("brokerSignIn")==="complete";
+
+  await refreshBrokerCloud(signInReturn);
+
+  if(signInReturn){
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname+"#brokerCloud"
+    );
+  }
 
 }
 
