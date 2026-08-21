@@ -1411,6 +1411,34 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
   }
 }
 
+
+.print-tip{
+  max-width:520px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.45;
+}
+
+@media print{
+
+  #report .report-allocation .report-line{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:4mm!important;
+    align-items:baseline!important;
+  }
+
+  #report .report-allocation .report-line span{
+    min-width:0!important;
+    overflow-wrap:anywhere!important;
+  }
+
+  #report .report-allocation .report-line strong{
+    min-width:max-content!important;
+    white-space:nowrap!important;
+  }
+}
+
 </style>
 </head>
 
@@ -2626,7 +2654,7 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
 
     </div>
 
-    <div class="report-section">
+    <div class="report-section report-allocation">
       <h3>Payment Allocation</h3>
       <div class="report-grid">
         <div class="report-line"><span>Capital Gains Tax</span><strong id="rPayerCGT">Seller</strong></div>
@@ -2700,8 +2728,13 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
 
     <div
       class="button-row no-print"
-      style="justify-content:flex-end"
+      style="justify-content:space-between;align-items:center"
     >
+
+      <div class="print-tip">
+        For the cleanest PDF, select A4 paper and turn off
+        browser headers and footers in the print dialog.
+      </div>
 
       <button
         class="primary-btn"
