@@ -6,10 +6,12 @@ import {
   ApiError,
   MAX_REQUEST_BYTES,
   PLAN_LIMITS,
+  SECURITY_HEADERS,
   hasSameOrigin,
   limitsFor,
   normalizeDeal,
-  readJson
+  readJson,
+  secureResponse
 } from "../worker/index.js";
 
 const jsonRequest = (body, headers = {}) => new Request("https://example.com/api/v2/deals", {
@@ -74,4 +76,30 @@ test("source keeps concurrency and reopen checks inside SQL writes", async () =>
   assert.match(source, /SELECT COUNT\(\*\) FROM deals WHERE owner_id = \? AND archived = 0/);
   assert.match(source, /STORAGE_LIMIT_REACHED/);
   assert.match(source, /version: "2\.1\.1"/);
+});
+
+
+test("applies the site-wide browser security policy", async () => {
+  const secured = secureResponse(
+    new Response("<!doctype html>", {
+      headers: { "content-type": "text/html; charset=utf-8" }
+    })
+  );
+
+  assert.equal(secured.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(secured.headers.get("x-frame-options"), "DENY");
+  assert.equal(secured.headers.get("referrer-policy"), "strict-origin-when-cross-origin");
+  assert.match(secured.headers.get("strict-transport-security"), /max-age=31536000/);
+  assert.match(secured.headers.get("permissions-policy"), /geolocation=\(self\)/);
+  assert.match(secured.headers.get("content-security-policy"), /frame-ancestors 'none'/);
+  assert.match(secured.headers.get("content-security-policy"), /object-src 'none'/);
+  assert.match(secured.headers.get("content-security-policy"), /https:\/\/psgc\.cloud/);
+  assert.equal(await secured.text(), "<!doctype html>");
+});
+
+test("security policy keeps sensitive capabilities disabled", () => {
+  assert.match(SECURITY_HEADERS["permissions-policy"], /camera=\(\)/);
+  assert.match(SECURITY_HEADERS["permissions-policy"], /microphone=\(\)/);
+  assert.match(SECURITY_HEADERS["permissions-policy"], /payment=\(\)/);
+  assert.match(SECURITY_HEADERS["permissions-policy"], /usb=\(\)/);
 });
