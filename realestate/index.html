@@ -1645,6 +1645,47 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
   }
 }
 
+
+.cloud-item.archived{
+  opacity:.72;
+}
+
+.cloud-item-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.sync-chip{
+  display:inline-flex;
+  margin-left:7px;
+  padding:3px 7px;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--accent) 12%,transparent);
+  color:var(--accent);
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.sync-chip.warning{
+  background:color-mix(in srgb,var(--warning) 12%,transparent);
+  color:var(--warning);
+}
+
+.sync-chip.success{
+  background:color-mix(in srgb,var(--success) 12%,transparent);
+  color:var(--success);
+}
+
+@media(max-width:720px){
+  .cloud-item-actions{
+    justify-content:flex-start;
+  }
+}
+
 </style>
 </head>
 
@@ -1707,7 +1748,7 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
   <section class="hero">
 
     <div class="kicker">
-      VERSION 1.5 · PROFESSIONAL PDF REPORTS
+      VERSION 2.1 · BROKER CLOUD WORKSPACE
     </div>
 
     <h1>
@@ -1795,6 +1836,9 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
         <button class="secondary-btn small-btn" id="cloudRefreshBtn" type="button">
           Refresh
         </button>
+        <button class="secondary-btn small-btn" id="cloudSignOutBtn" type="button">
+          Sign out
+        </button>
         <button class="primary-btn small-btn" id="cloudSyncBtn" type="button">
           Sync Current Deal
         </button>
@@ -1880,7 +1924,7 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
     <div class="client-workspace">
       <div class="card-title">
         <div><h2>Client & Deal Details</h2><p>Connect this property transaction to a client and track its progress.</p></div>
-        <span class="badge">V1.4</span>
+        <span class="badge">V2.1</span>
       </div>
       <div class="form-grid three">
         <div class="field"><label for="dealName">Deal name</label><input id="dealName" type="text" maxlength="100" placeholder="e.g. Cruz family house purchase" required aria-describedby="dealNameError"><span class="field-error" id="dealNameError" aria-live="polite"></span></div>
@@ -7366,10 +7410,10 @@ $("savedTransactionsList").addEventListener("click",e=>{const b=e.target.closest
 
 
 /* =========================================================
-   V2 BROKER CLOUD
+   V2.1 BROKER CLOUD LIFECYCLE
    ========================================================= */
 
-const cloudState = {
+const cloudState={
   user:null,
   plans:null,
   deals:[],
@@ -7383,7 +7427,7 @@ function setCloudStatus(message,type=""){
 }
 
 function setCloudBusy(busy){
-  ["cloudRefreshBtn","cloudSyncBtn"].forEach(id=>{
+  ["cloudRefreshBtn","cloudSyncBtn","cloudSignOutBtn"].forEach(id=>{
     $(id).disabled=busy;
   });
 }
@@ -7401,14 +7445,40 @@ async function cloudRequest(path,options={}){
 
   const contentType=response.headers.get("content-type")||"";
   if(!contentType.includes("application/json")){
-    throw new Error("Sign in through Cloudflare Access, then return here and choose Refresh.");
+    const error=new Error(
+      "Sign in through Cloudflare Access, then return here and choose Refresh."
+    );
+    error.code="AUTHENTICATION_REQUIRED";
+    throw error;
   }
 
   const data=await response.json();
   if(!response.ok){
-    throw new Error(data?.error?.message||"The Broker Cloud request failed.");
+    const error=new Error(data?.error?.message||"The Broker Cloud request failed.");
+    error.code=data?.error?.code||"CLOUD_REQUEST_FAILED";
+    error.details=data?.error||{};
+    throw error;
   }
   return data;
+}
+
+function localRecordForCloud(cloudId){
+  return state.savedTransactions.find(record=>record.cloudDealId===cloudId)||null;
+}
+
+function syncStateForCloud(deal){
+  const local=localRecordForCloud(deal.id);
+  if(!local)return {label:"Cloud only",kind:""};
+
+  const synced=Date.parse(local.cloudSyncedAt||0);
+  const localChanged=Date.parse(local.updatedAt||0)>synced;
+  const cloudChanged=Date.parse(deal.updated_at||0)>synced;
+
+  if(cloudChanged)return {label:"Cloud newer",kind:"warning"};
+  if(localChanged||(state.activeTransactionId===local.id&&state.isDirty)){
+    return {label:"Local changes",kind:"warning"};
+  }
+  return {label:"Synced",kind:"success"};
 }
 
 function renderCloudAccount(){
@@ -7420,10 +7490,11 @@ function renderCloudAccount(){
 
   const user=cloudState.user;
   const plan=cloudState.plans?.[user.plan]||{};
+  const activeCount=cloudState.deals.filter(deal=>!deal.archived).length;
   $("cloudAccountName").textContent=user.name||user.email;
   $("cloudAccountMeta").textContent=
     user.email+" · "+user.plan.toUpperCase()+" plan · "+
-    cloudState.deals.length+" of "+(plan.dealLimit||"—")+" active deals";
+    activeCount+" of "+(plan.dealLimit||"—")+" active deals";
 }
 
 function renderCloudDeals(){
@@ -7445,12 +7516,24 @@ function renderCloudDeals(){
     const property=deal.property_type||"Property";
     const value=peso(Number(deal.selling_price)||0);
     const updated=formatDateTime(deal.updated_at);
-    return '<article class="cloud-item">'+
-      '<div><div class="cloud-item-title">'+escapeHtml(deal.title)+'</div>'+
-      '<div class="cloud-item-meta">'+escapeHtml(client)+" · "+escapeHtml(property)+" · "+
+    const sync=syncStateForCloud(deal);
+    const archiveButton=deal.archived
+      ? '<button class="secondary-btn small-btn" type="button" data-cloud-action="reopen" data-cloud-id="'+escapeHtml(deal.id)+'">Reopen</button>'
+      : '<button class="secondary-btn small-btn" type="button" data-cloud-action="archive" data-cloud-id="'+escapeHtml(deal.id)+'">Archive</button>';
+    const deleteButton=deal.archived
+      ? '<button class="danger-btn small-btn" type="button" data-cloud-action="delete" data-cloud-id="'+escapeHtml(deal.id)+'">Delete permanently</button>'
+      : "";
+
+    return '<article class="cloud-item '+(deal.archived?"archived":"")+'">'+
+      '<div><div class="cloud-item-title">'+escapeHtml(deal.title)+
+      '<span class="sync-chip '+sync.kind+'">'+escapeHtml(sync.label)+'</span>'+
+      (deal.archived?'<span class="sync-chip warning">Archived</span>':"")+
+      '</div><div class="cloud-item-meta">'+escapeHtml(client)+" · "+escapeHtml(property)+" · "+
       escapeHtml(value)+" · Updated "+escapeHtml(updated)+'</div></div>'+
-      '<button class="secondary-btn small-btn" type="button" data-cloud-load="'+
-      escapeHtml(deal.id)+'">Load on This Device</button></article>';
+      '<div class="cloud-item-actions">'+
+      '<button class="secondary-btn small-btn" type="button" data-cloud-action="load" data-cloud-id="'+
+      escapeHtml(deal.id)+'">Load on This Device</button>'+
+      archiveButton+deleteButton+'</div></article>';
   }).join("");
 }
 
@@ -7460,7 +7543,7 @@ async function refreshBrokerCloud(showSuccess=true){
 
   try{
     const account=await cloudRequest("/me");
-    const listing=await cloudRequest("/deals");
+    const listing=await cloudRequest("/deals?archived=true");
     cloudState.user=account.user;
     cloudState.plans=account.plans;
     cloudState.deals=listing.deals||[];
@@ -7468,7 +7551,7 @@ async function refreshBrokerCloud(showSuccess=true){
     renderCloudAccount();
     renderCloudDeals();
     if(showSuccess){
-      setCloudStatus("Broker Cloud connected. Your local deals remain unchanged.","success");
+      setCloudStatus("Broker Cloud refreshed. No local records were replaced.","success");
     }
     return true;
   }catch(error){
@@ -7500,7 +7583,12 @@ function cloudPayloadFromLocal(record){
     sellingPrice:Number(record.sellingPrice)||0,
     locationLabel:location,
     localTransactionId:record.id,
-    localRecord:{...record,cloudDealId:record.cloudDealId||null}
+    expectedUpdatedAt:record.cloudSyncedAt||"",
+    localRecord:{
+      ...record,
+      cloudDealId:record.cloudDealId||null,
+      cloudSyncedAt:record.cloudSyncedAt||null
+    }
   };
 }
 
@@ -7533,6 +7621,14 @@ async function syncCurrentDealToCloud(){
       setCloudBusy(true);
     }
 
+    const cloudSummary=record.cloudDealId
+      ? cloudState.deals.find(deal=>deal.id===record.cloudDealId)
+      : null;
+
+    if(cloudSummary&&cloudSummary.archived){
+      throw new Error("Reopen this cloud deal before synchronizing local changes.");
+    }
+
     const payload=cloudPayloadFromLocal(record);
     const existingCloudId=record.cloudDealId;
     const result=await cloudRequest(
@@ -7553,7 +7649,15 @@ async function syncCurrentDealToCloud(){
       "success"
     );
   }catch(error){
-    setCloudStatus(error.message,"error");
+    if(error.code==="CLOUD_CONFLICT"){
+      await refreshBrokerCloud(false);
+      setCloudStatus(
+        "Cloud conflict detected. Another device has a newer copy. Load that cloud deal before editing again.",
+        "warning"
+      );
+    }else{
+      setCloudStatus(error.message,"error");
+    }
   }finally{
     setCloudBusy(false);
   }
@@ -7565,6 +7669,15 @@ async function loadCloudDeal(cloudId){
     if(!proceed)return;
   }
 
+  const summary=cloudState.deals.find(deal=>deal.id===cloudId);
+  const local=localRecordForCloud(cloudId);
+  if(local&&summary&&Date.parse(local.updatedAt||0)>Date.parse(local.cloudSyncedAt||0)){
+    const proceed=confirm(
+      "This device has local changes that have not been synchronized. Replace them with the cloud copy?"
+    );
+    if(!proceed)return;
+  }
+
   setCloudBusy(true);
   setCloudStatus("Downloading the cloud deal...");
 
@@ -7572,7 +7685,6 @@ async function loadCloudDeal(cloudId){
     const result=await cloudRequest("/deals/"+encodeURIComponent(cloudId));
     const cloudDeal=result.deal;
     const source=cloudDeal.localRecord;
-
     if(!source||typeof source!=="object"){
       throw new Error("This cloud record does not contain a restorable workspace transaction.");
     }
@@ -7589,18 +7701,85 @@ async function loadCloudDeal(cloudId){
     const index=state.savedTransactions.findIndex(item=>
       item.id===localId||item.cloudDealId===cloudDeal.id
     );
-
-    if(index>=0){
-      state.savedTransactions[index]=localRecord;
-    }else{
-      state.savedTransactions.push(localRecord);
-    }
+    if(index>=0)state.savedTransactions[index]=localRecord;
+    else state.savedTransactions.push(localRecord);
 
     persistSavedTransactions();
     renderSavedTransactions();
     await openSavedTransaction(localRecord.id);
+    renderCloudDeals();
     setCloudStatus("Cloud deal restored on this device and saved locally.","success");
     $("workspace").scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(error){
+    setCloudStatus(error.message,"error");
+  }finally{
+    setCloudBusy(false);
+  }
+}
+
+async function changeCloudLifecycle(cloudId,action){
+  const deal=cloudState.deals.find(item=>item.id===cloudId);
+  if(!deal)return;
+
+  if(action==="delete"){
+    const confirmation=prompt(
+      'Permanent deletion cannot be undone. Type DELETE to remove "'+deal.title+'" from Broker Cloud.'
+    );
+    if(confirmation!=="DELETE"){
+      setCloudStatus("Permanent deletion cancelled.","warning");
+      return;
+    }
+  }else{
+    const verb=action==="archive"?"archive":"reopen";
+    if(!confirm("Do you want to "+verb+' "'+deal.title+'"?'))return;
+  }
+
+  setCloudBusy(true);
+  setCloudStatus(
+    action==="archive"?"Archiving cloud deal...":
+    action==="reopen"?"Reopening cloud deal...":"Permanently deleting cloud deal..."
+  );
+
+  try{
+    const encoded=encodeURIComponent(cloudId);
+    if(action==="archive"){
+      const result=await cloudRequest("/deals/"+encoded,{method:"DELETE"});
+      const local=localRecordForCloud(cloudId);
+      if(local){
+        local.cloudSyncedAt=result.deal.updatedAt;
+        local.deal=normalizeDealTransaction(local).deal;
+        local.deal.archived=true;
+      }
+    }
+
+    if(action==="reopen"){
+      const result=await cloudRequest("/deals/"+encoded+"/reopen",{method:"POST"});
+      const local=localRecordForCloud(cloudId);
+      if(local){
+        local.cloudSyncedAt=result.deal.updatedAt;
+        local.deal=normalizeDealTransaction(local).deal;
+        local.deal.archived=false;
+      }
+    }
+
+    if(action==="delete"){
+      await cloudRequest("/deals/"+encoded+"/permanent",{method:"DELETE"});
+      const local=localRecordForCloud(cloudId);
+      if(local){
+        local.cloudDealId=null;
+        local.cloudSyncedAt=null;
+      }
+    }
+
+    persistSavedTransactions();
+    renderSavedTransactions();
+    await refreshBrokerCloud(false);
+    setCloudStatus(
+      action==="archive"?"Cloud deal archived. The local fallback remains available.":
+      action==="reopen"?"Cloud deal reopened.":
+      "Cloud deal permanently deleted. The local fallback remains available.",
+      "success"
+    );
   }catch(error){
     setCloudStatus(error.message,"error");
   }finally{
@@ -7615,10 +7794,17 @@ $("cloudSignInBtn").addEventListener("click",()=>{
 
 $("cloudRefreshBtn").addEventListener("click",()=>refreshBrokerCloud(true));
 $("cloudSyncBtn").addEventListener("click",syncCurrentDealToCloud);
+$("cloudSignOutBtn").addEventListener("click",()=>{
+  window.location.href="/cdn-cgi/access/logout";
+});
 
 $("cloudDealsList").addEventListener("click",event=>{
-  const button=event.target.closest("button[data-cloud-load]");
-  if(button)loadCloudDeal(button.dataset.cloudLoad);
+  const button=event.target.closest("button[data-cloud-action]");
+  if(!button)return;
+  const action=button.dataset.cloudAction;
+  const id=button.dataset.cloudId;
+  if(action==="load")loadCloudDeal(id);
+  else changeCloudLifecycle(id,action);
 });
 
 
