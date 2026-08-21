@@ -1562,6 +1562,89 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
   }
 }
 
+
+/* =========================================================
+   V2 BROKER CLOUD
+   ========================================================= */
+
+.cloud-panel{
+  margin-bottom:20px;
+  border-color:color-mix(in srgb,var(--accent) 45%,var(--border));
+}
+
+.cloud-account{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:center;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--surface2);
+}
+
+.cloud-account strong{
+  display:block;
+  font-size:14px;
+}
+
+.cloud-account-meta,
+.cloud-status{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.cloud-status.success{color:var(--success)}
+.cloud-status.warning{color:var(--warning)}
+.cloud-status.error{color:var(--danger)}
+
+.cloud-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.cloud-list{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.cloud-item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:14px;
+  align-items:center;
+  padding:13px 14px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--surface2);
+}
+
+.cloud-item-title{
+  font-weight:800;
+  font-size:13px;
+}
+
+.cloud-item-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+@media(max-width:720px){
+  .cloud-account,
+  .cloud-item{
+    grid-template-columns:1fr;
+  }
+
+  .cloud-actions{
+    justify-content:flex-start;
+  }
+}
+
 </style>
 </head>
 
@@ -1646,6 +1729,10 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
       ▦ Transaction
     </a>
 
+    <a href="#brokerCloud">
+      ☁ Cloud
+    </a>
+
     <a href="#savedTransactions">
       ◆ Deals
     </a>
@@ -1671,6 +1758,56 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
     </a>
 
   </nav>
+
+
+  <!-- =====================================================
+       V2 BROKER CLOUD
+       ===================================================== -->
+
+  <section class="card cloud-panel" id="brokerCloud">
+
+    <div class="card-title">
+      <div>
+        <h2>Broker Cloud</h2>
+        <p>
+          Securely synchronize saved deals through Cloudflare Access and D1.
+          Local V1.5 records remain available as an offline fallback.
+        </p>
+      </div>
+      <span class="badge">V2 CLOUD</span>
+    </div>
+
+    <div class="cloud-account">
+      <div>
+        <strong id="cloudAccountName">Not connected</strong>
+        <div class="cloud-account-meta" id="cloudAccountMeta">
+          Sign in to connect this browser to your broker account.
+        </div>
+        <div class="cloud-status" id="cloudStatus" role="status" aria-live="polite">
+          No local deal is uploaded automatically.
+        </div>
+      </div>
+
+      <div class="cloud-actions">
+        <button class="secondary-btn small-btn" id="cloudSignInBtn" type="button">
+          Sign in
+        </button>
+        <button class="secondary-btn small-btn" id="cloudRefreshBtn" type="button">
+          Refresh
+        </button>
+        <button class="primary-btn small-btn" id="cloudSyncBtn" type="button">
+          Sync Current Deal
+        </button>
+      </div>
+    </div>
+
+    <div class="cloud-list" id="cloudDealsList">
+      <div class="saved-empty">
+        Connect your broker account to view cloud deals.
+      </div>
+    </div>
+
+  </section>
 
   <!-- =====================================================
        WORKSPACE
@@ -7126,7 +7263,7 @@ loadSavedTransactionsFromStorage=function(){loadV13();state.savedTransactions=st
 const captureV13=captureTransaction;
 captureTransaction=function(){
  const t=captureV13(),existing=state.savedTransactions.find(x=>x.id===t.id),now=t.updatedAt;
- return normalizeDealTransaction({...t,version:"1.4",deal:{name:$("dealName").value.trim()||($("clientName").value.trim()?$("clientName").value.trim()+" · "+t.propertyType:t.propertyType+" Deal"),status:$("dealStatus").value,archived:Boolean(existing?.deal?.archived),client:{name:$("clientName").value.trim(),role:$("clientRole").value,email:$("clientEmail").value.trim(),phone:$("clientPhone").value.trim()},notes:$("dealNotes").value.trim(),activity:[{message:existing?"Deal details updated":"Deal created",at:now},...(existing?.deal?.activity||[])].slice(0,30)}});
+ return normalizeDealTransaction({...t,version:"1.4",cloudDealId:existing?.cloudDealId||null,cloudSyncedAt:existing?.cloudSyncedAt||null,deal:{name:$("dealName").value.trim()||($("clientName").value.trim()?$("clientName").value.trim()+" · "+t.propertyType:t.propertyType+" Deal"),status:$("dealStatus").value,archived:Boolean(existing?.deal?.archived),client:{name:$("clientName").value.trim(),role:$("clientRole").value,email:$("clientEmail").value.trim(),phone:$("clientPhone").value.trim()},notes:$("dealNotes").value.trim(),activity:[{message:existing?"Deal details updated":"Deal created",at:now},...(existing?.deal?.activity||[])].slice(0,30)}});
 };
 const newV13=newTransaction;
 newTransaction=function(confirmFirst=true){
@@ -7226,6 +7363,264 @@ $("clientPhone").addEventListener(
 ["dealName","dealStatus","clientRole","clientName","clientEmail","clientPhone","dealNotes"].forEach(id=>$(id).addEventListener(id==="dealStatus"||id==="clientRole"?"change":"input",markDirty));
 $("dealSearch").addEventListener("input",renderSavedTransactions);$("dealStatusFilter").addEventListener("change",renderSavedTransactions);$("dealSort").addEventListener("change",renderSavedTransactions);
 $("savedTransactionsList").addEventListener("click",e=>{const b=e.target.closest("button[data-action]");if(!b)return;if(b.dataset.action==="archive")setDealArchived(b.dataset.id,true);if(b.dataset.action==="reopen")setDealArchived(b.dataset.id,false);});
+
+
+/* =========================================================
+   V2 BROKER CLOUD
+   ========================================================= */
+
+const cloudState = {
+  user:null,
+  plans:null,
+  deals:[],
+  connected:false
+};
+
+function setCloudStatus(message,type=""){
+  const status=$("cloudStatus");
+  status.textContent=message;
+  status.className="cloud-status"+(type?" "+type:"");
+}
+
+function setCloudBusy(busy){
+  ["cloudRefreshBtn","cloudSyncBtn"].forEach(id=>{
+    $(id).disabled=busy;
+  });
+}
+
+async function cloudRequest(path,options={}){
+  const response=await fetch("/api/v2"+path,{
+    credentials:"include",
+    headers:{
+      "Accept":"application/json",
+      ...(options.body?{"Content-Type":"application/json"}:{}),
+      ...(options.headers||{})
+    },
+    ...options
+  });
+
+  const contentType=response.headers.get("content-type")||"";
+  if(!contentType.includes("application/json")){
+    throw new Error("Sign in through Cloudflare Access, then return here and choose Refresh.");
+  }
+
+  const data=await response.json();
+  if(!response.ok){
+    throw new Error(data?.error?.message||"The Broker Cloud request failed.");
+  }
+  return data;
+}
+
+function renderCloudAccount(){
+  if(!cloudState.user){
+    $("cloudAccountName").textContent="Not connected";
+    $("cloudAccountMeta").textContent="Sign in to connect this browser to your broker account.";
+    return;
+  }
+
+  const user=cloudState.user;
+  const plan=cloudState.plans?.[user.plan]||{};
+  $("cloudAccountName").textContent=user.name||user.email;
+  $("cloudAccountMeta").textContent=
+    user.email+" · "+user.plan.toUpperCase()+" plan · "+
+    cloudState.deals.length+" of "+(plan.dealLimit||"—")+" active deals";
+}
+
+function renderCloudDeals(){
+  const box=$("cloudDealsList");
+  const deals=cloudState.deals;
+
+  if(!cloudState.connected){
+    box.innerHTML='<div class="saved-empty">Connect your broker account to view cloud deals.</div>';
+    return;
+  }
+
+  if(!deals.length){
+    box.innerHTML='<div class="saved-empty">No cloud deals yet. Save a local transaction, then choose <strong>Sync Current Deal</strong>.</div>';
+    return;
+  }
+
+  box.innerHTML=deals.map(deal=>{
+    const client=deal.client_name||"Client not specified";
+    const property=deal.property_type||"Property";
+    const value=peso(Number(deal.selling_price)||0);
+    const updated=formatDateTime(deal.updated_at);
+    return '<article class="cloud-item">'+
+      '<div><div class="cloud-item-title">'+escapeHtml(deal.title)+'</div>'+
+      '<div class="cloud-item-meta">'+escapeHtml(client)+" · "+escapeHtml(property)+" · "+
+      escapeHtml(value)+" · Updated "+escapeHtml(updated)+'</div></div>'+
+      '<button class="secondary-btn small-btn" type="button" data-cloud-load="'+
+      escapeHtml(deal.id)+'">Load on This Device</button></article>';
+  }).join("");
+}
+
+async function refreshBrokerCloud(showSuccess=true){
+  setCloudBusy(true);
+  setCloudStatus("Connecting securely to Broker Cloud...");
+
+  try{
+    const account=await cloudRequest("/me");
+    const listing=await cloudRequest("/deals");
+    cloudState.user=account.user;
+    cloudState.plans=account.plans;
+    cloudState.deals=listing.deals||[];
+    cloudState.connected=true;
+    renderCloudAccount();
+    renderCloudDeals();
+    if(showSuccess){
+      setCloudStatus("Broker Cloud connected. Your local deals remain unchanged.","success");
+    }
+    return true;
+  }catch(error){
+    cloudState.user=null;
+    cloudState.connected=false;
+    renderCloudAccount();
+    renderCloudDeals();
+    setCloudStatus(error.message,"error");
+    return false;
+  }finally{
+    setCloudBusy(false);
+  }
+}
+
+function cloudPayloadFromLocal(record){
+  const deal=normalizeDealTransaction(record).deal;
+  const location=[
+    record.location?.barangayName,
+    record.location?.cityName,
+    record.location?.provinceName
+  ].filter(Boolean).join(", ");
+
+  return {
+    title:deal.name,
+    status:deal.status,
+    clientName:deal.client.name,
+    clientEmail:deal.client.email,
+    propertyType:record.propertyType||"",
+    sellingPrice:Number(record.sellingPrice)||0,
+    locationLabel:location,
+    localTransactionId:record.id,
+    localRecord:{...record,cloudDealId:record.cloudDealId||null}
+  };
+}
+
+async function syncCurrentDealToCloud(){
+  if(!state.activeTransactionId){
+    setCloudStatus("Save the transaction locally before syncing it to Broker Cloud.","error");
+    $("saveTransactionBtn").focus();
+    return;
+  }
+
+  if(state.isDirty){
+    setCloudStatus("Save your latest local changes before syncing.","error");
+    $("saveTransactionBtn").focus();
+    return;
+  }
+
+  const record=state.savedTransactions.find(item=>item.id===state.activeTransactionId);
+  if(!record){
+    setCloudStatus("The active saved transaction could not be found.","error");
+    return;
+  }
+
+  setCloudBusy(true);
+  setCloudStatus("Synchronizing the current deal...");
+
+  try{
+    if(!cloudState.connected){
+      const connected=await refreshBrokerCloud(false);
+      if(!connected)return;
+      setCloudBusy(true);
+    }
+
+    const payload=cloudPayloadFromLocal(record);
+    const existingCloudId=record.cloudDealId;
+    const result=await cloudRequest(
+      existingCloudId?"/deals/"+encodeURIComponent(existingCloudId):"/deals",
+      {
+        method:existingCloudId?"PUT":"POST",
+        body:JSON.stringify(payload)
+      }
+    );
+
+    record.cloudDealId=result.deal.id;
+    record.cloudSyncedAt=result.deal.updatedAt||new Date().toISOString();
+    persistSavedTransactions();
+    renderSavedTransactions();
+    await refreshBrokerCloud(false);
+    setCloudStatus(
+      existingCloudId?"Cloud deal updated successfully.":"Deal uploaded to Broker Cloud successfully.",
+      "success"
+    );
+  }catch(error){
+    setCloudStatus(error.message,"error");
+  }finally{
+    setCloudBusy(false);
+  }
+}
+
+async function loadCloudDeal(cloudId){
+  if(state.isDirty){
+    const proceed=confirm("You have unsaved local changes. Load the cloud deal anyway?");
+    if(!proceed)return;
+  }
+
+  setCloudBusy(true);
+  setCloudStatus("Downloading the cloud deal...");
+
+  try{
+    const result=await cloudRequest("/deals/"+encodeURIComponent(cloudId));
+    const cloudDeal=result.deal;
+    const source=cloudDeal.localRecord;
+
+    if(!source||typeof source!=="object"){
+      throw new Error("This cloud record does not contain a restorable workspace transaction.");
+    }
+
+    const localId=cloudDeal.localTransactionId||source.id||createTransactionId();
+    const localRecord=normalizeDealTransaction({
+      ...source,
+      id:localId,
+      cloudDealId:cloudDeal.id,
+      cloudSyncedAt:cloudDeal.updatedAt,
+      updatedAt:cloudDeal.updatedAt||source.updatedAt
+    });
+
+    const index=state.savedTransactions.findIndex(item=>
+      item.id===localId||item.cloudDealId===cloudDeal.id
+    );
+
+    if(index>=0){
+      state.savedTransactions[index]=localRecord;
+    }else{
+      state.savedTransactions.push(localRecord);
+    }
+
+    persistSavedTransactions();
+    renderSavedTransactions();
+    await openSavedTransaction(localRecord.id);
+    setCloudStatus("Cloud deal restored on this device and saved locally.","success");
+    $("workspace").scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(error){
+    setCloudStatus(error.message,"error");
+  }finally{
+    setCloudBusy(false);
+  }
+}
+
+$("cloudSignInBtn").addEventListener("click",()=>{
+  window.open("/api/v2/me","_blank","noopener");
+  setCloudStatus("Complete Cloudflare Access sign-in in the new tab, then choose Refresh.","warning");
+});
+
+$("cloudRefreshBtn").addEventListener("click",()=>refreshBrokerCloud(true));
+$("cloudSyncBtn").addEventListener("click",syncCurrentDealToCloud);
+
+$("cloudDealsList").addEventListener("click",event=>{
+  const button=event.target.closest("button[data-cloud-load]");
+  if(button)loadCloudDeal(button.dataset.cloudLoad);
+});
+
 
 async function initialize(){
 
