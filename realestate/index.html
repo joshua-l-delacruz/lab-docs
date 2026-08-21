@@ -6690,23 +6690,69 @@ function setPrintStatus(
 
 function generateProfessionalPdf(){
 
-  if(
-    !validateReportBeforePrint()
-  ){
-
-    setPrintStatus(
-      "The report is not ready. Review the highlighted field or message above, save the transaction, then try again.",
-      "error"
-    );
-
-    return;
-
-  }
+  setPrintStatus(
+    "Checking the saved report...",
+    "success"
+  );
 
   const originalTitle =
     document.title;
 
   try{
+
+    /*
+      Saving already validates the client, contact and location fields.
+      Re-running the form validators here caused the Chrome/Brave click
+      to throw before window.print() could run.
+    */
+
+    if(
+      !state.activeTransactionId
+    ){
+
+      setPrintStatus(
+        "Save this transaction before generating the professional PDF.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    if(state.isDirty){
+
+      setPrintStatus(
+        "Save your latest changes before generating the professional PDF.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    const reportValue =
+      Math.max(
+        numberValue(
+          "sellingPrice"
+        ),
+        numberValue(
+          "fairMarketValue"
+        ),
+        numberValue(
+          "zonalValue"
+        )
+      );
+
+    if(reportValue <= 0){
+
+      setPrintStatus(
+        "Enter a property value and save the transaction before generating the professional PDF.",
+        "error"
+      );
+
+      return;
+
+    }
 
     document.title =
       professionalPdfFilename()
@@ -6719,12 +6765,6 @@ function generateProfessionalPdf(){
       "Opening the browser print dialog...",
       "success"
     );
-
-    /*
-      The report is updated continuously while the form changes.
-      Avoid recalculating it here: a browser-specific exception in
-      that duplicate preparation step must never block printing.
-    */
 
     window.print();
 
