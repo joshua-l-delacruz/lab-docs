@@ -29,7 +29,7 @@ export default {
         return problem(503, "D1_NOT_CONFIGURED", "The V2 database binding has not been configured.");
       }
 
-      const user = await requireUser(ctx, env);
+      const user = await requireUser(request, ctx, env);
 
       if (!user) {
         return problem(401, "AUTHENTICATION_REQUIRED", "Sign in through Cloudflare Access to use the broker workspace.");
@@ -81,10 +81,8 @@ export default {
   }
 };
 
-async function requireUser(ctx, env) {
-  if (!ctx.access) return null;
-
-  const identity = await ctx.access.getIdentity();
+async function requireUser(request, ctx, env) {
+  const identity = await resolveAccessIdentity(request, ctx);
   const email = String(identity?.email || "").trim().toLowerCase();
 
   if (!email) return null;
@@ -107,6 +105,38 @@ async function requireUser(ctx, env) {
             stripe_subscription_id, created_at, updated_at
        FROM users WHERE id = ?`
   ).bind(id).first();
+}
+
+async function resolveAccessIdentity(request, ctx) {
+  if (ctx.access) {
+    const identity = await ctx.access.getIdentity();
+    if (identity?.email) return identity;
+  }
+
+  const cookie = request.headers.get("cookie") || "";
+  const assertion = request.headers.get("cf-access-jwt-assertion") || "";
+
+  if (!cookie && !assertion) return null;
+
+  const headers = new Headers();
+
+  if (cookie) headers.set("cookie", cookie);
+  if (assertion) headers.set("cf-access-jwt-assertion", assertion);
+
+  const identityUrl = new URL("/cdn-cgi/access/get-identity", request.url);
+  const response = await fetch(identityUrl, {
+    method: "GET",
+    headers,
+    redirect: "manual"
+  });
+
+  if (!response.ok) {
+    console.warn("Access identity lookup failed", response.status);
+    return null;
+  }
+
+  const identity = await response.json();
+  return identity?.email ? identity : null;
 }
 
 function publicUser(user) {
