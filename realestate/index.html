@@ -552,6 +552,26 @@ select:focus{
   color:var(--warning);
 }
 
+.print-status{
+  min-height:20px;
+  margin-top:7px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+}
+
+.print-status.success{
+  color:var(--success);
+}
+
+.print-status.warning{
+  color:var(--warning);
+}
+
+.print-status.error{
+  color:var(--danger);
+}
+
 .location-help{
   color:var(--muted);
   font-size:11px;
@@ -2834,9 +2854,20 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
       style="justify-content:space-between;align-items:center"
     >
 
-      <div class="print-tip">
-        Requires a complete saved transaction. For the cleanest PDF, select A4 paper and turn off
-        browser headers and footers in the print dialog.
+      <div>
+        <div class="print-tip">
+          Requires a complete saved transaction. For the cleanest PDF, select A4 paper and turn off
+          browser headers and footers in the print dialog.
+        </div>
+
+        <div
+          class="print-status"
+          id="printStatus"
+          role="status"
+          aria-live="polite"
+        >
+          Ready to generate your professional PDF.
+        </div>
       </div>
 
       <button
@@ -6636,58 +6667,182 @@ $("resetBtn")
    PRINT
    ========================================================= */
 
+function setPrintStatus(
+  message,
+  type = ""
+){
+
+  const status =
+    $("printStatus");
+
+  status.textContent =
+    message;
+
+  status.className =
+    "print-status" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+
+}
+
+function generateProfessionalPdf(){
+
+  setPrintStatus(
+    "Preparing your professional PDF...",
+    "success"
+  );
+
+  try{
+
+    if(
+      !validateReportBeforePrint()
+    ){
+
+      setPrintStatus(
+        "The report is not ready. Review the highlighted field or message above, save the transaction, then try again.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    calculate();
+
+    updateReportDate();
+
+    updateReportLocation();
+
+    updateChecklistReport();
+
+    updateProfessionalReport();
+
+    const originalTitle =
+      document.title;
+
+    let printStarted =
+      false;
+
+    let titleRestored =
+      false;
+
+    const handleBeforePrint =
+      () => {
+
+        printStarted =
+          true;
+
+        setPrintStatus(
+          "The print dialog opened. Choose Save as PDF to create the report.",
+          "success"
+        );
+
+      };
+
+    const restoreTitle =
+      () => {
+
+        if(titleRestored){
+          return;
+        }
+
+        titleRestored =
+          true;
+
+        document.title =
+          originalTitle;
+
+        window.removeEventListener(
+          "beforeprint",
+          handleBeforePrint
+        );
+
+        window.removeEventListener(
+          "afterprint",
+          handleAfterPrint
+        );
+
+      };
+
+    const handleAfterPrint =
+      () => {
+
+        restoreTitle();
+
+        setPrintStatus(
+          "Print dialog closed. If you saved the file, your professional PDF is ready.",
+          "success"
+        );
+
+      };
+
+    document.title =
+      professionalPdfFilename()
+        .replace(
+          /\.pdf$/i,
+          ""
+        );
+
+    window.addEventListener(
+      "beforeprint",
+      handleBeforePrint
+    );
+
+    window.addEventListener(
+      "afterprint",
+      handleAfterPrint
+    );
+
+    setPrintStatus(
+      "Opening the browser print dialog...",
+      "success"
+    );
+
+    window.focus();
+
+    window.print();
+
+    window.setTimeout(
+      () => {
+
+        if(!printStarted){
+
+          restoreTitle();
+
+          setPrintStatus(
+            "The browser did not open the print dialog. Press Ctrl+P now to print the prepared report.",
+            "warning"
+          );
+
+        }
+
+      },
+      750
+    );
+
+  }catch(error){
+
+    console.error(
+      "Unable to generate the professional PDF:",
+      error
+    );
+
+    setPrintStatus(
+      "The PDF could not be prepared. Press Ctrl+P to print the current report, or refresh the page and try again.",
+      "error"
+    );
+
+  }
+
+}
+
 $("printReportBtn")
   .addEventListener(
     "click",
-    () => {
-
-      if(
-        !validateReportBeforePrint()
-      ){
-        return;
-      }
-
-      calculate();
-
-      updateReportDate();
-
-      updateReportLocation();
-
-      updateChecklistReport();
-
-      updateProfessionalReport();
-
-      const originalTitle =
-        document.title;
-
-      document.title =
-        professionalPdfFilename()
-          .replace(
-            /\.pdf$/i,
-            ""
-          );
-
-      const restoreTitle =
-        () => {
-
-          document.title =
-            originalTitle;
-
-          window.removeEventListener(
-            "afterprint",
-            restoreTitle
-          );
-
-        };
-
-      window.addEventListener(
-        "afterprint",
-        restoreTitle
-      );
-
-      window.print();
-
-    }
+    generateProfessionalPdf
   );
 
 /* =========================================================
