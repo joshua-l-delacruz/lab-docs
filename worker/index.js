@@ -51,6 +51,24 @@ export default {
       }
 
       if (url.pathname === "/api/v2/me" && request.method === "GET") {
+        const returnTo = url.searchParams.get("returnTo");
+
+        if (returnTo) {
+          const destination = brokerWorkspaceReturn(returnTo, url.origin);
+
+          if (!destination) {
+            return problem(400, "INVALID_RETURN_URL", "The sign-in return address is not allowed.");
+          }
+
+          return new Response(null, {
+            status: 303,
+            headers: {
+              location: destination,
+              "cache-control": "no-store"
+            }
+          });
+        }
+
         return json({ user: publicUser(user), plans: planSummary(env) });
       }
 
@@ -155,6 +173,23 @@ async function resolveAccessIdentity(request, ctx) {
 
   const identity = await response.json();
   return identity?.email ? identity : null;
+}
+
+function brokerWorkspaceReturn(value, origin) {
+  try {
+    const destination = new URL(value, origin);
+
+    if (
+      destination.origin !== origin ||
+      destination.pathname !== "/realestate/"
+    ) {
+      return null;
+    }
+
+    return destination.pathname + destination.search + destination.hash;
+  } catch {
+    return null;
+  }
 }
 
 function publicUser(user) {
