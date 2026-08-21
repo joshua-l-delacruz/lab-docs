@@ -11,6 +11,14 @@
       "/api/v2/*"
     ]
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "realestate-saas",
+      "database_id": "deda6942-abd6-4a93-9167-22a417060953",
+      "migrations_dir": "migrations"
+    }
+  ],
   "observability": {
     "enabled": true
   }
