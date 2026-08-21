@@ -1214,6 +1214,10 @@ textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb
 .deal-timeline{display:grid;gap:8px;margin-top:12px}.timeline-item{display:grid;grid-template-columns:10px minmax(0,1fr);gap:10px;align-items:start;color:var(--muted);font-size:11px}.timeline-dot{width:8px;height:8px;margin-top:4px;border-radius:50%;background:var(--accent)}.timeline-item strong{display:block;color:var(--text);font-size:11px}
 @media(max-width:800px){.deal-stats{grid-template-columns:repeat(2,1fr)}.deal-filters{grid-template-columns:1fr}}
 
+
+.field-error{min-height:16px;color:var(--danger);font-size:10px;font-weight:700}
+input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 12%,transparent)}
+
 </style>
 </head>
 
@@ -1398,12 +1402,12 @@ textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb
         <span class="badge">V1.4</span>
       </div>
       <div class="form-grid three">
-        <div class="field"><label for="dealName">Deal name</label><input id="dealName" type="text" maxlength="100" placeholder="e.g. Cruz family house purchase"></div>
+        <div class="field"><label for="dealName">Deal name</label><input id="dealName" type="text" maxlength="100" placeholder="e.g. Cruz family house purchase" required aria-describedby="dealNameError"><span class="field-error" id="dealNameError" aria-live="polite"></span></div>
         <div class="field"><label for="dealStatus">Deal status</label><select id="dealStatus"><option>Lead</option><option selected>Active</option><option>Pending</option><option>Closed</option><option>Cancelled</option></select></div>
         <div class="field"><label for="clientRole">Client role</label><select id="clientRole"><option>Buyer</option><option>Seller</option><option>Buyer & Seller</option><option>Other</option></select></div>
-        <div class="field"><label for="clientName">Client name</label><input id="clientName" type="text" maxlength="100" placeholder="Full name or company"></div>
-        <div class="field"><label for="clientEmail">Client email</label><input id="clientEmail" type="email" maxlength="120" placeholder="name@example.com"></div>
-        <div class="field"><label for="clientPhone">Client phone</label><input id="clientPhone" type="tel" maxlength="40" placeholder="+63 9XX XXX XXXX"></div>
+        <div class="field"><label for="clientName">Client name</label><input id="clientName" type="text" maxlength="100" placeholder="Full name or company" required aria-describedby="clientNameError"><span class="field-error" id="clientNameError" aria-live="polite"></span></div>
+        <div class="field"><label for="clientEmail">Client email</label><input id="clientEmail" type="email" maxlength="120" placeholder="name@example.com" autocomplete="email" aria-describedby="clientEmailError"><span class="field-error" id="clientEmailError" aria-live="polite"></span></div>
+        <div class="field"><label for="clientPhone">Client phone</label><input id="clientPhone" type="tel" maxlength="24" placeholder="+63 9XX XXX XXXX" inputmode="tel" autocomplete="tel" aria-describedby="clientPhoneError"><span class="field-error" id="clientPhoneError" aria-live="polite"></span></div>
         <div class="field full"><label for="dealNotes">Deal notes</label><textarea id="dealNotes" maxlength="2000" placeholder="Next steps, client requirements, viewing notes or follow-up reminders"></textarea></div>
       </div>
       <div class="deal-timeline" id="dealTimeline"><div class="saved-empty">Activity will appear after this deal is saved.</div></div>
@@ -3080,6 +3084,126 @@ function captureTransaction(){
    SAVE TRANSACTION
    ========================================================= */
 
+
+function setClientFieldError(
+  fieldId,
+  message
+){
+
+  const field =
+    $(fieldId);
+
+  const error =
+    $(fieldId + "Error");
+
+  field.classList.toggle(
+    "invalid",
+    Boolean(message)
+  );
+
+  field.setAttribute(
+    "aria-invalid",
+    message
+      ? "true"
+      : "false"
+  );
+
+  error.textContent =
+    message || "";
+
+}
+
+function validateClientDealBeforeSave(){
+
+  const dealName =
+    $("dealName").value.trim();
+
+  const clientName =
+    $("clientName").value.trim();
+
+  const email =
+    $("clientEmail").value.trim();
+
+  const phone =
+    $("clientPhone").value.trim();
+
+  const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  const phoneDigits =
+    phone.replace(
+      /\D/g,
+      ""
+    );
+
+  const errors = {
+
+    dealName:
+      dealName
+        ? ""
+        : "Enter a deal name.",
+
+    clientName:
+      clientName
+        ? ""
+        : "Enter the client name or company.",
+
+    clientEmail:
+      email &&
+      !emailPattern.test(email)
+        ? "Enter a valid email address, such as name@example.com."
+        : "",
+
+    clientPhone:
+      phone &&
+      (
+        !/^[+()\d\s-]+$/.test(phone) ||
+        phoneDigits.length < 7 ||
+        phoneDigits.length > 15
+      )
+        ? "Enter a valid phone number containing 7 to 15 digits."
+        : ""
+
+  };
+
+  Object.entries(
+    errors
+  ).forEach(
+    ([fieldId,message]) =>
+      setClientFieldError(
+        fieldId,
+        message
+      )
+  );
+
+  const firstInvalid =
+    Object.keys(errors).find(
+      fieldId =>
+        errors[fieldId]
+    );
+
+  if(firstInvalid){
+
+    setStatus(
+      "Please correct the highlighted client and deal details before saving.",
+      "error"
+    );
+
+    $(firstInvalid).focus();
+
+    $("workspace").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
 function validateLocationBeforeSave(){
 
   const missing = [];
@@ -3130,6 +3254,10 @@ function validateLocationBeforeSave(){
    ========================================================= */
 
 function saveCurrentTransaction(){
+
+  if(!validateClientDealBeforeSave()){
+    return false;
+  }
 
   if(!validateLocationBeforeSave()){
     return false;
@@ -6387,6 +6515,53 @@ renderSavedTransactions=function(){
  if(!items.length){box.innerHTML=`<div class="saved-empty">${all.length?"No deals match the current search or filter.":"No deals saved yet.<br>Complete the workspace and choose <strong>Save Transaction</strong>."}</div>`;return;}
  box.innerHTML=items.map(t=>{const d=t.deal,active=t.id===state.activeTransactionId,loc=[t.location?.barangayName,t.location?.cityName,t.location?.provinceName].filter(Boolean).join(", ")||"Location not specified",client=d.client.name||"Client not specified",chip=d.archived?"archived":d.status.toLowerCase();return `<article class="saved-item ${active?"active":""} ${d.archived?"archived":""}"><div class="saved-main"><div class="saved-id">${escapeHtml(t.id)}${active?'<span class="current-chip">CURRENT</span>':""}<span class="status-chip ${escapeHtml(chip)}">${escapeHtml(d.archived?"Archived":d.status)}</span></div><div class="saved-title">${escapeHtml(d.name)}</div><div class="deal-client">${escapeHtml(client)} · ${escapeHtml(d.client.role)}</div><div class="saved-meta"><span>${escapeHtml(t.propertyType||"Property")} · ${escapeHtml(peso(t.sellingPrice||0))}</span><span>·</span><span>${escapeHtml(loc)}</span><span>·</span><span>Updated ${escapeHtml(formatDateTime(t.updatedAt||t.createdAt))}</span></div></div><div class="saved-actions"><button class="secondary-btn small-btn" type="button" data-action="open" data-id="${escapeHtml(t.id)}">Open</button><button class="secondary-btn small-btn" type="button" data-action="duplicate" data-id="${escapeHtml(t.id)}">Duplicate</button><button class="secondary-btn small-btn" type="button" data-action="${d.archived?"reopen":"archive"}" data-id="${escapeHtml(t.id)}">${d.archived?"Reopen":"Archive"}</button><button class="danger-btn small-btn" type="button" data-action="delete" data-id="${escapeHtml(t.id)}">Delete</button></div></article>`;}).join("");
 };
+
+$("clientPhone").addEventListener(
+  "input",
+  () => {
+
+    const sanitized =
+      $("clientPhone").value
+        .replace(
+          /[^+()\d\s-]/g,
+          ""
+        )
+        .replace(
+          /(?!^)[+]/g,
+          ""
+        );
+
+    if(
+      sanitized !==
+      $("clientPhone").value
+    ){
+      $("clientPhone").value =
+        sanitized;
+    }
+
+    setClientFieldError(
+      "clientPhone",
+      ""
+    );
+
+  }
+);
+
+["dealName","clientName","clientEmail"].forEach(
+  fieldId => {
+
+    $(fieldId).addEventListener(
+      "input",
+      () =>
+        setClientFieldError(
+          fieldId,
+          ""
+        )
+    );
+
+  }
+);
+
 ["dealName","dealStatus","clientRole","clientName","clientEmail","clientPhone","dealNotes"].forEach(id=>$(id).addEventListener(id==="dealStatus"||id==="clientRole"?"change":"input",markDirty));
 $("dealSearch").addEventListener("input",renderSavedTransactions);$("dealStatusFilter").addEventListener("change",renderSavedTransactions);$("dealSort").addEventListener("change",renderSavedTransactions);
 $("savedTransactionsList").addEventListener("click",e=>{const b=e.target.closest("button[data-action]");if(!b)return;if(b.dataset.action==="archive")setDealArchived(b.dataset.id,true);if(b.dataset.action==="reopen")setDealArchived(b.dataset.id,false);});
