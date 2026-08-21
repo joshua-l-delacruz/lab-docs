@@ -1,0 +1,33 @@
+name: Real Estate V2 Backend Tests
+
+on:
+  pull_request:
+    paths:
+      - "worker/**"
+      - "tests/**"
+      - "package.json"
+      - ".github/workflows/realestate-v2-backend.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "worker/**"
+      - "tests/**"
+      - "package.json"
+
+permissions:
+  contents: read
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run backend tests
+        run: npm test
