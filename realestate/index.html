@@ -995,6 +995,94 @@ footer{
   flex-wrap:wrap;
 }
 
+
+function validateReportBeforePrint(){
+
+  if(
+    !state.activeTransactionId
+  ){
+
+    setStatus(
+      "Save this transaction before generating a professional PDF.",
+      "error"
+    );
+
+    $("workspace").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+    $("saveTransactionBtn").focus();
+
+    return false;
+
+  }
+
+  if(state.isDirty){
+
+    setStatus(
+      "Save your latest changes before generating the PDF.",
+      "error"
+    );
+
+    $("workspace").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+    $("saveTransactionBtn").focus();
+
+    return false;
+
+  }
+
+  if(
+    !validateClientDealBeforeSave()
+  ){
+    return false;
+  }
+
+  if(
+    !validateLocationBeforeSave()
+  ){
+    return false;
+  }
+
+  const reportValue =
+    Math.max(
+      numberValue(
+        "sellingPrice"
+      ),
+      numberValue(
+        "fairMarketValue"
+      ),
+      numberValue(
+        "zonalValue"
+      )
+    );
+
+  if(reportValue <= 0){
+
+    setStatus(
+      "Enter a gross selling price, fair market value or BIR zonal value before generating the PDF.",
+      "error"
+    );
+
+    $("workspace").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+    $("sellingPrice").focus();
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
 /* =========================================================
    PRINT
    ========================================================= */
@@ -2747,7 +2835,7 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
     >
 
       <div class="print-tip">
-        For the cleanest PDF, select A4 paper and turn off
+        Requires a complete saved transaction. For the cleanest PDF, select A4 paper and turn off
         browser headers and footers in the print dialog.
       </div>
 
@@ -6552,6 +6640,12 @@ $("printReportBtn")
   .addEventListener(
     "click",
     () => {
+
+      if(
+        !validateReportBeforePrint()
+      ){
+        return;
+      }
 
       calculate();
 
