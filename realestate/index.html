@@ -1936,7 +1936,7 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
         <button class="secondary-btn small-btn" id="cloudRefreshBtn" type="button">
           Refresh
         </button>
-        <button class="secondary-btn small-btn" id="cloudSignOutBtn" type="button">
+        <button class="secondary-btn small-btn" id="cloudSignOutBtn" type="button" hidden>
           Sign out
         </button>
         <button class="primary-btn small-btn" id="cloudSyncBtn" type="button">
@@ -7582,6 +7582,10 @@ function syncStateForCloud(deal){
 }
 
 function renderCloudAccount(){
+  const connected=Boolean(cloudState.connected&&cloudState.user);
+  $("cloudSignInBtn").hidden=connected;
+  $("cloudSignOutBtn").hidden=!connected;
+
   if(!cloudState.user){
     $("cloudAccountName").textContent="Not connected";
     $("cloudAccountMeta").textContent="Sign in to connect this browser to your broker account.";
