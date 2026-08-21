@@ -1,0 +1,9 @@
+worker/
+migrations/
+docs/realestate-v2-setup.md
+wrangler.jsonc
+package.json
+package-lock.json
+.dev.vars*
+.git/
+.github/
