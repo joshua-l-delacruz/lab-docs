@@ -3931,6 +3931,10 @@ function validateLocationBeforeSave(){
 
 function saveCurrentTransaction(){
 
+  if(!requireBrokerAuthentication("saving or updating this transaction")){
+    return false;
+  }
+
   if(!validateClientDealBeforeSave()){
     return false;
   }
@@ -6927,6 +6931,10 @@ $("updateBtn")
     "click",
     () => {
 
+      if(!requireBrokerAuthentication("updating this estimate")){
+        return;
+      }
+
       calculate();
 
       $("costs")
@@ -6970,6 +6978,14 @@ function setPrintStatus(
 }
 
 function generateProfessionalPdf(){
+
+  if(!requireBrokerAuthentication("generating or printing this report")){
+    setPrintStatus(
+      "Sign in through Cloudflare Access before generating or printing this report.",
+      "error"
+    );
+    return;
+  }
 
   setPrintStatus(
     "Checking the saved report...",
@@ -7581,6 +7597,24 @@ function syncStateForCloud(deal){
   return {label:"Synced",kind:"success"};
 }
 
+function requireBrokerAuthentication(action){
+  if(cloudState.connected&&cloudState.user){
+    return true;
+  }
+
+  const message=
+    "Sign in through Cloudflare Access before "+action+". Return here and choose Refresh.";
+  setCloudStatus(message,"warning");
+  $("brokerCloud").scrollIntoView({behavior:"smooth",block:"center"});
+  $("cloudSignInBtn").focus();
+
+  if(window.confirm("Authentication required. Open Cloudflare Access sign-in now?")){
+    window.open("/api/v2/me","_blank","noopener");
+  }
+
+  return false;
+}
+
 function renderCloudAccount(){
   const connected=Boolean(cloudState.connected&&cloudState.user);
   $("cloudSignInBtn").hidden=connected;
@@ -7697,6 +7731,10 @@ function cloudPayloadFromLocal(record){
 }
 
 async function syncCurrentDealToCloud(){
+  if(!requireBrokerAuthentication("synchronizing this deal")){
+    return;
+  }
+
   if(!state.activeTransactionId){
     setCloudStatus("Save the transaction locally before syncing it to Broker Cloud.","error");
     $("saveTransactionBtn").focus();
@@ -7940,6 +7978,8 @@ async function initialize(){
   updateSaveStateUI();
 
   await loadProvinces();
+
+  await refreshBrokerCloud(false);
 
 }
 
