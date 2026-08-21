@@ -2,11 +2,6 @@ name: Real Estate V2 Backend Tests
 
 on:
   pull_request:
-    paths:
-      - "worker/**"
-      - "tests/**"
-      - "package.json"
-      - ".github/workflows/realestate-v2-backend.yml"
   push:
     branches:
       - main
