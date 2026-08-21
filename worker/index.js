@@ -1,4 +1,39 @@
+const SECURITY_HEADERS = {
+  "content-security-policy": [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self' https://psgc.cloud https://nominatim.openstreetmap.org",
+    "frame-src 'none'",
+    "worker-src 'self'",
+    "manifest-src 'self'",
+    "upgrade-insecure-requests"
+  ].join("; "),
+  "cross-origin-opener-policy": "same-origin",
+  "cross-origin-resource-policy": "same-origin",
+  "permissions-policy": [
+    "geolocation=(self)",
+    "camera=()",
+    "microphone=()",
+    "payment=()",
+    "usb=()",
+    "interest-cohort=()"
+  ].join(", "),
+  "referrer-policy": "strict-origin-when-cross-origin",
+  "strict-transport-security": "max-age=31536000; includeSubDomains",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "DENY",
+  "x-permitted-cross-domain-policies": "none"
+};
+
 const JSON_HEADERS = {
+  ...SECURITY_HEADERS,
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store"
 };
@@ -22,7 +57,8 @@ export default {
     const url = new URL(request.url);
 
     if (!url.pathname.startsWith("/api/v2/")) {
-      return env.ASSETS.fetch(request);
+      const assetResponse = await env.ASSETS.fetch(request);
+      return secureResponse(assetResponse);
     }
 
     try {
@@ -55,7 +91,7 @@ export default {
           request.headers.get("sec-fetch-mode") === "navigate";
 
         if (isBrowserNavigation) {
-          return Response.redirect(
+          return redirect(
             new URL("/realestate/?brokerSignIn=complete#brokerCloud", url.origin),
             303
           );
@@ -70,13 +106,7 @@ export default {
             return problem(400, "INVALID_RETURN_URL", "The sign-in return address is not allowed.");
           }
 
-          return new Response(null, {
-            status: 303,
-            headers: {
-              location: destination,
-              "cache-control": "no-store"
-            }
-          });
+          return redirect(destination, 303);
         }
 
         return json({ user: publicUser(user), plans: planSummary(env) });
@@ -447,6 +477,32 @@ function limitsFor(user) {
 
 function cleanText(value, limit) {
   return String(value || "").trim().slice(0, limit);
+}
+
+function secureResponse(response) {
+  const headers = new Headers(response.headers);
+
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    headers.set(name, value);
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+
+function redirect(location, status = 303) {
+  return secureResponse(
+    new Response(null, {
+      status,
+      headers: {
+        location: String(location),
+        "cache-control": "no-store"
+      }
+    })
+  );
 }
 
 function json(data, status = 200) {
