@@ -26,14 +26,19 @@ const SECURITY_HEADERS = {
     "interest-cohort=()"
   ].join(", "),
   "referrer-policy": "strict-origin-when-cross-origin",
-  "strict-transport-security": "max-age=31536000; includeSubDomains",
+  "strict-transport-security": "max-age=63072000; includeSubDomains",
   "x-content-type-options": "nosniff",
   "x-frame-options": "DENY",
   "x-permitted-cross-domain-policies": "none"
 };
 
-const JSON_HEADERS = {
+const API_SECURITY_HEADERS = {
   ...SECURITY_HEADERS,
+  "content-security-policy": "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'none'"
+};
+
+const JSON_HEADERS = {
+  ...API_SECURITY_HEADERS,
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store"
 };
@@ -517,6 +522,7 @@ export {
   ApiError,
   MAX_REQUEST_BYTES,
   PLAN_LIMITS,
+  API_SECURITY_HEADERS,
   SECURITY_HEADERS,
   cleanText,
   hasSameOrigin,
