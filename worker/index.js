@@ -517,9 +517,11 @@ export {
   ApiError,
   MAX_REQUEST_BYTES,
   PLAN_LIMITS,
+  SECURITY_HEADERS,
   cleanText,
   hasSameOrigin,
   limitsFor,
   normalizeDeal,
-  readJson
+  readJson,
+  secureResponse
 };
