@@ -1564,6 +1564,102 @@ input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);box-sha
 
 
 /* =========================================================
+   V1.5 COMPACT A4 PRINT LAYOUT
+   Keeps ordinary reports on one page while allowing long content to flow.
+   ========================================================= */
+
+@media print{
+
+  #report .report-header{
+    padding-bottom:4mm!important;
+  }
+
+  #report .report-header h2{
+    font-size:17pt!important;
+  }
+
+  #report .report-header p{
+    margin-top:1mm!important;
+    font-size:8pt!important;
+  }
+
+  #report .report-section{
+    padding:3mm 0!important;
+    page-break-inside:auto!important;
+    break-inside:auto!important;
+  }
+
+  #report .report-section h3{
+    margin-bottom:1.5mm!important;
+    font-size:8pt!important;
+    page-break-after:avoid!important;
+    break-after:avoid!important;
+  }
+
+  #report .report-grid{
+    column-gap:9mm!important;
+    row-gap:.4mm!important;
+  }
+
+  #report .report-line{
+    gap:5mm!important;
+    padding:.65mm 0!important;
+    font-size:8.5pt!important;
+    line-height:1.2!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  #report .report-total{
+    margin-top:2.5mm!important;
+    padding-top:2.5mm!important;
+    font-size:11pt!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  #report .report-warning{
+    margin-top:2.5mm!important;
+    padding:2.5mm!important;
+    font-size:7.2pt!important;
+    line-height:1.3!important;
+  }
+
+  #report .report-disclaimer{
+    margin-top:2mm!important;
+    padding-top:2mm!important;
+    font-size:6.7pt!important;
+    line-height:1.3!important;
+  }
+
+  #report .report-signatures{
+    gap:14mm!important;
+    margin-top:4mm!important;
+  }
+
+  #report .signature-line{
+    padding-top:6mm!important;
+  }
+
+  #report .signature-caption{
+    padding-top:1mm!important;
+    font-size:6.7pt!important;
+  }
+
+  #report .report-document-footer{
+    margin-top:3mm!important;
+    padding-top:2mm!important;
+    font-size:6.2pt!important;
+  }
+
+  #report .report-allocation{
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+}
+
+
+/* =========================================================
    V2 BROKER CLOUD
    ========================================================= */
 
