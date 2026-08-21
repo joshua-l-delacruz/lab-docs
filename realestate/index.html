@@ -6690,94 +6690,23 @@ function setPrintStatus(
 
 function generateProfessionalPdf(){
 
-  setPrintStatus(
-    "Preparing your professional PDF...",
-    "success"
-  );
+  if(
+    !validateReportBeforePrint()
+  ){
+
+    setPrintStatus(
+      "The report is not ready. Review the highlighted field or message above, save the transaction, then try again.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const originalTitle =
+    document.title;
 
   try{
-
-    if(
-      !validateReportBeforePrint()
-    ){
-
-      setPrintStatus(
-        "The report is not ready. Review the highlighted field or message above, save the transaction, then try again.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    calculate();
-
-    updateReportDate();
-
-    updateReportLocation();
-
-    updateChecklistReport();
-
-    updateProfessionalReport();
-
-    const originalTitle =
-      document.title;
-
-    let printStarted =
-      false;
-
-    let titleRestored =
-      false;
-
-    const handleBeforePrint =
-      () => {
-
-        printStarted =
-          true;
-
-        setPrintStatus(
-          "The print dialog opened. Choose Save as PDF to create the report.",
-          "success"
-        );
-
-      };
-
-    const restoreTitle =
-      () => {
-
-        if(titleRestored){
-          return;
-        }
-
-        titleRestored =
-          true;
-
-        document.title =
-          originalTitle;
-
-        window.removeEventListener(
-          "beforeprint",
-          handleBeforePrint
-        );
-
-        window.removeEventListener(
-          "afterprint",
-          handleAfterPrint
-        );
-
-      };
-
-    const handleAfterPrint =
-      () => {
-
-        restoreTitle();
-
-        setPrintStatus(
-          "Print dialog closed. If you saved the file, your professional PDF is ready.",
-          "success"
-        );
-
-      };
 
     document.title =
       professionalPdfFilename()
@@ -6786,53 +6715,53 @@ function generateProfessionalPdf(){
           ""
         );
 
-    window.addEventListener(
-      "beforeprint",
-      handleBeforePrint
-    );
-
-    window.addEventListener(
-      "afterprint",
-      handleAfterPrint
-    );
-
     setPrintStatus(
       "Opening the browser print dialog...",
       "success"
     );
 
-    window.focus();
+    /*
+      The report is updated continuously while the form changes.
+      Avoid recalculating it here: a browser-specific exception in
+      that duplicate preparation step must never block printing.
+    */
 
     window.print();
 
-    window.setTimeout(
-      () => {
-
-        if(!printStarted){
-
-          restoreTitle();
-
-          setPrintStatus(
-            "The browser did not open the print dialog. Press Ctrl+P now to print the prepared report.",
-            "warning"
-          );
-
-        }
-
-      },
-      750
+    setPrintStatus(
+      "Print dialog closed. If you saved the file, your professional PDF is ready.",
+      "success"
     );
 
   }catch(error){
 
     console.error(
-      "Unable to generate the professional PDF:",
+      "Unable to open the browser print dialog:",
       error
     );
 
+    const detail =
+      error &&
+      error.message
+        ? " Browser message: " +
+          error.message
+        : "";
+
     setPrintStatus(
-      "The PDF could not be prepared. Press Ctrl+P to print the current report, or refresh the page and try again.",
+      "The browser could not open the print dialog." +
+      detail +
+      " Press Ctrl+P to print the prepared report.",
       "error"
+    );
+
+  }finally{
+
+    window.setTimeout(
+      () => {
+        document.title =
+          originalTitle;
+      },
+      500
     );
 
   }
