@@ -119,7 +119,7 @@ test("uses a locked-down CSP for JSON API responses", () => {
 
 test("homepage uses external assets and a strict CSP", async () => {
   const homepage = await readFile(new URL("../index.html", import.meta.url), "utf8");
-  assert.match(homepage, /href="\/assets\/css\/home\.css\?v=1"/);
+  assert.match(homepage, /href="\/assets\/css\/home\.css\?v=2"/);
   assert.match(homepage, /src="\/assets\/js\/home\.js\?v=1"/);
   assert.doesNotMatch(homepage, /<style[\s>]/i);
   assert.doesNotMatch(homepage, /\sstyle=/i);
