@@ -137,3 +137,17 @@ test("strict homepage policy can be applied without changing other pages", () =>
   );
   assert.match(SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
 });
+
+
+test("C++ case study uses external assets and a strict CSP", async () => {
+  const page = await readFile(new URL("../cpp-calculator/index.html", import.meta.url), "utf8");
+  const source = await readFile(new URL("../worker/index.js", import.meta.url), "utf8");
+
+  assert.match(page, /href="\/assets\/css\/cpp-calculator\.css\?v=1"/);
+  assert.match(page, /src="\/assets\/js\/cpp-calculator\.js\?v=1"/);
+  assert.doesNotMatch(page, /<style[\s>]/i);
+  assert.doesNotMatch(page, /\sstyle=/i);
+  assert.doesNotMatch(page, /<script(?![^>]*\bsrc=)[^>]*>/i);
+  assert.match(source, /url\.pathname === "\/cpp-calculator\/"/);
+  assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
+});
