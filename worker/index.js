@@ -83,10 +83,15 @@ export default {
 
     if (!url.pathname.startsWith("/api/v2/")) {
       const assetResponse = await env.ASSETS.fetch(request);
-      const policy =
-        url.pathname === "/" || url.pathname === "/index.html"
-          ? HOME_SECURITY_HEADERS
-          : SECURITY_HEADERS;
+      const usesStrictStaticPolicy =
+        url.pathname === "/" ||
+        url.pathname === "/index.html" ||
+        url.pathname === "/cpp-calculator" ||
+        url.pathname === "/cpp-calculator/" ||
+        url.pathname === "/cpp-calculator/index.html";
+      const policy = usesStrictStaticPolicy
+        ? HOME_SECURITY_HEADERS
+        : SECURITY_HEADERS;
       return secureResponse(assetResponse, policy);
     }
 
