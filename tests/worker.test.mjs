@@ -151,3 +151,25 @@ test("C++ case study uses external assets and a strict CSP", async () => {
   assert.match(source, /url\.pathname === "\/cpp-calculator\/"/);
   assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
 });
+
+test("services page presents scoped packages and uses a strict CSP", async () => {
+  const page = await readFile(new URL("../services/index.html", import.meta.url), "utf8");
+  const source = await readFile(new URL("../worker/index.js", import.meta.url), "utf8");
+
+  assert.match(page, /href="\/assets\/css\/services\.css\?v=1"/);
+  assert.match(page, /src="\/assets\/js\/services\.js\?v=1"/);
+  assert.doesNotMatch(page, /<style[\s>]/i);
+  assert.doesNotMatch(page, /\sstyle=/i);
+  assert.doesNotMatch(page, /<script(?![^>]*\bsrc=)[^>]*>/i);
+  assert.match(source, /url\.pathname === "\/services\/"/);
+  assert.match(page, /Portfolio \/ Landing Page/);
+  assert.match(page, /Interactive Business Tool/);
+  assert.match(page, /Full-Stack Web Application/);
+  assert.match(page, /30–50% deposit/);
+  assert.match(page, /name="email"/);
+  assert.match(page, /Request a Quote/);
+  assert.match(page, /realestate-workspace\.png/);
+  assert.match(page, /cpp-calculator-dashboard\.png/);
+  assert.match(page, /global-malware-trends-dashboard\.png/);
+  assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
+});

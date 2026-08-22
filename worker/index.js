@@ -88,7 +88,10 @@ export default {
         url.pathname === "/index.html" ||
         url.pathname === "/cpp-calculator" ||
         url.pathname === "/cpp-calculator/" ||
-        url.pathname === "/cpp-calculator/index.html";
+        url.pathname === "/cpp-calculator/index.html" ||
+        url.pathname === "/services" ||
+        url.pathname === "/services/" ||
+        url.pathname === "/services/index.html";
       const policy = usesStrictStaticPolicy
         ? HOME_SECURITY_HEADERS
         : SECURITY_HEADERS;
