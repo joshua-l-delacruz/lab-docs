@@ -89,6 +89,9 @@ export default {
         url.pathname === "/cpp-calculator" ||
         url.pathname === "/cpp-calculator/" ||
         url.pathname === "/cpp-calculator/index.html" ||
+        url.pathname === "/security" ||
+        url.pathname === "/security/" ||
+        url.pathname === "/security/index.html" ||
         url.pathname === "/services" ||
         url.pathname === "/services/" ||
         url.pathname === "/services/index.html";

@@ -173,3 +173,29 @@ test("services page presents scoped packages and uses a strict CSP", async () =>
   assert.match(page, /global-malware-trends-dashboard\.png/);
   assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
 });
+
+test("security portfolio presents evidence-backed role alignment and uses a strict CSP", async () => {
+  const page = await readFile(
+    new URL("../security/index.html", import.meta.url),
+    "utf8",
+  );
+  const source = await readFile(
+    new URL("../worker/index.js", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(page, /Senior IAM Analyst/);
+  assert.match(
+    page,
+    /does not represent prior employment under a Security Architect title/,
+  );
+  assert.match(page, /href="\/assets\/css\/security\.css\?v=1"/);
+  assert.match(page, /src="\/assets\/js\/home\.js\?v=1"/);
+  assert.doesNotMatch(page, /<script(?![^>]*\bsrc=)/i);
+  assert.doesNotMatch(page, /\sstyle="/i);
+  assert.match(source, /url\.pathname === "\/security\/"/);
+  assert.doesNotMatch(
+    HOME_SECURITY_HEADERS["content-security-policy"],
+    /unsafe-inline/,
+  );
+});
