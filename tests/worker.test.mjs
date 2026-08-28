@@ -113,7 +113,7 @@ test("uses a locked-down CSP for JSON API responses", () => {
     "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'none'"
   );
   assert.doesNotMatch(API_SECURITY_HEADERS["content-security-policy"], /unsafe-inline|data:|https:/);
-  assert.equal(SECURITY_HEADERS["strict-transport-security"], "max-age=63072000; includeSubDomains");
+  assert.equal(SECURITY_HEADERS["strict-transport-security"], "max-age=63072000; includeSubDomains; preload");
 });
 
 

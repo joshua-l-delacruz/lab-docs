@@ -26,7 +26,7 @@ const SECURITY_HEADERS = {
     "interest-cohort=()"
   ].join(", "),
   "referrer-policy": "strict-origin-when-cross-origin",
-  "strict-transport-security": "max-age=63072000; includeSubDomains",
+  "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
   "x-content-type-options": "nosniff",
   "x-frame-options": "DENY",
   "x-permitted-cross-domain-policies": "none"
