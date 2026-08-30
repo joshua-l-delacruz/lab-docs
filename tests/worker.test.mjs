@@ -9,10 +9,12 @@ import worker, {
   PLAN_LIMITS,
   API_SECURITY_HEADERS,
   HOME_SECURITY_HEADERS,
+  LIVE_APPLICATION_ORIGINS,
   SECURITY_HEADERS,
   hasSameOrigin,
   limitsFor,
   normalizeDeal,
+  proxyLiveApplication,
   readJson,
   secureResponse
 } from "../worker/index.js";
@@ -162,6 +164,48 @@ test("redirects www requests to the canonical host", async () => {
   );
   assert.equal(response.status, 308);
   assert.equal(response.headers.get("location"), "https://joshuadelacruz.solutions/workspaces/?source=test");
+});
+
+test("declares branded custom domains for both live C++ applications", async () => {
+  const config = await readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8");
+  assert.match(config, /"pattern": "calculator\.joshuadelacruz\.solutions"/);
+  assert.match(config, /"pattern": "malware\.joshuadelacruz\.solutions"/);
+  assert.equal(LIVE_APPLICATION_ORIGINS["calculator.joshuadelacruz.solutions"], "https://scientific-calculator-cpp.onrender.com");
+  assert.equal(LIVE_APPLICATION_ORIGINS["malware.joshuadelacruz.solutions"], "https://global-malware-trends-cpp.onrender.com");
+});
+
+test("proxies branded application paths and rewrites origin redirects", async () => {
+  let receivedRequest;
+  const response = await proxyLiveApplication(
+    new Request("https://calculator.joshuadelacruz.solutions/api/health?full=1"),
+    new URL("https://calculator.joshuadelacruz.solutions/api/health?full=1"),
+    "https://scientific-calculator-cpp.onrender.com",
+    request => {
+      receivedRequest = request;
+      return new Response(null, {
+        status: 302,
+        headers: { location: "https://scientific-calculator-cpp.onrender.com/login?next=%2Fapi%2Fhealth" }
+      });
+    }
+  );
+
+  assert.equal(receivedRequest.url, "https://scientific-calculator-cpp.onrender.com/api/health?full=1");
+  assert.equal(response.headers.get("location"), "https://calculator.joshuadelacruz.solutions/login?next=%2Fapi%2Fhealth");
+});
+
+test("public project CTAs use branded domains instead of Render hostnames", async () => {
+  const pages = await Promise.all([
+    "../index.html",
+    "../workspaces/index.html",
+    "../services/index.html",
+    "../cpp-calculator/index.html"
+  ].map(path => readFile(new URL(path, import.meta.url), "utf8")));
+  const markup = pages.join("\n");
+
+  assert.match(markup, /https:\/\/calculator\.joshuadelacruz\.solutions\//);
+  assert.match(markup, /https:\/\/malware\.joshuadelacruz\.solutions\//);
+  assert.doesNotMatch(markup, /https:\/\/scientific-calculator-cpp\.onrender\.com\//);
+  assert.doesNotMatch(markup, /https:\/\/global-malware-trends-cpp\.onrender\.com\//);
 });
 
 test("adds an explicit UTF-8 charset to HTML responses", () => {
