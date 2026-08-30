@@ -250,6 +250,17 @@ test("workspaces lists every current public application", async () => {
   assert.match(page, /"@type":"CollectionPage"/);
 });
 
+test("featured portfolio-hosted apps return to the main portfolio", async () => {
+  const pages = await Promise.all([
+    readFile(new URL("../realestate/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../iam-support/lab/index.html", import.meta.url), "utf8")
+  ]);
+  for (const page of pages) {
+    assert.match(page, /href="https:\/\/joshuadelacruz\.solutions\/"/);
+    assert.match(page, /← Main Portfolio/);
+  }
+});
+
 test("adds an explicit UTF-8 charset to HTML responses", () => {
   const secured = secureResponse(new Response("home", { headers: { "content-type": "text/html" } }));
   assert.equal(secured.headers.get("content-type"), "text/html; charset=utf-8");
