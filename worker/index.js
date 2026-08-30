@@ -97,6 +97,12 @@ export default {
       return redirect(url, 308);
     }
 
+    if (["/services", "/services/", "/services/index.html"].includes(url.pathname)) {
+      url.pathname = "/";
+      url.hash = "contact";
+      return redirect(url, 308);
+    }
+
     if (!url.pathname.startsWith("/api/v2/")) {
       const assetResponse = await env.ASSETS.fetch(request);
       const usesStrictStaticPolicy =
@@ -104,10 +110,7 @@ export default {
         url.pathname === "/index.html" ||
         url.pathname === "/cpp-calculator" ||
         url.pathname === "/cpp-calculator/" ||
-        url.pathname === "/cpp-calculator/index.html" ||
-        url.pathname === "/services" ||
-        url.pathname === "/services/" ||
-        url.pathname === "/services/index.html";
+        url.pathname === "/cpp-calculator/index.html";
       const policy = usesStrictStaticPolicy
         ? HOME_SECURITY_HEADERS
         : SECURITY_HEADERS;

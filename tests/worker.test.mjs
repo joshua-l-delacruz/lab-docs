@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { buildQuoteEmail } from "../assets/js/services-inquiry.js";
 
 import worker, {
   ApiError,
@@ -166,6 +165,18 @@ test("redirects www requests to the canonical host", async () => {
   assert.equal(response.headers.get("location"), "https://joshuadelacruz.solutions/workspaces/?source=test");
 });
 
+test("retires the services page without breaking its existing URLs", async () => {
+  for (const pathname of ["/services", "/services/", "/services/index.html"]) {
+    const response = await worker.fetch(
+      new Request(`https://joshuadelacruz.solutions${pathname}`),
+      { ASSETS: { fetch: () => new Response("unexpected") } },
+      {}
+    );
+    assert.equal(response.status, 308);
+    assert.equal(response.headers.get("location"), "https://joshuadelacruz.solutions/#contact");
+  }
+});
+
 test("declares every branded custom domain and live application origin", async () => {
   const config = await readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8");
   assert.match(config, /"pattern": "joshuadelacruz\.solutions"/);
@@ -201,7 +212,6 @@ test("public project CTAs use branded domains instead of deployment hostnames", 
   const pages = await Promise.all([
     "../index.html",
     "../workspaces/index.html",
-    "../services/index.html",
     "../cpp-calculator/index.html"
   ].map(path => readFile(new URL(path, import.meta.url), "utf8")));
   const markup = pages.join("\n");
@@ -261,56 +271,13 @@ test("C++ case study uses external assets and a strict CSP", async () => {
   assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
 });
 
-test("services page presents scoped packages and uses a strict CSP", async () => {
-  const page = await readFile(new URL("../services/index.html", import.meta.url), "utf8");
-  const source = await readFile(new URL("../worker/index.js", import.meta.url), "utf8");
-
-  assert.match(page, /href="\/assets\/css\/services\.css\?v=2"/);
-  assert.match(page, /type="module" src="\/assets\/js\/services\.js\?v=2"/);
-  assert.doesNotMatch(page, /<style[\s>]/i);
-  assert.doesNotMatch(page, /\sstyle=/i);
-  assert.doesNotMatch(page, /<script(?![^>]*\bsrc=)[^>]*>/i);
-  assert.match(source, /url\.pathname === "\/services\/"/);
-  assert.match(page, /Launch-Ready Service Website/);
-  assert.match(page, /Business Calculator or Workflow Tool/);
-  assert.match(page, /Secure Full-Stack MVP/);
-  assert.match(page, /Starting at<\/span> ₱15,000/);
-  assert.match(page, /Starting at<\/span> ₱35,000/);
-  assert.match(page, /Starting at<\/span> ₱75,000/);
-  assert.match(page, /7–10 business days/);
-  assert.match(page, /3–5 weeks/);
-  assert.match(page, /6–10 weeks/);
-  assert.match(page, /40–50% deposit/);
-  assert.match(page, /name="email"/);
-  assert.match(page, /Request a Quote/);
-  assert.match(page, /realestate-workspace\.png/);
-  assert.match(page, /cpp-calculator-dashboard\.png/);
-  assert.match(page, /global-malware-trends-dashboard\.png/);
-  assert.match(page, /Property Workspace Paid Pilot/);
-  assert.match(page, /30-day pilot · starting at<\/span>₱12,000/);
-  for (const field of ["budget", "stage", "launch-date", "audience", "success-criteria", "reference-links"]) {
-    assert.match(page, new RegExp(`name="${field}"`));
-  }
-  assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
-});
-
-test("services inquiry preserves qualification details in the prepared email", () => {
-  const inquiry = buildQuoteEmail({
-    name: "Client Name", email: "client@example.com", organization: "Example Co",
-    package: "Property Workspace Paid Pilot", budget: "₱12,000–₱24,999",
-    stage: "Requirements are documented", "launch-date": "2026-10-15",
-    audience: "Property brokers need faster estimates.",
-    "success-criteria": "Produce a consistent report in under five minutes.",
-    "reference-links": "https://example.com/brief"
-  });
-  assert.equal(inquiry.subject, "Project fit request — Property Workspace Paid Pilot");
-  assert.match(inquiry.body, /Available budget: ₱12,000–₱24,999/);
-  assert.match(inquiry.body, /Target launch: 2026-10-15/);
-  assert.match(inquiry.body, /Produce a consistent report in under five minutes/);
-});
-
-test("services inquiry supplies safe labels for optional answers", () => {
-  const inquiry = buildQuoteEmail({ package: "Secure Full-Stack MVP" });
-  assert.match(inquiry.body, /Business or organization: Not provided/);
-  assert.match(inquiry.body, /Target launch: Flexible/);
+test("portfolio pages no longer advertise freelance services or pricing", async () => {
+  const pages = await Promise.all([
+    "../index.html",
+    "../workspaces/index.html"
+  ].map(path => readFile(new URL(path, import.meta.url), "utf8")));
+  const markup = pages.join("\n");
+  assert.doesNotMatch(markup, /Hire Me|Request a Quote|fixed-price package/i);
+  assert.doesNotMatch(markup, /href="\/services\/?/i);
+  assert.match(markup, /mailto:josh\.delacruz19@gmail\.com/);
 });
