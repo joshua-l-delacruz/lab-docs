@@ -146,6 +146,9 @@ test("homepage publishes complete search and social metadata", async () => {
   assert.match(homepage, /<small>Portfolio Projects<\/small><strong>7<\/strong>/);
   assert.match(homepage, /<strong>7<\/strong><span>live application experiences<\/span>/);
   assert.match(homepage, /<strong>24<\/strong><span>portfolio regression tests<\/span>/);
+  assert.match(homepage, /7\+ years of formal enterprise IT support experience/);
+  assert.match(homepage, /longer-term independent and on-call technology support work/);
+  assert.doesNotMatch(homepage, /17\+ years of combined technology experience/);
 });
 
 test("publishes crawler discovery and web app files", async () => {
