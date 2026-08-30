@@ -143,6 +143,9 @@ test("homepage publishes complete search and social metadata", async () => {
   assert.match(homepage, /"@type":"WebSite"/);
   assert.match(homepage, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
   assert.match(homepage, /luzon-road-rush\.svg/);
+  assert.match(homepage, /<small>Portfolio Projects<\/small><strong>7<\/strong>/);
+  assert.match(homepage, /<strong>7<\/strong><span>live application experiences<\/span>/);
+  assert.match(homepage, /<strong>24<\/strong><span>portfolio regression tests<\/span>/);
 });
 
 test("publishes crawler discovery and web app files", async () => {
@@ -241,6 +244,10 @@ test("workspaces lists every current public application", async () => {
   assert.match(page, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
   assert.match(page, /monthly-spending\.svg/);
   assert.match(page, /luzon-road-rush\.svg/);
+  assert.match(page, /rel="canonical" href="https:\/\/joshuadelacruz\.solutions\/workspaces\/"/);
+  assert.match(page, /property="og:image"/);
+  assert.match(page, /name="twitter:card" content="summary_large_image"/);
+  assert.match(page, /"@type":"CollectionPage"/);
 });
 
 test("adds an explicit UTF-8 charset to HTML responses", () => {
@@ -266,18 +273,37 @@ test("C++ case study uses external assets and a strict CSP", async () => {
   assert.match(page, /src="\/assets\/js\/cpp-calculator\.js\?v=1"/);
   assert.doesNotMatch(page, /<style[\s>]/i);
   assert.doesNotMatch(page, /\sstyle=/i);
-  assert.doesNotMatch(page, /<script(?![^>]*\bsrc=)[^>]*>/i);
+  assert.doesNotMatch(page, /<script(?![^>]*(?:\bsrc=|type="application\/ld\+json"))[^>]*>/i);
   assert.match(source, /url\.pathname === "\/cpp-calculator\/"/);
+  assert.match(page, /rel="canonical" href="https:\/\/joshuadelacruz\.solutions\/cpp-calculator\/"/);
+  assert.match(page, /property="og:image"/);
+  assert.match(page, /name="twitter:card" content="summary_large_image"/);
+  assert.match(page, /"@type":"BreadcrumbList"/);
   assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
 });
 
-test("portfolio pages no longer advertise freelance services or pricing", async () => {
-  const pages = await Promise.all([
-    "../index.html",
-    "../workspaces/index.html"
-  ].map(path => readFile(new URL(path, import.meta.url), "utf8")));
+test("portfolio pages publish current positioning and complete discovery metadata", async () => {
+  const pageSpecs = [
+    ["../index.html", "https://joshuadelacruz.solutions/"],
+    ["../workspaces/index.html", "https://joshuadelacruz.solutions/workspaces/"],
+    ["../cpp-calculator/index.html", "https://joshuadelacruz.solutions/cpp-calculator/"],
+    ["../iam-support/index.html", "https://joshuadelacruz.solutions/iam-support/"],
+    ["../iam-support/lab/index.html", "https://joshuadelacruz.solutions/iam-support/lab/"],
+    ["../realestate/index.html", "https://joshuadelacruz.solutions/realestate/"]
+  ];
+  const pages = await Promise.all(pageSpecs.map(([path]) => readFile(new URL(path, import.meta.url), "utf8")));
   const markup = pages.join("\n");
   assert.doesNotMatch(markup, /Hire Me|Request a Quote|fixed-price package/i);
   assert.doesNotMatch(markup, /href="\/services\/?/i);
   assert.match(markup, /mailto:josh\.delacruz19@gmail\.com/);
+  for (let index = 0; index < pageSpecs.length; index += 1) {
+    const canonical = pageSpecs[index][1].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(pages[index], new RegExp(`rel="canonical" href="${canonical}"`));
+    assert.match(pages[index], /name="description"/);
+    assert.match(pages[index], /property="og:image"/);
+    assert.match(pages[index], /name="twitter:card" content="summary_large_image"/);
+  }
+  for (const page of pages.slice(2)) {
+    assert.match(page, /"@type":"BreadcrumbList"/);
+  }
 });

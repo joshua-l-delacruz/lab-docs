@@ -16,7 +16,6 @@ This repository presents practical evidence for IT support, identity and access 
 - `cpp-calculator/` - C++ scientific and programmer calculator case study
 - `realestate/` - Philippine property transaction workspace
 - `workspaces/` - domain-organized project directory
-- `services/` - scoped service packages and inquiry workflow
 - `worker/` - Cloudflare Worker routing, security headers and protected APIs
 - `migrations/` - Cloudflare D1 database migrations
 - `tests/` - Worker, security-policy and page regression tests
@@ -40,8 +39,10 @@ joshuadelacruz.solutions
 Linked applications use separate deployment boundaries where appropriate:
 
 - Pi 2048: Rails, PostgreSQL and Docker on Render behind `2048.joshuadelacruz.solutions`
-- Scientific Calculator: C++/Drogon container on Render
-- Global Malware Trends: C++/Drogon illustrative defensive dashboard on Render
+- Scientific Calculator: C++/Drogon container on Render behind `calculator.joshuadelacruz.solutions`
+- Global Malware Trends: C++/Drogon illustrative defensive dashboard behind `malware.joshuadelacruz.solutions`
+- Monthly Spending: local-first static application on Vercel behind `spending.joshuadelacruz.solutions`
+- Luzon Road Rush: standalone browser game behind `roadrush.joshuadelacruz.solutions`
 
 ## Security and data boundaries
 
@@ -72,6 +73,8 @@ The production deployment is managed through Cloudflare Workers Builds from the 
 - [Pi 2048 Rails App](https://github.com/joshua-l-delacruz/2048-pi-app)
 - [C++ Scientific and Programmer Calculator](https://github.com/joshua-l-delacruz/scientific-calculator-cpp)
 - [Global Malware Trends C++](https://github.com/joshua-l-delacruz/global-malware-trends-cpp)
+- [Pi Monthly Spending](https://github.com/joshua-l-delacruz/monthly-spending)
+- [Luzon Road Rush](https://github.com/joshua-l-delacruz/luzon-road-rush)
 
 ## Scope
 
