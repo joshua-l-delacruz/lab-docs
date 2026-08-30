@@ -168,6 +168,8 @@ test("redirects www requests to the canonical host", async () => {
 
 test("declares branded custom domains for both live C++ applications", async () => {
   const config = await readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8");
+  assert.match(config, /"pattern": "joshuadelacruz\.solutions"/);
+  assert.match(config, /"pattern": "www\.joshuadelacruz\.solutions"/);
   assert.match(config, /"pattern": "calculator\.joshuadelacruz\.solutions"/);
   assert.match(config, /"pattern": "malware\.joshuadelacruz\.solutions"/);
   assert.equal(LIVE_APPLICATION_ORIGINS["calculator.joshuadelacruz.solutions"], "https://scientific-calculator-cpp.onrender.com");

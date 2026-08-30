@@ -5,6 +5,14 @@
   "compatibility_date": "2026-08-21",
   "routes": [
     {
+      "pattern": "joshuadelacruz.solutions",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.joshuadelacruz.solutions",
+      "custom_domain": true
+    },
+    {
       "pattern": "calculator.joshuadelacruz.solutions",
       "custom_domain": true
     },
