@@ -3,6 +3,16 @@
   "name": "lab-docs",
   "main": "worker/index.js",
   "compatibility_date": "2026-08-21",
+  "routes": [
+    {
+      "pattern": "calculator.joshuadelacruz.solutions",
+      "custom_domain": true
+    },
+    {
+      "pattern": "malware.joshuadelacruz.solutions",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": ".",
     "binding": "ASSETS",

@@ -63,6 +63,11 @@ const JSON_HEADERS = {
   "cache-control": "no-store"
 };
 
+export const LIVE_APPLICATION_ORIGINS = Object.freeze({
+  "calculator.joshuadelacruz.solutions": "https://scientific-calculator-cpp.onrender.com",
+  "malware.joshuadelacruz.solutions": "https://global-malware-trends-cpp.onrender.com"
+});
+
 const MAX_REQUEST_BYTES = 256 * 1024;
 const PLAN_LIMITS = {
   free: { active: 10, total: 50 },
@@ -80,6 +85,11 @@ class ApiError extends Error {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    const liveOrigin = LIVE_APPLICATION_ORIGINS[url.hostname];
+    if (liveOrigin) {
+      return proxyLiveApplication(request, url, liveOrigin);
+    }
 
     if (url.hostname === "www.joshuadelacruz.solutions") {
       url.hostname = "joshuadelacruz.solutions";
@@ -198,6 +208,31 @@ export default {
     }
   }
 };
+
+export async function proxyLiveApplication(request, publicUrl, origin, fetchImpl = fetch) {
+  const originUrl = new URL(publicUrl.pathname + publicUrl.search, origin);
+  const response = await fetchImpl(new Request(originUrl, request));
+  const headers = new Headers(response.headers);
+  const location = headers.get("location");
+
+  if (location) {
+    const destination = new URL(location, originUrl);
+    const originHost = new URL(origin).hostname;
+
+    if (destination.hostname === originHost) {
+      destination.protocol = publicUrl.protocol;
+      destination.hostname = publicUrl.hostname;
+      destination.port = "";
+      headers.set("location", destination.toString());
+    }
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
 
 async function requireUser(request, ctx, env) {
   const identity = await resolveAccessIdentity(request, ctx);
