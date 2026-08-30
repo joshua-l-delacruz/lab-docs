@@ -70,6 +70,7 @@ export const LIVE_APPLICATION_ORIGINS = Object.freeze({
 });
 
 const MAX_REQUEST_BYTES = 256 * 1024;
+const GITHUB_REPOSITORIES_URL = "https://api.github.com/users/joshua-l-delacruz/repos?per_page=100&sort=updated";
 const PLAN_LIMITS = {
   free: { active: 10, total: 50 },
   professional: { active: 1000, total: 5000 }
@@ -101,6 +102,14 @@ export default {
       url.pathname = "/";
       url.hash = "contact";
       return redirect(url, 308);
+    }
+
+    if (url.pathname === "/api/engineering-evidence" && request.method === "GET") {
+      try {
+        return await engineeringEvidenceResponse(request, env);
+      } catch {
+        return problem(502, "EVIDENCE_UNAVAILABLE", "Live engineering evidence is temporarily unavailable.");
+      }
     }
 
     if (!url.pathname.startsWith("/api/v2/")) {
@@ -212,6 +221,47 @@ export default {
     }
   }
 };
+
+export async function engineeringEvidenceResponse(request, env, fetchImpl = fetch, now = new Date()) {
+  const response = await fetchImpl(GITHUB_REPOSITORIES_URL, {
+    headers: {
+      accept: "application/vnd.github+json",
+      "user-agent": "joshuadelacruz-solutions-evidence",
+      "x-github-api-version": "2022-11-28"
+    },
+    cf: { cacheEverything: true, cacheTtl: 300 }
+  });
+
+  if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
+  const repositories = await response.json();
+  if (!Array.isArray(repositories)) throw new Error("Invalid GitHub response");
+
+  const projects = repositories.filter(repository => !repository.fork && repository.name !== "joshua-l-delacruz");
+  const recentThreshold = now.getTime() - 30 * 24 * 60 * 60 * 1000;
+  const languages = new Set(projects.map(repository => repository.language).filter(Boolean));
+  const latest = projects.reduce((current, repository) =>
+    !current || Date.parse(repository.pushed_at) > Date.parse(current.pushed_at) ? repository : current, null);
+  const version = env.CF_VERSION_METADATA || {};
+  const evidence = {
+    github: {
+      repositories: projects.length,
+      recentlyUpdated: projects.filter(repository => Date.parse(repository.pushed_at) >= recentThreshold).length,
+      languages: languages.size,
+      latestRepository: latest?.name || "Unavailable",
+      latestPushAt: latest?.pushed_at || null
+    },
+    cloudflare: {
+      deployedAt: version.timestamp || null,
+      version: version.id ? String(version.id).slice(0, 8) : "local",
+      edge: request.cf?.colo || "Cloudflare"
+    },
+    refreshedAt: now.toISOString()
+  };
+
+  const headers = new Headers(JSON_HEADERS);
+  headers.set("cache-control", "public, max-age=300, stale-while-revalidate=600");
+  return new Response(JSON.stringify(evidence), { headers });
+}
 
 export async function proxyLiveApplication(request, publicUrl, origin, fetchImpl = fetch) {
   const originUrl = new URL(publicUrl.pathname + publicUrl.search, origin);
@@ -604,6 +654,7 @@ export {
   PLAN_LIMITS,
   API_SECURITY_HEADERS,
   HOME_SECURITY_HEADERS,
+  GITHUB_REPOSITORIES_URL,
   SECURITY_HEADERS,
   cleanText,
   hasSameOrigin,

@@ -8,6 +8,7 @@ import worker, {
   PLAN_LIMITS,
   API_SECURITY_HEADERS,
   HOME_SECURITY_HEADERS,
+  engineeringEvidenceResponse,
   LIVE_APPLICATION_ORIGINS,
   SECURITY_HEADERS,
   hasSameOrigin,
@@ -122,7 +123,7 @@ test("uses a locked-down CSP for JSON API responses", () => {
 test("homepage uses external assets and a strict CSP", async () => {
   const homepage = await readFile(new URL("../index.html", import.meta.url), "utf8");
   assert.match(homepage, /href="\/assets\/css\/home\.css\?v=2"/);
-  assert.match(homepage, /src="\/assets\/js\/home\.js\?v=1"/);
+  assert.match(homepage, /src="\/assets\/js\/home\.js\?v=2"/);
   assert.doesNotMatch(homepage, /<style[\s>]/i);
   assert.doesNotMatch(homepage, /\sstyle=/i);
   assert.doesNotMatch(homepage, /<script(?![^>]*(?:\bsrc=|type="application\/ld\+json"))[^>]*>/i);
@@ -144,11 +145,34 @@ test("homepage publishes complete search and social metadata", async () => {
   assert.match(homepage, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
   assert.match(homepage, /luzon-road-rush\.svg/);
   assert.match(homepage, /<small>Portfolio Projects<\/small><strong>7<\/strong>/);
-  assert.match(homepage, /<strong>7<\/strong><span>live application experiences<\/span>/);
-  assert.match(homepage, /<strong>24<\/strong><span>portfolio regression tests<\/span>/);
+  assert.match(homepage, /id="engineeringEvidence"/);
+  assert.match(homepage, /LIVE EVIDENCE/);
   assert.match(homepage, /7\+ years of formal enterprise IT support experience/);
   assert.match(homepage, /longer-term independent and on-call technology support work/);
   assert.doesNotMatch(homepage, /17\+ years of combined technology experience/);
+});
+
+test("builds live GitHub and Cloudflare engineering evidence", async () => {
+  const repositories = [
+    { name: "joshua-l-delacruz", fork: false, language: null, pushed_at: "2026-08-30T00:00:00Z" },
+    { name: "lab-docs", fork: false, language: "JavaScript", pushed_at: "2026-08-30T00:00:00Z" },
+    { name: "luzon-road-rush", fork: false, language: "TypeScript", pushed_at: "2026-08-29T00:00:00Z" },
+    { name: "forked-project", fork: true, language: "Go", pushed_at: "2026-08-28T00:00:00Z" }
+  ];
+  const response = await engineeringEvidenceResponse(
+    new Request("https://joshuadelacruz.solutions/api/engineering-evidence"),
+    { CF_VERSION_METADATA: { id: "1234567890", timestamp: "2026-08-30T01:00:00Z" } },
+    async () => new Response(JSON.stringify(repositories)),
+    new Date("2026-08-30T12:00:00Z")
+  );
+  const evidence = await response.json();
+  assert.equal(evidence.github.repositories, 2);
+  assert.equal(evidence.github.recentlyUpdated, 2);
+  assert.equal(evidence.github.languages, 2);
+  assert.equal(evidence.github.latestRepository, "lab-docs");
+  assert.equal(evidence.cloudflare.version, "12345678");
+  assert.equal(evidence.cloudflare.deployedAt, "2026-08-30T01:00:00Z");
+  assert.match(response.headers.get("cache-control"), /max-age=300/);
 });
 
 test("publishes crawler discovery and web app files", async () => {
@@ -190,6 +214,7 @@ test("declares every branded custom domain and live application origin", async (
   assert.match(config, /"pattern": "calculator\.joshuadelacruz\.solutions"/);
   assert.match(config, /"pattern": "malware\.joshuadelacruz\.solutions"/);
   assert.match(config, /"pattern": "spending\.joshuadelacruz\.solutions"/);
+  assert.match(config, /"binding": "CF_VERSION_METADATA"/);
   assert.equal(LIVE_APPLICATION_ORIGINS["calculator.joshuadelacruz.solutions"], "https://scientific-calculator-cpp.onrender.com");
   assert.equal(LIVE_APPLICATION_ORIGINS["malware.joshuadelacruz.solutions"], "https://global-malware-trends-cpp.onrender.com");
   assert.equal(LIVE_APPLICATION_ORIGINS["spending.joshuadelacruz.solutions"], "https://monthly-spending.vercel.app");
