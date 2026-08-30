@@ -2,6 +2,10 @@
 
 Source for [joshuadelacruz.solutions](https://joshuadelacruz.solutions), Joshua Dela Cruz's technology portfolio and interactive project hub.
 
+![Portfolio workspace overview](assets/images/realestate-workspace.png)
+
+> **Repository role:** This is the deployment source for the main portfolio platform. Standalone applications retain their own repositories, histories, and deployment boundaries.
+
 ## Purpose
 
 This repository presents practical evidence for IT support, identity and access operations, application support, cloud operations and software delivery. It combines recruiter-facing case studies, interactive demonstrations and production-backed workspaces without exposing credentials or production data.
@@ -51,6 +55,12 @@ Linked applications use separate deployment boundaries where appropriate:
 ## Local verification
 
 ```text
+npm test
+```
+
+The command runs:
+
+```text
 node --test tests/worker.test.mjs
 ```
 
@@ -66,3 +76,11 @@ The production deployment is managed through Cloudflare Workers Builds from the 
 ## Scope
 
 This is a personal portfolio and sanitized demonstration environment. It does not represent production systems operated for an employer or client.
+
+## Contributing
+
+This is primarily a personal portfolio, but focused bug reports are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Do not submit personal data, credentials, client material, or unsolicited changes to biographical content.
+
+## License
+
+No open-source license has been selected yet. Copyright remains with the repository owner unless a license is added.
