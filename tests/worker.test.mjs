@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { buildQuoteEmail } from "../assets/js/services-inquiry.js";
 
 import worker, {
   ApiError,
@@ -193,20 +194,52 @@ test("services page presents scoped packages and uses a strict CSP", async () =>
   const page = await readFile(new URL("../services/index.html", import.meta.url), "utf8");
   const source = await readFile(new URL("../worker/index.js", import.meta.url), "utf8");
 
-  assert.match(page, /href="\/assets\/css\/services\.css\?v=1"/);
-  assert.match(page, /src="\/assets\/js\/services\.js\?v=1"/);
+  assert.match(page, /href="\/assets\/css\/services\.css\?v=2"/);
+  assert.match(page, /type="module" src="\/assets\/js\/services\.js\?v=2"/);
   assert.doesNotMatch(page, /<style[\s>]/i);
   assert.doesNotMatch(page, /\sstyle=/i);
   assert.doesNotMatch(page, /<script(?![^>]*\bsrc=)[^>]*>/i);
   assert.match(source, /url\.pathname === "\/services\/"/);
-  assert.match(page, /Portfolio \/ Landing Page/);
-  assert.match(page, /Interactive Business Tool/);
-  assert.match(page, /Full-Stack Web Application/);
-  assert.match(page, /30–50% deposit/);
+  assert.match(page, /Launch-Ready Service Website/);
+  assert.match(page, /Business Calculator or Workflow Tool/);
+  assert.match(page, /Secure Full-Stack MVP/);
+  assert.match(page, /Starting at<\/span> ₱15,000/);
+  assert.match(page, /Starting at<\/span> ₱35,000/);
+  assert.match(page, /Starting at<\/span> ₱75,000/);
+  assert.match(page, /7–10 business days/);
+  assert.match(page, /3–5 weeks/);
+  assert.match(page, /6–10 weeks/);
+  assert.match(page, /40–50% deposit/);
   assert.match(page, /name="email"/);
   assert.match(page, /Request a Quote/);
   assert.match(page, /realestate-workspace\.png/);
   assert.match(page, /cpp-calculator-dashboard\.png/);
   assert.match(page, /global-malware-trends-dashboard\.png/);
+  assert.match(page, /Property Workspace Paid Pilot/);
+  assert.match(page, /30-day pilot · starting at<\/span>₱12,000/);
+  for (const field of ["budget", "stage", "launch-date", "audience", "success-criteria", "reference-links"]) {
+    assert.match(page, new RegExp(`name="${field}"`));
+  }
   assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
+});
+
+test("services inquiry preserves qualification details in the prepared email", () => {
+  const inquiry = buildQuoteEmail({
+    name: "Client Name", email: "client@example.com", organization: "Example Co",
+    package: "Property Workspace Paid Pilot", budget: "₱12,000–₱24,999",
+    stage: "Requirements are documented", "launch-date": "2026-10-15",
+    audience: "Property brokers need faster estimates.",
+    "success-criteria": "Produce a consistent report in under five minutes.",
+    "reference-links": "https://example.com/brief"
+  });
+  assert.equal(inquiry.subject, "Project fit request — Property Workspace Paid Pilot");
+  assert.match(inquiry.body, /Available budget: ₱12,000–₱24,999/);
+  assert.match(inquiry.body, /Target launch: 2026-10-15/);
+  assert.match(inquiry.body, /Produce a consistent report in under five minutes/);
+});
+
+test("services inquiry supplies safe labels for optional answers", () => {
+  const inquiry = buildQuoteEmail({ package: "Secure Full-Stack MVP" });
+  assert.match(inquiry.body, /Business or organization: Not provided/);
+  assert.match(inquiry.body, /Target launch: Flexible/);
 });
