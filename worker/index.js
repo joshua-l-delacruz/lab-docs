@@ -40,7 +40,7 @@ const HOME_SECURITY_HEADERS = {
     "object-src 'none'",
     "frame-ancestors 'none'",
     "form-action 'self'",
-    "script-src 'self'",
+    "script-src 'self' 'sha256-XLuFGznggQHklfN0GjPo7D/tFTj3zUFGF3GyJh9g2OE='",
     "style-src 'self'",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
@@ -80,6 +80,11 @@ class ApiError extends Error {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    if (url.hostname === "www.joshuadelacruz.solutions") {
+      url.hostname = "joshuadelacruz.solutions";
+      return redirect(url, 308);
+    }
 
     if (!url.pathname.startsWith("/api/v2/")) {
       const assetResponse = await env.ASSETS.fetch(request);
@@ -518,6 +523,10 @@ function cleanText(value, limit) {
 
 function secureResponse(response, policy = SECURITY_HEADERS) {
   const headers = new Headers(response.headers);
+
+  if (headers.get("content-type")?.toLowerCase() === "text/html") {
+    headers.set("content-type", "text/html; charset=utf-8");
+  }
 
   for (const [name, value] of Object.entries(policy)) {
     headers.set(name, value);
