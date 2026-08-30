@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-import {
+import worker, {
   ApiError,
   MAX_REQUEST_BYTES,
   PLAN_LIMITS,
@@ -123,10 +123,47 @@ test("homepage uses external assets and a strict CSP", async () => {
   assert.match(homepage, /src="\/assets\/js\/home\.js\?v=1"/);
   assert.doesNotMatch(homepage, /<style[\s>]/i);
   assert.doesNotMatch(homepage, /\sstyle=/i);
-  assert.doesNotMatch(homepage, /<script(?![^>]*\bsrc=)[^>]*>/i);
+  assert.doesNotMatch(homepage, /<script(?![^>]*(?:\bsrc=|type="application\/ld\+json"))[^>]*>/i);
+  assert.match(homepage, /<script type="application\/ld\+json">/);
+  assert.match(HOME_SECURITY_HEADERS["content-security-policy"], /sha256-XLuFGznggQHklfN0GjPo7D\/tFTj3zUFGF3GyJh9g2OE=/);
   assert.match(HOME_SECURITY_HEADERS["content-security-policy"], /script-src 'self'/);
   assert.match(HOME_SECURITY_HEADERS["content-security-policy"], /style-src 'self'/);
   assert.doesNotMatch(HOME_SECURITY_HEADERS["content-security-policy"], /unsafe-inline/);
+});
+
+test("homepage publishes complete search and social metadata", async () => {
+  const homepage = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  assert.match(homepage, /rel="canonical" href="https:\/\/joshuadelacruz\.solutions\/"/);
+  assert.match(homepage, /name="robots" content="index,follow,max-image-preview:large/);
+  assert.match(homepage, /property="og:image"/);
+  assert.match(homepage, /name="twitter:card" content="summary_large_image"/);
+  assert.match(homepage, /"@type":"Person"/);
+  assert.match(homepage, /"@type":"WebSite"/);
+});
+
+test("publishes crawler discovery and web app files", async () => {
+  const robots = await readFile(new URL("../robots.txt", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../sitemap.xml", import.meta.url), "utf8");
+  const manifest = JSON.parse(await readFile(new URL("../site.webmanifest", import.meta.url), "utf8"));
+  assert.match(robots, /Sitemap: https:\/\/joshuadelacruz\.solutions\/sitemap\.xml/);
+  assert.match(sitemap, /<loc>https:\/\/joshuadelacruz\.solutions\/<\/loc>/);
+  assert.equal(manifest.start_url, "/");
+  assert.equal(manifest.icons[0].src, "/favicon.svg");
+});
+
+test("redirects www requests to the canonical host", async () => {
+  const response = await worker.fetch(
+    new Request("https://www.joshuadelacruz.solutions/workspaces/?source=test"),
+    { ASSETS: { fetch: () => new Response("unexpected") } },
+    {}
+  );
+  assert.equal(response.status, 308);
+  assert.equal(response.headers.get("location"), "https://joshuadelacruz.solutions/workspaces/?source=test");
+});
+
+test("adds an explicit UTF-8 charset to HTML responses", () => {
+  const secured = secureResponse(new Response("home", { headers: { "content-type": "text/html" } }));
+  assert.equal(secured.headers.get("content-type"), "text/html; charset=utf-8");
 });
 
 test("strict homepage policy can be applied without changing other pages", () => {

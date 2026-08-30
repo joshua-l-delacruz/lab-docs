@@ -1,0 +1,17 @@
+{
+  "name": "Joshua Dela Cruz Technology Portfolio",
+  "short_name": "JD Portfolio",
+  "description": "IT, identity security, cloud operations and software delivery portfolio.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
