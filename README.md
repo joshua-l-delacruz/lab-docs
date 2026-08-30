@@ -52,6 +52,7 @@ Linked applications use separate deployment boundaries where appropriate:
 - IAM identities, tickets and audit events are fictional and browser-local.
 - Malware dashboard data is explicitly illustrative; no malware samples are hosted.
 - Secrets and credentials are excluded from the repository.
+- Vulnerabilities are reported privately according to [SECURITY.md](SECURITY.md).
 
 ## Local verification
 
