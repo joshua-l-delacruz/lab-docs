@@ -210,6 +210,25 @@ test("public project CTAs use branded domains instead of Render hostnames", asyn
   assert.doesNotMatch(markup, /https:\/\/global-malware-trends-cpp\.onrender\.com\//);
 });
 
+test("workspaces lists every current public application", async () => {
+  const page = await readFile(new URL("../workspaces/index.html", import.meta.url), "utf8");
+  for (const project of [
+    "PH Property Transaction Workspace",
+    "Pi Monthly Spending",
+    "Pi 2048 Network Game",
+    "Luzon Road Rush",
+    "IAM Support Automation &amp; Human Escalation",
+    "C++ Scientific &amp; Programmer Calculator",
+    "Global Malware Trends"
+  ]) {
+    assert.match(page, new RegExp(project.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(page, /https:\/\/monthly-spending\.vercel\.app\//);
+  assert.match(page, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
+  assert.match(page, /monthly-spending\.svg/);
+  assert.match(page, /luzon-road-rush\.svg/);
+});
+
 test("adds an explicit UTF-8 charset to HTML responses", () => {
   const secured = secureResponse(new Response("home", { headers: { "content-type": "text/html" } }));
   assert.equal(secured.headers.get("content-type"), "text/html; charset=utf-8");
