@@ -65,7 +65,8 @@ const JSON_HEADERS = {
 
 export const LIVE_APPLICATION_ORIGINS = Object.freeze({
   "calculator.joshuadelacruz.solutions": "https://scientific-calculator-cpp.onrender.com",
-  "malware.joshuadelacruz.solutions": "https://global-malware-trends-cpp.onrender.com"
+  "malware.joshuadelacruz.solutions": "https://global-malware-trends-cpp.onrender.com",
+  "spending.joshuadelacruz.solutions": "https://monthly-spending.vercel.app"
 });
 
 const MAX_REQUEST_BYTES = 256 * 1024;
