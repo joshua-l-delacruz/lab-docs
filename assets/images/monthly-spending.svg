@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Pi Monthly Spending</title>
+  <desc id="desc">Personal finance dashboard with a monthly budget, expense categories and recent transactions</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#221044"/><stop offset="1" stop-color="#0b1538"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8b5cf6"/><stop offset="1" stop-color="#38bdf8"/></linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#background)"/>
+  <rect x="90" y="70" width="1420" height="760" rx="36" fill="#111827" stroke="#334155" stroke-width="3"/>
+  <text x="145" y="145" fill="#f8fafc" font-family="Arial,sans-serif" font-size="42" font-weight="700">Pi Monthly Spending</text>
+  <text x="145" y="190" fill="#94a3b8" font-family="Arial,sans-serif" font-size="22">Private, local-first expense planning</text>
+  <rect x="145" y="240" width="400" height="190" rx="24" fill="#1e293b"/>
+  <text x="180" y="290" fill="#94a3b8" font-family="Arial,sans-serif" font-size="20">MONTHLY BUDGET</text>
+  <text x="180" y="355" fill="#f8fafc" font-family="Arial,sans-serif" font-size="52" font-weight="700">₱30,000</text>
+  <rect x="180" y="385" width="330" height="13" rx="7" fill="#334155"/><rect x="180" y="385" width="205" height="13" rx="7" fill="url(#accent)"/>
+  <rect x="580" y="240" width="400" height="190" rx="24" fill="#1e293b"/>
+  <text x="615" y="290" fill="#94a3b8" font-family="Arial,sans-serif" font-size="20">SPENT THIS MONTH</text>
+  <text x="615" y="355" fill="#f8fafc" font-family="Arial,sans-serif" font-size="52" font-weight="700">₱18,650</text>
+  <text x="615" y="397" fill="#4ade80" font-family="Arial,sans-serif" font-size="20">₱11,350 remaining</text>
+  <rect x="1015" y="240" width="440" height="510" rx="24" fill="#1e293b"/>
+  <text x="1050" y="292" fill="#f8fafc" font-family="Arial,sans-serif" font-size="27" font-weight="700">Categories</text>
+  <g font-family="Arial,sans-serif" font-size="20"><circle cx="1065" cy="350" r="10" fill="#8b5cf6"/><text x="1090" y="357" fill="#cbd5e1">Food</text><text x="1380" y="357" fill="#f8fafc" text-anchor="end">₱6,400</text><circle cx="1065" cy="410" r="10" fill="#38bdf8"/><text x="1090" y="417" fill="#cbd5e1">Housing</text><text x="1380" y="417" fill="#f8fafc" text-anchor="end">₱5,500</text><circle cx="1065" cy="470" r="10" fill="#4ade80"/><text x="1090" y="477" fill="#cbd5e1">Transport</text><text x="1380" y="477" fill="#f8fafc" text-anchor="end">₱3,250</text><circle cx="1065" cy="530" r="10" fill="#fbbf24"/><text x="1090" y="537" fill="#cbd5e1">Utilities</text><text x="1380" y="537" fill="#f8fafc" text-anchor="end">₱2,100</text><circle cx="1065" cy="590" r="10" fill="#fb7185"/><text x="1090" y="597" fill="#cbd5e1">Other</text><text x="1380" y="597" fill="#f8fafc" text-anchor="end">₱1,400</text></g>
+  <rect x="145" y="470" width="835" height="280" rx="24" fill="#1e293b"/>
+  <text x="180" y="525" fill="#f8fafc" font-family="Arial,sans-serif" font-size="27" font-weight="700">Recent expenses</text>
+  <g font-family="Arial,sans-serif" font-size="20"><text x="180" y="585" fill="#cbd5e1">Groceries</text><text x="905" y="585" fill="#f8fafc" text-anchor="end">₱1,250</text><line x1="180" y1="610" x2="940" y2="610" stroke="#334155"/><text x="180" y="655" fill="#cbd5e1">Fuel</text><text x="905" y="655" fill="#f8fafc" text-anchor="end">₱1,000</text><line x1="180" y1="680" x2="940" y2="680" stroke="#334155"/><text x="180" y="725" fill="#cbd5e1">Internet bill</text><text x="905" y="725" fill="#f8fafc" text-anchor="end">₱2,099</text></g>
+</svg>
