@@ -19,6 +19,10 @@
     {
       "pattern": "malware.joshuadelacruz.solutions",
       "custom_domain": true
+    },
+    {
+      "pattern": "spending.joshuadelacruz.solutions",
+      "custom_domain": true
     }
   ],
   "assets": {

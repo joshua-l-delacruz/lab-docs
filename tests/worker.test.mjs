@@ -166,14 +166,16 @@ test("redirects www requests to the canonical host", async () => {
   assert.equal(response.headers.get("location"), "https://joshuadelacruz.solutions/workspaces/?source=test");
 });
 
-test("declares branded custom domains for both live C++ applications", async () => {
+test("declares every branded custom domain and live application origin", async () => {
   const config = await readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8");
   assert.match(config, /"pattern": "joshuadelacruz\.solutions"/);
   assert.match(config, /"pattern": "www\.joshuadelacruz\.solutions"/);
   assert.match(config, /"pattern": "calculator\.joshuadelacruz\.solutions"/);
   assert.match(config, /"pattern": "malware\.joshuadelacruz\.solutions"/);
+  assert.match(config, /"pattern": "spending\.joshuadelacruz\.solutions"/);
   assert.equal(LIVE_APPLICATION_ORIGINS["calculator.joshuadelacruz.solutions"], "https://scientific-calculator-cpp.onrender.com");
   assert.equal(LIVE_APPLICATION_ORIGINS["malware.joshuadelacruz.solutions"], "https://global-malware-trends-cpp.onrender.com");
+  assert.equal(LIVE_APPLICATION_ORIGINS["spending.joshuadelacruz.solutions"], "https://monthly-spending.vercel.app");
 });
 
 test("proxies branded application paths and rewrites origin redirects", async () => {
@@ -195,7 +197,7 @@ test("proxies branded application paths and rewrites origin redirects", async ()
   assert.equal(response.headers.get("location"), "https://calculator.joshuadelacruz.solutions/login?next=%2Fapi%2Fhealth");
 });
 
-test("public project CTAs use branded domains instead of Render hostnames", async () => {
+test("public project CTAs use branded domains instead of deployment hostnames", async () => {
   const pages = await Promise.all([
     "../index.html",
     "../workspaces/index.html",
@@ -206,8 +208,10 @@ test("public project CTAs use branded domains instead of Render hostnames", asyn
 
   assert.match(markup, /https:\/\/calculator\.joshuadelacruz\.solutions\//);
   assert.match(markup, /https:\/\/malware\.joshuadelacruz\.solutions\//);
+  assert.match(markup, /https:\/\/spending\.joshuadelacruz\.solutions\//);
   assert.doesNotMatch(markup, /https:\/\/scientific-calculator-cpp\.onrender\.com\//);
   assert.doesNotMatch(markup, /https:\/\/global-malware-trends-cpp\.onrender\.com\//);
+  assert.doesNotMatch(markup, /https:\/\/monthly-spending\.vercel\.app\//);
 });
 
 test("workspaces lists every current public application", async () => {
@@ -223,7 +227,7 @@ test("workspaces lists every current public application", async () => {
   ]) {
     assert.match(page, new RegExp(project.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
-  assert.match(page, /https:\/\/monthly-spending\.vercel\.app\//);
+  assert.match(page, /https:\/\/spending\.joshuadelacruz\.solutions\//);
   assert.match(page, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
   assert.match(page, /monthly-spending\.svg/);
   assert.match(page, /luzon-road-rush\.svg/);
