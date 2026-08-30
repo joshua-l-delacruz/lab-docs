@@ -140,6 +140,8 @@ test("homepage publishes complete search and social metadata", async () => {
   assert.match(homepage, /name="twitter:card" content="summary_large_image"/);
   assert.match(homepage, /"@type":"Person"/);
   assert.match(homepage, /"@type":"WebSite"/);
+  assert.match(homepage, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
+  assert.match(homepage, /luzon-road-rush\.svg/);
 });
 
 test("publishes crawler discovery and web app files", async () => {
