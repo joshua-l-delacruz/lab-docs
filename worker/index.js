@@ -112,6 +112,10 @@ export default {
       }
     }
 
+    if (url.pathname === "/api/incident-triage" && request.method === "POST") {
+      return incidentTriageResponse(request);
+    }
+
     if (!url.pathname.startsWith("/api/v2/")) {
       const assetResponse = await env.ASSETS.fetch(request);
       const usesStrictStaticPolicy =
@@ -221,6 +225,38 @@ export default {
     }
   }
 };
+
+export async function incidentTriageResponse(request) {
+  const length = Number(request.headers.get("content-length") || 0);
+  if (length > 16384) return problem(413, "PAYLOAD_TOO_LARGE", "Incident payload must be 16 KB or smaller.");
+  if (!(request.headers.get("content-type") || "").toLowerCase().includes("application/json")) {
+    return problem(415, "JSON_REQUIRED", "Send the incident as application/json.");
+  }
+  let input;
+  try { input = await request.json(); } catch { return problem(400, "INVALID_JSON", "The request body is not valid JSON."); }
+  const description = String(input?.description || "").trim();
+  if (description.length < 10 || description.length > 4000) return problem(400, "INVALID_DESCRIPTION", "Description must contain 10 to 4,000 characters.");
+  const text = `${String(input.short_description || "")} ${description}`;
+  const rules = [
+    ["Security", "Security Operations", /ransomware|malware|phishing|compromis|data leak/i],
+    ["Identity & Access", "Microsoft 365 / Identity", /password|login|mfa|authenticat|credential/i],
+    ["Network", "Network Connectivity", /vpn|wifi|network|dns|internet/i],
+    ["Endpoint", "Managed Endpoint", /laptop|desktop|device|intune|disk|cpu/i],
+    ["Application", "Business Application", /application|website|portal|crash/i]
+  ];
+  const match = rules.find(([, , pattern]) => pattern.test(text));
+  const category = match?.[0] || "General IT";
+  const service = match?.[1] || "Service Desk";
+  const users = Math.max(1, Math.min(100000, Number(input.affected_users) || 1));
+  const security = category === "Security";
+  const outage = /all users|site[- ]wide|company[- ]wide|complete outage|service down/i.test(text);
+  let priority = "P3";
+  if (security || (Boolean(input.business_critical) && outage)) priority = "P1";
+  else if (outage || users >= 25 || Boolean(input.business_critical)) priority = "P2";
+  const team = security ? "Security Operations" : category === "Identity & Access" ? "IAM Support" : category === "Network" ? "Network Operations" : "Service Desk / Application Owner";
+  const actions = security ? ["Preserve available evidence", "Isolate affected assets only when authorized", "Escalate to Security Operations"] : category === "Identity & Access" ? ["Verify identity through the approved process", "Check account and authentication state", "Review recent password, MFA and session changes"] : category === "Network" ? ["Confirm affected scope", "Collect DNS, connection and VPN status", "Compare with monitoring and known outages"] : ["Confirm impact, scope and start time", "Collect exact errors and recent changes", "Check known issues before assignment"];
+  return json({ schema_version: "1.0", execution: "cloudflare-worker", category, service, priority, confidence: match ? 0.82 : 0.55, escalation_team: team, human_review_required: priority === "P1" || priority === "P2" || !match, initial_actions: actions, ai_status: "not_configured", data_notice: "Use sanitized data only; human validation required." });
+}
 
 export async function engineeringEvidenceResponse(request, env, fetchImpl = fetch, now = new Date()) {
   const response = await fetchImpl(GITHUB_REPOSITORIES_URL, {

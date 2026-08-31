@@ -9,6 +9,7 @@ import worker, {
   API_SECURITY_HEADERS,
   HOME_SECURITY_HEADERS,
   engineeringEvidenceResponse,
+  incidentTriageResponse,
   LIVE_APPLICATION_ORIGINS,
   SECURITY_HEADERS,
   hasSameOrigin,
@@ -364,4 +365,14 @@ test("portfolio pages publish current positioning and complete discovery metadat
   for (const page of pages.slice(2)) {
     assert.match(page, /"@type":"BreadcrumbList"/);
   }
+});
+
+test("Cloudflare incident triage API returns an explainable identity recommendation", async () => {
+  const response = await incidentTriageResponse(new Request("https://joshuadelacruz.solutions/api/incident-triage", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ description: "User cannot sign in after a password reset and Outlook requests credentials.", affected_users: 1 }) }));
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.execution, "cloudflare-worker");
+  assert.equal(result.category, "Identity & Access");
+  assert.equal(result.priority, "P3");
+  assert.equal(result.ai_status, "not_configured");
 });
