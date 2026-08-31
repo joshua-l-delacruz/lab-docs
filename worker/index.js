@@ -111,9 +111,20 @@ export default {
         return problem(502, "EVIDENCE_UNAVAILABLE", "Live engineering evidence is temporarily unavailable.");
       }
     }
+    if (["/incident-triage/demo", "/incident-triage/demo/", "/incident-triage/demo/index.html"].includes(url.pathname)) {
+      url.pathname = "/incident-triage/automation/";
+      return redirect(url, 308);
+    }
 
     if (url.pathname === "/api/incident-triage" && request.method === "POST") {
-      return incidentTriageResponse(request);
+      return incidentTriageResponse(request, env);
+    }
+    if (url.pathname === "/api/incident-triage" && request.method === "GET") {
+      return listSupportIncidents(env);
+    }
+    const supportMatch = url.pathname.match(/^\/api\/incident-triage\/([A-Za-z0-9-]+)$/);
+    if (supportMatch && request.method === "PATCH") {
+      return updateSupportIncident(request, env, supportMatch[1]);
     }
 
     if (!url.pathname.startsWith("/api/v2/")) {
@@ -226,7 +237,7 @@ export default {
   }
 };
 
-export async function incidentTriageResponse(request) {
+export async function incidentTriageResponse(request, env = {}) {
   const length = Number(request.headers.get("content-length") || 0);
   if (length > 16384) return problem(413, "PAYLOAD_TOO_LARGE", "Incident payload must be 16 KB or smaller.");
   if (!(request.headers.get("content-type") || "").toLowerCase().includes("application/json")) {
@@ -255,7 +266,36 @@ export async function incidentTriageResponse(request) {
   else if (outage || users >= 25 || Boolean(input.business_critical)) priority = "P2";
   const team = security ? "Security Operations" : category === "Identity & Access" ? "IAM Support" : category === "Network" ? "Network Operations" : "Service Desk / Application Owner";
   const actions = security ? ["Preserve available evidence", "Isolate affected assets only when authorized", "Escalate to Security Operations"] : category === "Identity & Access" ? ["Verify identity through the approved process", "Check account and authentication state", "Review recent password, MFA and session changes"] : category === "Network" ? ["Confirm affected scope", "Collect DNS, connection and VPN status", "Compare with monitoring and known outages"] : ["Confirm impact, scope and start time", "Collect exact errors and recent changes", "Check known issues before assignment"];
-  return json({ schema_version: "1.0", execution: "cloudflare-worker", category, service, priority, confidence: match ? 0.82 : 0.55, escalation_team: team, human_review_required: priority === "P1" || priority === "P2" || !match, initial_actions: actions, ai_status: "not_configured", data_notice: "Use sanitized data only; human validation required." });
+  const confidence = match ? 0.82 : 0.55;
+  const humanReview = priority === "P1" || priority === "P2" || !match;
+  const incident = { id: crypto.randomUUID(), short_description: String(input.short_description || description.slice(0, 100)).slice(0, 120), category, service, priority, confidence, escalation_team: team, human_review_required: humanReview, status: "New", initial_actions: actions, created_at: new Date().toISOString() };
+  if (env.DB) {
+    await env.DB.batch([
+      env.DB.prepare("INSERT INTO support_incidents (id, short_description, category, service, priority, confidence, escalation_team, human_review_required, status, actions_json, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'New', ?, ?, ?)").bind(incident.id, incident.short_description, category, service, priority, confidence, team, humanReview ? 1 : 0, JSON.stringify(actions), incident.created_at, incident.created_at),
+      env.DB.prepare("INSERT INTO support_incident_events (id, incident_id, event_type, detail, created_at) VALUES (?, ?, 'TRIAGED', ?, ?)").bind(crypto.randomUUID(), incident.id, `${category} / ${priority} routed to ${team}`, incident.created_at)
+    ]);
+  }
+  return json({ schema_version: "1.0", execution: "cloudflare-worker", incident, persisted: Boolean(env.DB), ai_status: "not_configured", data_notice: "Only structured triage metadata is stored; human validation required." }, 201);
+}
+
+export async function listSupportIncidents(env) {
+  if (!env.DB) return problem(503, "D1_NOT_CONFIGURED", "Incident storage is not configured.");
+  const result = await env.DB.prepare("SELECT id, short_description, category, service, priority, confidence, escalation_team, human_review_required, status, created_at, updated_at FROM support_incidents ORDER BY created_at DESC LIMIT 50").all();
+  return json({ incidents: result.results || [] });
+}
+
+export async function updateSupportIncident(request, env, id) {
+  if (!env.DB) return problem(503, "D1_NOT_CONFIGURED", "Incident storage is not configured.");
+  if (!hasSameOrigin(request)) return problem(403, "INVALID_ORIGIN", "Status changes require a same-origin request.");
+  let input;
+  try { input = await request.json(); } catch { return problem(400, "INVALID_JSON", "The request body is not valid JSON."); }
+  const allowed = ["In Review", "Escalated", "Resolved"];
+  if (!allowed.includes(input.status)) return problem(400, "INVALID_STATUS", "Status must be In Review, Escalated, or Resolved.");
+  const now = new Date().toISOString();
+  const result = await env.DB.prepare("UPDATE support_incidents SET status = ?, updated_at = ? WHERE id = ?").bind(input.status, now, id).run();
+  if (!result.meta?.changes) return problem(404, "INCIDENT_NOT_FOUND", "Incident was not found.");
+  await env.DB.prepare("INSERT INTO support_incident_events (id, incident_id, event_type, detail, created_at) VALUES (?, ?, 'STATUS_CHANGED', ?, ?)").bind(crypto.randomUUID(), id, `Status changed to ${input.status}`, now).run();
+  return json({ id, status: input.status, updated_at: now });
 }
 
 export async function engineeringEvidenceResponse(request, env, fetchImpl = fetch, now = new Date()) {
