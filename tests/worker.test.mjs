@@ -144,7 +144,7 @@ test("homepage publishes complete search and social metadata", async () => {
   assert.match(homepage, /"@type":"WebSite"/);
   assert.match(homepage, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
   assert.match(homepage, /luzon-road-rush\.svg/);
-  assert.match(homepage, /<small>Portfolio Projects<\/small><strong>7<\/strong>/);
+  assert.match(homepage, /<small>Portfolio Projects<\/small><strong>8<\/strong>/);
   assert.match(homepage, /id="engineeringEvidence"/);
   assert.match(homepage, /LIVE EVIDENCE/);
   assert.match(homepage, /7\+ years of formal enterprise IT support experience/);
@@ -272,6 +272,7 @@ test("workspaces lists every current public application", async () => {
     "Pi 2048 Network Game",
     "Luzon Road Rush",
     "IAM Support Automation &amp; Human Escalation",
+    "AI-Assisted IT Incident Triage",
     "C++ Scientific &amp; Programmer Calculator",
     "Global Malware Trends"
   ]) {
@@ -285,6 +286,15 @@ test("workspaces lists every current public application", async () => {
   assert.match(page, /property="og:image"/);
   assert.match(page, /name="twitter:card" content="summary_large_image"/);
   assert.match(page, /"@type":"CollectionPage"/);
+});
+
+test("incident triage case study states integration boundaries", async () => {
+  const page = await readFile(new URL("../incident-triage/index.html", import.meta.url), "utf8");
+  assert.match(page, /AI-assisted incident triage with a safety baseline/i);
+  assert.match(page, /Setup required/);
+  assert.match(page, /not represented as live integrations/);
+  assert.match(page, /human review/i);
+  assert.match(page, /https:\/\/github\.com\/joshua-l-delacruz\/ai-it-incident-triage/);
 });
 
 test("featured portfolio-hosted apps return to the main portfolio", async () => {

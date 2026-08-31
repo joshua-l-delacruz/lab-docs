@@ -13,6 +13,7 @@ This repository presents practical evidence for IT support, identity and access 
 ## Portfolio areas
 
 - `iam-support/` - IAM case study and interactive automation/human-escalation lab
+- `incident-triage/` - AI-assisted n8n incident-triage case study
 - `cpp-calculator/` - C++ scientific and programmer calculator case study
 - `realestate/` - Philippine property transaction workspace
 - `workspaces/` - domain-organized project directory
@@ -76,6 +77,7 @@ The production deployment is managed through Cloudflare Workers Builds from the 
 - [Global Malware Trends C++](https://github.com/joshua-l-delacruz/global-malware-trends-cpp)
 - [Pi Monthly Spending](https://github.com/joshua-l-delacruz/monthly-spending)
 - [Luzon Road Rush](https://github.com/joshua-l-delacruz/luzon-road-rush)
+- [AI-Assisted IT Incident Triage](https://github.com/joshua-l-delacruz/ai-it-incident-triage)
 
 ## Scope
 
