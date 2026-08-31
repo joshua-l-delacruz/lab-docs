@@ -1,7 +1,146 @@
-const samples={identity:{short:"Microsoft 365 sign-in loop",description:"User cannot access Microsoft 365 after a password reset. Outlook repeatedly asks for credentials.",users:1,critical:false},network:{short:"Manila site VPN outage",description:"VPN is unavailable for all users at the Manila site. The issue began at 09:10 PHT.",users:48,critical:true},security:{short:"Suspected endpoint compromise",description:"A managed laptop generated an active ransomware alert and unexpected file changes.",users:1,critical:true}};
-const $=id=>document.getElementById(id);document.querySelectorAll("[data-sample]").forEach(button=>button.addEventListener("click",()=>{const sample=samples[button.dataset.sample];$("shortDescription").value=sample.short;$("description").value=sample.description;$("affectedUsers").value=sample.users;$("businessCritical").checked=sample.critical}));
-$("incidentForm").addEventListener("submit",async event=>{event.preventDefault();$("formMessage").textContent="Running Cloudflare automation…";try{const response=await fetch("/api/incident-triage",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({short_description:$("shortDescription").value,description:$("description").value,affected_users:Number($("affectedUsers").value),business_critical:$("businessCritical").checked})});const body=await response.json();if(!response.ok)throw new Error(body.error?.message||"Automation failed");renderResult(body);$("formMessage").textContent=`Created incident ${body.incident.id.slice(0,8)}.`;await loadQueue()}catch(error){$("formMessage").textContent=error.message}});
-function renderResult(body){const incident=body.incident;$("emptyState").hidden=true;$("result").hidden=false;$("resultPriority").textContent=incident.priority;$("resultCategory").textContent=incident.category;$("resultConfidence").textContent=`${Math.round(incident.confidence*100)}% confidence`;$("resultService").textContent=incident.service;$("resultTeam").textContent=incident.escalation_team;$("resultReview").textContent=incident.human_review_required?"Required":"Quality check";$("resultPersisted").textContent=body.persisted?"Cloudflare D1":"Not stored";$("resultAi").textContent=body.ai_status;$("resultActions").innerHTML="";incident.initial_actions.forEach(action=>{const item=document.createElement("li");item.textContent=action;$("resultActions").appendChild(item)})}
-async function loadQueue(){try{const response=await fetch("/api/incident-triage");const body=await response.json();if(!response.ok)throw new Error(body.error?.message||"Queue unavailable");$("queueRows").innerHTML="";if(!body.incidents.length){$("queueRows").innerHTML='<p class="loading">No incidents yet.</p>';return}body.incidents.forEach(incident=>{const row=document.createElement("div");row.className="queue-row";row.innerHTML=`<span class="priority-tag">${incident.priority}</span><b></b><span></span><span></span><select aria-label="Incident status"><option>New</option><option>In Review</option><option>Escalated</option><option>Resolved</option></select>`;row.children[1].textContent=incident.short_description;row.children[2].textContent=incident.category;row.children[3].textContent=incident.escalation_team;const select=row.querySelector("select");select.value=incident.status;select.addEventListener("change",()=>updateStatus(incident.id,select.value));$("queueRows").appendChild(row)})}catch(error){$("queueRows").innerHTML=`<p class="loading">${error.message}</p>`}}
-async function updateStatus(id,status){const response=await fetch(`/api/incident-triage/${id}`,{method:"PATCH",headers:{"content-type":"application/json"},body:JSON.stringify({status})});if(!response.ok){const body=await response.json();alert(body.error?.message||"Status update failed");await loadQueue()}}
-$("refreshQueue").addEventListener("click",loadQueue);const root=document.documentElement;const saved=localStorage.getItem("portfolio-theme");if(saved==="dark")root.classList.add("dark");function sync(){$("theme").textContent=root.classList.contains("dark")?"☀":"☾"}sync();$("theme").addEventListener("click",()=>{root.classList.toggle("dark");localStorage.setItem("portfolio-theme",root.classList.contains("dark")?"dark":"light");sync()});$("menu").addEventListener("click",()=>$("sidebar").classList.toggle("open"));loadQueue();
+const samples = {
+  identity: {
+    short: "Microsoft 365 sign-in loop",
+    description:
+      "User cannot access Microsoft 365 after a password reset. Outlook repeatedly asks for credentials.",
+    users: 1,
+    critical: false,
+  },
+  network: {
+    short: "Manila site VPN outage",
+    description:
+      "VPN is unavailable for all users at the Manila site. The issue began at 09:10 PHT.",
+    users: 48,
+    critical: true,
+  },
+  security: {
+    short: "Suspected endpoint compromise",
+    description:
+      "A managed laptop generated an active ransomware alert and unexpected file changes.",
+    users: 1,
+    critical: true,
+  },
+};
+const $ = (id) => document.getElementById(id);
+document.querySelectorAll("[data-sample]").forEach((button) =>
+  button.addEventListener("click", () => {
+    const sample = samples[button.dataset.sample];
+    $("shortDescription").value = sample.short;
+    $("description").value = sample.description;
+    $("affectedUsers").value = sample.users;
+    $("businessCritical").checked = sample.critical;
+  }),
+);
+$("incidentForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  $("formMessage").textContent = "Running Cloudflare automation…";
+  try {
+    const response = await fetch("/api/incident-triage", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        short_description: $("shortDescription").value,
+        description: $("description").value,
+        affected_users: Number($("affectedUsers").value),
+        business_critical: $("businessCritical").checked,
+      }),
+    });
+    const body = await response.json();
+    if (!response.ok)
+      throw new Error(body.error?.message || "Automation failed");
+    renderResult(body);
+    $("formMessage").textContent =
+      `Created incident ${body.incident.id.slice(0, 8)}.`;
+    await loadQueue();
+  } catch (error) {
+    $("formMessage").textContent = error.message;
+  }
+});
+function renderResult(body) {
+  const incident = body.incident;
+  $("emptyState").hidden = true;
+  $("result").hidden = false;
+  $("resultPriority").textContent = incident.priority;
+  $("resultCategory").textContent = incident.category;
+  $("resultConfidence").textContent =
+    `${Math.round(incident.confidence * 100)}% confidence`;
+  $("resultService").textContent = incident.service;
+  $("resultTeam").textContent = incident.escalation_team;
+  $("resultReview").textContent = incident.human_review_required
+    ? "Required"
+    : "Quality check";
+  $("resultPersisted").textContent = body.persisted
+    ? "Cloudflare D1"
+    : "Not stored";
+  $("resultAi").textContent =
+    body.ai_status === "enriched"
+      ? `Enriched by Cloudflare Workers AI (${body.ai_model})`
+      : "Safety-rule fallback used because AI was unavailable";
+  $("resultActions").innerHTML = "";
+  incident.initial_actions.forEach((action) => {
+    const item = document.createElement("li");
+    item.textContent = action;
+    $("resultActions").appendChild(item);
+  });
+}
+async function loadQueue() {
+  try {
+    const response = await fetch("/api/incident-triage");
+    const body = await response.json();
+    if (!response.ok)
+      throw new Error(body.error?.message || "Queue unavailable");
+    $("queueRows").innerHTML = "";
+    if (!body.incidents.length) {
+      $("queueRows").innerHTML = '<p class="loading">No incidents yet.</p>';
+      return;
+    }
+    body.incidents.forEach((incident) => {
+      const row = document.createElement("div");
+      row.className = "queue-row";
+      row.innerHTML = `<span class="priority-tag">${incident.priority}</span><b></b><span></span><span></span><select aria-label="Incident status"><option>New</option><option>In Review</option><option>Escalated</option><option>Resolved</option></select>`;
+      row.children[1].textContent = incident.short_description;
+      row.children[2].textContent = incident.category;
+      row.children[3].textContent = incident.escalation_team;
+      const select = row.querySelector("select");
+      select.value = incident.status;
+      select.addEventListener("change", () =>
+        updateStatus(incident.id, select.value),
+      );
+      $("queueRows").appendChild(row);
+    });
+  } catch (error) {
+    $("queueRows").innerHTML = `<p class="loading">${error.message}</p>`;
+  }
+}
+async function updateStatus(id, status) {
+  const response = await fetch(`/api/incident-triage/${id}`, {
+    method: "PATCH",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  if (!response.ok) {
+    const body = await response.json();
+    alert(body.error?.message || "Status update failed");
+    await loadQueue();
+  }
+}
+$("refreshQueue").addEventListener("click", loadQueue);
+const root = document.documentElement;
+const saved = localStorage.getItem("portfolio-theme");
+if (saved === "dark") root.classList.add("dark");
+function sync() {
+  $("theme").textContent = root.classList.contains("dark") ? "☀" : "☾";
+}
+sync();
+$("theme").addEventListener("click", () => {
+  root.classList.toggle("dark");
+  localStorage.setItem(
+    "portfolio-theme",
+    root.classList.contains("dark") ? "dark" : "light",
+  );
+  sync();
+});
+$("menu").addEventListener("click", () =>
+  $("sidebar").classList.toggle("open"),
+);
+loadQueue();

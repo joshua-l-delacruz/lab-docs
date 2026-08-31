@@ -268,14 +268,57 @@ export async function incidentTriageResponse(request, env = {}) {
   const actions = security ? ["Preserve available evidence", "Isolate affected assets only when authorized", "Escalate to Security Operations"] : category === "Identity & Access" ? ["Verify identity through the approved process", "Check account and authentication state", "Review recent password, MFA and session changes"] : category === "Network" ? ["Confirm affected scope", "Collect DNS, connection and VPN status", "Compare with monitoring and known outages"] : ["Confirm impact, scope and start time", "Collect exact errors and recent changes", "Check known issues before assignment"];
   const confidence = match ? 0.82 : 0.55;
   const humanReview = priority === "P1" || priority === "P2" || !match;
-  const incident = { id: crypto.randomUUID(), short_description: String(input.short_description || description.slice(0, 100)).slice(0, 120), category, service, priority, confidence, escalation_team: team, human_review_required: humanReview, status: "New", initial_actions: actions, created_at: new Date().toISOString() };
+  const baseline = { category, service, priority, confidence, escalation_team: team, human_review_required: humanReview, initial_actions: actions };
+  const enrichment = await enrichIncidentWithAi(env.AI, {
+    short_description: String(input.short_description || description.slice(0, 100)).slice(0, 120),
+    description,
+    affected_users: users,
+    business_critical: Boolean(input.business_critical)
+  }, baseline);
+  const incident = { id: crypto.randomUUID(), short_description: String(input.short_description || description.slice(0, 100)).slice(0, 120), ...enrichment.triage, status: "New", created_at: new Date().toISOString() };
   if (env.DB) {
     await env.DB.batch([
-      env.DB.prepare("INSERT INTO support_incidents (id, short_description, category, service, priority, confidence, escalation_team, human_review_required, status, actions_json, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'New', ?, ?, ?)").bind(incident.id, incident.short_description, category, service, priority, confidence, team, humanReview ? 1 : 0, JSON.stringify(actions), incident.created_at, incident.created_at),
-      env.DB.prepare("INSERT INTO support_incident_events (id, incident_id, event_type, detail, created_at) VALUES (?, ?, 'TRIAGED', ?, ?)").bind(crypto.randomUUID(), incident.id, `${category} / ${priority} routed to ${team}`, incident.created_at)
+      env.DB.prepare("INSERT INTO support_incidents (id, short_description, category, service, priority, confidence, escalation_team, human_review_required, status, actions_json, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'New', ?, ?, ?)").bind(incident.id, incident.short_description, incident.category, incident.service, incident.priority, incident.confidence, incident.escalation_team, incident.human_review_required ? 1 : 0, JSON.stringify(incident.initial_actions), incident.created_at, incident.created_at),
+      env.DB.prepare("INSERT INTO support_incident_events (id, incident_id, event_type, detail, created_at) VALUES (?, ?, 'TRIAGED', ?, ?)").bind(crypto.randomUUID(), incident.id, `${incident.category} / ${incident.priority} routed to ${incident.escalation_team} (${enrichment.status})`, incident.created_at)
     ]);
   }
-  return json({ schema_version: "1.0", execution: "cloudflare-worker", incident, persisted: Boolean(env.DB), ai_status: "not_configured", data_notice: "Only structured triage metadata is stored; human validation required." }, 201);
+  return json({ schema_version: "1.1", execution: "cloudflare-worker", incident, persisted: Boolean(env.DB), ai_status: enrichment.status, ai_model: enrichment.model, data_notice: "Only structured triage metadata is stored; human validation required." }, 201);
+}
+
+const AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast";
+const PRIORITY_RANK = Object.freeze({ P4: 1, P3: 2, P2: 3, P1: 4 });
+
+async function enrichIncidentWithAi(ai, input, baseline) {
+  if (!ai?.run) return { status: "fallback_rules", model: null, triage: baseline };
+  try {
+    const response = await ai.run(AI_MODEL, {
+      messages: [
+        { role: "system", content: "You triage sanitized enterprise IT incidents. Return JSON only with category, service, priority, confidence, escalation_team, human_review_required, and initial_actions. Priority must be P1, P2, P3, or P4. initial_actions must contain exactly three non-destructive diagnostic or escalation steps. Never recommend disabling security controls, deleting evidence, resetting accounts, or isolating devices without authorization." },
+        { role: "user", content: JSON.stringify({ incident: input, deterministic_safety_baseline: baseline }) }
+      ],
+      response_format: { type: "json_object" },
+      max_tokens: 450,
+      temperature: 0.1
+    });
+    const raw = typeof response?.response === "string" ? JSON.parse(response.response) : response?.response;
+    const categories = new Set(["Security", "Identity & Access", "Network", "Endpoint", "Application", "General IT"]);
+    const priorities = new Set(["P1", "P2", "P3", "P4"]);
+    if (!raw || !categories.has(raw.category) || !priorities.has(raw.priority)) throw new Error("Invalid AI triage classification");
+    const aiActions = Array.isArray(raw.initial_actions) ? raw.initial_actions.filter(action => typeof action === "string" && action.trim()).slice(0, 3) : [];
+    const finalPriority = PRIORITY_RANK[raw.priority] >= PRIORITY_RANK[baseline.priority] ? raw.priority : baseline.priority;
+    return { status: "enriched", model: AI_MODEL, triage: {
+      category: raw.category,
+      service: String(raw.service || baseline.service).slice(0, 100),
+      priority: finalPriority,
+      confidence: Math.max(0, Math.min(1, Number(raw.confidence) || baseline.confidence)),
+      escalation_team: String(raw.escalation_team || baseline.escalation_team).slice(0, 100),
+      human_review_required: Boolean(raw.human_review_required) || baseline.human_review_required || finalPriority === "P1" || finalPriority === "P2",
+      initial_actions: aiActions.length === 3 ? aiActions : baseline.initial_actions
+    } };
+  } catch (error) {
+    console.error(JSON.stringify({ event: "incident_ai_fallback", message: error instanceof Error ? error.message : "Unknown Workers AI error" }));
+    return { status: "fallback_rules", model: AI_MODEL, triage: baseline };
+  }
 }
 
 export async function listSupportIncidents(env) {

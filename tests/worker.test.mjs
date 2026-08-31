@@ -375,5 +375,42 @@ test("Cloudflare incident triage API returns an explainable identity recommendat
   assert.equal(result.incident.category, "Identity & Access");
   assert.equal(result.incident.priority, "P3");
   assert.equal(result.persisted, false);
-  assert.equal(result.ai_status, "not_configured");
+  assert.equal(result.ai_status, "fallback_rules");
+});
+
+test("Cloudflare Workers AI enriches triage without lowering the deterministic priority floor", async () => {
+  const AI = {
+    async run(model, options) {
+      assert.equal(model, "@cf/meta/llama-3.1-8b-instruct-fast");
+      assert.equal(options.response_format.type, "json_object");
+      return { response: JSON.stringify({
+        category: "Network",
+        service: "Corporate VPN",
+        priority: "P4",
+        confidence: 0.94,
+        escalation_team: "Network Operations",
+        human_review_required: false,
+        initial_actions: ["Confirm affected scope", "Check VPN service health", "Collect connection timestamps"]
+      }) };
+    }
+  };
+  const response = await incidentTriageResponse(new Request("https://joshuadelacruz.solutions/api/incident-triage", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ description: "VPN is unavailable for all users at the Manila site.", affected_users: 48, business_critical: true })
+  }), { AI });
+  const result = await response.json();
+  assert.equal(result.ai_status, "enriched");
+  assert.equal(result.ai_model, "@cf/meta/llama-3.1-8b-instruct-fast");
+  assert.equal(result.incident.service, "Corporate VPN");
+  assert.equal(result.incident.priority, "P1");
+  assert.equal(result.incident.human_review_required, true);
+});
+
+test("automation console identifies the live Workers AI integration", async () => {
+  const page = await readFile(new URL("../incident-triage/automation/index.html", import.meta.url), "utf8");
+  const config = await readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8");
+  assert.match(page, /Workers AI connected/);
+  assert.match(page, /deterministic safety floor/);
+  assert.match(config, /"ai"\s*:\s*\{\s*"binding"\s*:\s*"AI"/);
 });
