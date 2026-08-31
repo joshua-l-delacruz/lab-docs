@@ -150,6 +150,11 @@ test("homepage publishes complete search and social metadata", async () => {
   assert.match(homepage, /7\+ years of formal enterprise IT support experience/);
   assert.match(homepage, /longer-term independent and on-call technology support work/);
   assert.doesNotMatch(homepage, /17\+ years of combined technology experience/);
+  assert.match(homepage, /IT OPERATIONS · IAM · CLOUD SUPPORT/);
+  assert.match(homepage, /aria-label="Open navigation menu"/);
+  assert.match(homepage, /aria-label="Toggle light or dark mode"/);
+  assert.match(homepage, /https:\/\/www\.linkedin\.com\/in\/joshua-l-dela-cruz\//);
+  assert.match(homepage, /https:\/\/github\.com\/joshua-l-delacruz/);
 });
 
 test("builds live GitHub and Cloudflare engineering evidence", async () => {
@@ -179,10 +184,14 @@ test("publishes crawler discovery and web app files", async () => {
   const robots = await readFile(new URL("../robots.txt", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../sitemap.xml", import.meta.url), "utf8");
   const manifest = JSON.parse(await readFile(new URL("../site.webmanifest", import.meta.url), "utf8"));
+  const securityTxt = await readFile(new URL("../.well-known/security.txt", import.meta.url), "utf8");
   assert.match(robots, /Sitemap: https:\/\/joshuadelacruz\.solutions\/sitemap\.xml/);
   assert.match(sitemap, /<loc>https:\/\/joshuadelacruz\.solutions\/<\/loc>/);
   assert.equal(manifest.start_url, "/");
   assert.equal(manifest.icons[0].src, "/favicon.svg");
+  assert.match(sitemap, /<lastmod>2026-08-31<\/lastmod>/);
+  assert.match(securityTxt, /Contact: mailto:josh\.delacruz19@gmail\.com/);
+  assert.match(securityTxt, /Canonical: https:\/\/joshuadelacruz\.solutions\/\.well-known\/security\.txt/);
 });
 
 test("redirects www requests to the canonical host", async () => {
