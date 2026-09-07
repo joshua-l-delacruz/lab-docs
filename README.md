@@ -10,6 +10,12 @@ Source for [joshuadelacruz.solutions](https://joshuadelacruz.solutions), Joshua 
 
 This repository presents practical evidence for IT support, identity and access operations, application support, cloud operations and software delivery. It combines recruiter-facing case studies, interactive demonstrations and production-backed workspaces without exposing credentials or production data.
 
+| Review path | Evidence |
+| --- | --- |
+| **Recruiter** | Role-aligned case studies, live applications, concise project summaries and interview-ready walkthroughs. |
+| **Technical** | Source, tests, deployment configuration, API boundaries and reproducible local checks. |
+| **Security** | Sanitized examples, owner-scoped records, private vulnerability reporting and explicit trust boundaries. |
+
 ## Portfolio areas
 
 - `iam-support/` - IAM case study and interactive automation/human-escalation lab
@@ -58,6 +64,7 @@ Linked applications use separate deployment boundaries where appropriate:
 ## Local verification
 
 ```text
+npm ci
 npm test
 ```
 
@@ -68,6 +75,8 @@ node --test tests/worker.test.mjs
 ```
 
 The production deployment is managed through Cloudflare Workers Builds from the `main` branch.
+
+Search discovery is supported by canonical page URLs, structured social metadata, `robots.txt`, `sitemap.xml` and descriptive page titles. These improve discoverability; they do not guarantee search-engine ranking or indexing.
 
 ## Related repositories
 
