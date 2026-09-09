@@ -32,7 +32,9 @@
     <div class="nav-label">Navigate</div>
     <a href="../">⌂ &nbsp; Portfolio</a>
     <a class="active" href="./">▦ &nbsp; Workspaces</a>
-    <div class="nav-label">Categories</div>
+    <div class="nav-label">Primary Evidence</div>
+    <a href="#primary">◆ &nbsp; IAM &amp; Operations</a>
+    <div class="nav-label">Supporting Work</div>
     <a href="#real-estate">⌂ &nbsp; Real Estate</a>
     <a href="#finance">₱ &nbsp; Finance</a>
     <a href="#pi-network">π &nbsp; Pi Network</a>
@@ -46,21 +48,42 @@
 
   <section class="hero">
     <span class="pill">WORKSPACES DASHBOARD</span>
-    <h1>Practical tools,<br>organized by niche.</h1>
-    <p>A focused directory of applications and technical workspaces I build for real-world problems. Each workspace is separated by domain so the main portfolio stays simple and easy to scan.</p>
+    <h1>IAM and operations first.<br>Engineering proof second.</h1>
+    <p>The flagship IAM lab, incident decision-support system and Lab Docs platform carry the primary professional story. Pi 2048 and the C++ calculator prove engineering depth; the remaining workspaces support range without competing for equal prominence.</p>
+  </section>
+
+  <section id="primary">
+    <div class="head"><div><h2>Primary IAM &amp; Operations Evidence</h2><p>The three assets most aligned with identity governance, incident engineering and supportable cloud operations.</p></div></div>
+    <div class="grid">
+      <article class="card workspace featured">
+        <a class="workspaceShot" href="../iam-support/lab/" aria-label="Launch the IAM Support Operations Lab"><img src="/assets/images/iam-support-operations-simulator.png" alt="IAM Support Operations Lab overview dashboard" loading="lazy" width="2532" height="1297"></a>
+        <div class="workspaceTop"><div class="workspaceIcon">🔐</div><span class="state">FLAGSHIP</span></div>
+        <h3>IAM Support Operations Lab</h3>
+        <p>Designed JML governance, risk assessment, access reviews, SoD, privileged-access routing, exception handling, audit evidence, five incident cases and an explicit production-readiness plan.</p>
+        <div class="tags"><span class="tag">IAM</span><span class="tag">Identity Governance</span><span class="tag">JML</span><span class="tag">SoD</span><span class="tag">Access Reviews</span><span class="tag">Audit Evidence</span></div>
+        <div class="buttons"><a class="btn primary" href="../iam-support/">Read Flagship Case Study →</a><a class="btn secondary" href="../iam-support/lab/">Launch Lab</a></div>
+      </article>
+      <article class="card workspace featured">
+        <a class="workspaceShot" href="../incident-triage/" aria-label="Read the incident decision-support case study"><img src="/assets/images/ai-incident-triage-workflow.svg" alt="Incident decision-support workflow architecture" loading="lazy" width="1600" height="1000"></a>
+        <div class="workspaceTop"><div class="workspaceIcon">⚡</div><span class="state">PRIMARY</span></div>
+        <h3>IT Incident Triage &amp; Decision Support</h3>
+        <p>Implemented deterministic classification, optional AI enrichment, P1-P4 controls, explainable routing, response consistency and human-review gates.</p>
+        <div class="tags"><span class="tag">ITSM</span><span class="tag">Decision Support</span><span class="tag">n8n</span><span class="tag">Human Review</span><span class="tag">Responsible AI</span></div>
+        <div class="buttons"><a class="btn primary" href="../incident-triage/">Read Case Study →</a><a class="btn secondary" href="https://github.com/joshua-l-delacruz/ai-it-incident-triage" target="_blank" rel="noopener noreferrer">View GitHub</a></div>
+      </article>
+      <article class="card workspace featured">
+        <div class="workspaceTop"><div class="workspaceIcon">▦</div><span class="state">PRIMARY</span></div>
+        <h3>Lab Docs &amp; Portfolio Platform</h3>
+        <p>Deployed documentation and Cloudflare platform connecting IAM evidence, case studies, trust boundaries, live simulations, worker controls and regression tests.</p>
+        <div class="tags"><span class="tag">Documentation</span><span class="tag">Cloudflare Workers</span><span class="tag">Security Headers</span><span class="tag">Regression Tests</span></div>
+        <div class="buttons"><a class="btn primary" href="https://github.com/joshua-l-delacruz/lab-docs" target="_blank" rel="noopener noreferrer">Review Lab Docs →</a><a class="btn secondary" href="../">Portfolio Home</a></div>
+      </article>
+    </div>
   </section>
 
   <section id="real-estate">
     <div class="head"><div><h2>Real Estate</h2><p>Property transaction and broker workflow tools.</p></div></div>
     <div class="grid">
-      <article class="card workspace featured">
-        <a class="workspaceShot" href="../incident-triage/" aria-label="Read the AI-assisted IT incident triage case study"><img src="/assets/images/ai-incident-triage-workflow.svg" alt="AI-assisted IT incident triage workflow architecture" loading="lazy" width="1600" height="1000"></a>
-        <div class="workspaceTop"><div class="workspaceIcon">⚡</div><span class="state">DOCUMENTED BUILD</span></div>
-        <h3>AI-Assisted IT Incident Triage</h3>
-        <p>An n8n workflow project with a deterministic safety baseline, optional OpenAI enrichment, constrained output, P1-P4 test cases and explicit human-review gates.</p>
-        <div class="tags"><span class="tag">n8n</span><span class="tag">ITSM</span><span class="tag">Workflow Analysis</span><span class="tag">Responsible AI</span><span class="tag">OpenAI Setup</span></div>
-        <div class="buttons"><a class="btn primary" href="../incident-triage/">Read Case Study →</a><a class="btn secondary" href="https://github.com/joshua-l-delacruz/ai-it-incident-triage" target="_blank" rel="noopener noreferrer">View GitHub</a></div>
-      </article>
       <article class="card workspace featured">
         <a class="workspaceShot" href="../realestate/" aria-label="Open the Philippine Property Transaction Workspace"><img src="/assets/images/realestate-workspace.png" alt="Philippine Property Transaction Workspace dashboard" loading="lazy"></a>
         <div class="workspaceTop"><div class="workspaceIcon">🏠</div><span class="state">ACTIVE DEMO</span></div>
@@ -122,14 +145,6 @@
   <section id="it-cloud">
     <div class="head"><div><h2>IT / Cloud / Security</h2><p>Technical labs, utilities and architecture work.</p></div></div>
     <div class="grid">
-      <article class="card workspace featured">
-        <a class="workspaceShot" href="../iam-support/lab/" aria-label="Launch the interactive IAM Support Operations Simulator"><img src="/assets/images/iam-support-operations-simulator.png" alt="IAM Support Operations Simulator overview dashboard" loading="lazy" width="2532" height="1297"></a>
-        <div class="workspaceTop"><div class="workspaceIcon">🔐</div><span class="state">PORTFOLIO LAB</span></div>
-        <h3>IAM Support Automation &amp; Human Escalation</h3>
-        <p>An interactive identity operations system for automated request validation, least-privilege and SoD policy decisions, standard access provisioning, human escalation, failure-generated incidents, team notifications and audit evidence.</p>
-        <div class="tags"><span class="tag">IAM</span><span class="tag">Active Directory</span><span class="tag">Microsoft Entra ID</span><span class="tag">SailPoint</span><span class="tag">Access Governance</span><span class="tag">PowerShell</span></div>
-        <div class="buttons"><a class="btn primary" href="../iam-support/lab/">Launch Interactive Lab →</a><a class="btn secondary" href="../iam-support/">View Case Study</a></div>
-      </article>
       <article class="card workspace featured"><a class="workspaceShot" href="../cpp-calculator/" aria-label="Read the C++ Calculator case study"><img src="/assets/images/cpp-calculator-dashboard.png" alt="C++ Scientific and Programmer Calculator dashboard" loading="lazy"></a><div class="workspaceTop"><div class="workspaceIcon">⌨</div><span class="state">V10.2 RELEASED</span></div><h3>C++ Scientific &amp; Programmer Calculator</h3><p>A full-stack calculator powered by C++, Drogon and custom scientific and fixed-width programmer engines, with REST APIs, Docker deployment and automated testing.</p><div class="tags"><span class="tag">C++</span><span class="tag">Drogon</span><span class="tag">REST API</span><span class="tag">Docker</span><span class="tag">GitHub Actions</span></div><div class="buttons"><a class="btn primary" href="../cpp-calculator/">Read Case Study →</a><a class="btn secondary" href="https://calculator.joshuadelacruz.solutions/" target="_blank" rel="noreferrer">Open Live App</a></div></article>
       <article class="card workspace"><a class="workspaceShot" href="https://malware.joshuadelacruz.solutions/" target="_blank" rel="noopener noreferrer" aria-label="Open the Global Malware Trends interactive dashboard"><img src="/assets/images/global-malware-trends-dashboard.png" alt="Global Malware Trends illustrative defensive cybersecurity dashboard" loading="lazy"></a><div class="workspaceTop"><div class="workspaceIcon">🛡️</div><span class="state">INTERACTIVE</span></div><h3>Global Malware Trends</h3><p>An interactive C++-backed defensive trend simulation using a clearly labeled illustrative dataset, with timed updates, graphs, regional comparisons, malware categories and family-level severity context.</p><div class="tags"><span class="tag">C++</span><span class="tag">Cybersecurity</span><span class="tag">Illustrative Data</span><span class="tag">REST API</span><span class="tag">Render</span></div><div class="buttons"><a class="btn primary" href="https://malware.joshuadelacruz.solutions/" target="_blank" rel="noopener noreferrer">Open Dashboard →</a><a class="btn secondary" href="https://github.com/joshua-l-delacruz/global-malware-trends-cpp" target="_blank" rel="noopener noreferrer">View GitHub</a></div></article>
     </div>
