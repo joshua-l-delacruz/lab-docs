@@ -143,15 +143,15 @@ test("homepage publishes complete search and social metadata", async () => {
   assert.match(homepage, /name="twitter:card" content="summary_large_image"/);
   assert.match(homepage, /"@type":"Person"/);
   assert.match(homepage, /"@type":"WebSite"/);
-  assert.match(homepage, /https:\/\/roadrush\.joshuadelacruz\.solutions\//);
-  assert.match(homepage, /luzon-road-rush\.svg/);
+  assert.match(homepage, /FLAGSHIP IAM REPOSITORY/);
+  assert.match(homepage, /PRIMARY OPERATIONS PROJECT/);
+  assert.match(homepage, /PRIMARY DOCUMENTATION PLATFORM/);
   assert.match(homepage, /<small>Portfolio Projects<\/small><strong>8<\/strong>/);
   assert.match(homepage, /id="engineeringEvidence"/);
   assert.match(homepage, /LIVE EVIDENCE/);
   assert.match(homepage, /7\+ years of formal enterprise IT support experience/);
-  assert.match(homepage, /longer-term independent and on-call technology support work/);
   assert.doesNotMatch(homepage, /17\+ years of combined technology experience/);
-  assert.match(homepage, /IT OPERATIONS · IAM · CLOUD SUPPORT/);
+  assert.match(homepage, /IAM &amp; CLOUD OPERATIONS ENGINEER/);
   assert.match(homepage, /aria-label="Open navigation menu"/);
   assert.match(homepage, /aria-label="Toggle light or dark mode"/);
   assert.match(homepage, /https:\/\/www\.linkedin\.com\/in\/joshua-l-dela-cruz\//);
@@ -272,8 +272,8 @@ test("workspaces lists every current public application", async () => {
     "Pi Monthly Spending",
     "Pi 2048 Network Game",
     "Luzon Road Rush",
-    "IAM Support Automation &amp; Human Escalation",
-    "AI-Assisted IT Incident Triage",
+    "IAM Support Operations Lab",
+    "IT Incident Triage &amp; Decision Support",
     "C++ Scientific &amp; Programmer Calculator",
     "Global Malware Trends"
   ]) {

@@ -1,6 +1,6 @@
 # joshuadelacruz.solutions Portfolio Platform
 
-Source for [joshuadelacruz.solutions](https://joshuadelacruz.solutions), Joshua Dela Cruz's technology portfolio and interactive project hub.
+Source for [joshuadelacruz.solutions](https://joshuadelacruz.solutions), Joshua Dela Cruz's IAM, cloud operations, identity governance, and incident engineering portfolio.
 
 ![Portfolio workspace overview](assets/images/realestate-workspace.png)
 
@@ -8,7 +8,15 @@ Source for [joshuadelacruz.solutions](https://joshuadelacruz.solutions), Joshua 
 
 ## Purpose
 
-This repository presents practical evidence for IT support, identity and access operations, application support, cloud operations and software delivery. It combines recruiter-facing case studies, interactive demonstrations and production-backed workspaces without exposing credentials or production data.
+This repository is one of three primary portfolio assets alongside the IAM Support Operations Lab and IT Incident Triage & Decision Support. I designed and deployed it to present enterprise-support experience, IAM governance evidence, operational case studies, and supporting engineering work without exposing credentials or production data.
+
+## Portfolio hierarchy
+
+1. **IAM Support Operations Lab** - flagship evidence for JML, Risk Assessment, Access Reviews, SoD, Privileged Access, Exception Handling, Audit Evidence, and production-readiness reasoning.
+2. **IT Incident Triage & Decision Support** - primary evidence for structured incident handling, response consistency, explainable routing, and human review.
+3. **Lab Docs / Portfolio Platform** - primary evidence connecting the case studies, live simulator, deployment controls, and documentation narrative.
+4. **Pi 2048 and C++ Calculator** - engineering proof for end-to-end application delivery and lower-level implementation.
+5. **Other workspaces** - supporting evidence of range, presented outside the primary career narrative.
 
 | Review path | Evidence |
 | --- | --- |
